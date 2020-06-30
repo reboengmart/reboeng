@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "413309912175",
+    "firebase_url": "https://reboeng-f95b7.firebaseio.com",
+    "project_id": "reboeng-f95b7",
+    "storage_bucket": "reboeng-f95b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413309912175:android:45941457214cdcd0d0799a",
+        "android_client_info": {
+          "package_name": "com.marsell.adminreboeng"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413309912175-np9hh966ih51mihcmnmvm9cki1khs76i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marsell.adminreboeng",
+            "certificate_hash": "e186141c1b2ae941e8faa84f22dd5406fce29bd7"
+          }
+        },
+        {
+          "client_id": "413309912175-4l4jp5rs2qrlli53lbt61kae4jcr8q3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDlqrnWYB5KwHoMzDoNSxYkyjRSWOw51k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413309912175-4l4jp5rs2qrlli53lbt61kae4jcr8q3u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "413309912175-clkta4p9p7rlp19l9l10fn5s5ho9k0lp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.marsell.reboeng"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413309912175:android:fbd0c7d200189e96d0799a",
+        "android_client_info": {
+          "package_name": "com.marsell.reboeng"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413309912175-4l4jp5rs2qrlli53lbt61kae4jcr8q3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDlqrnWYB5KwHoMzDoNSxYkyjRSWOw51k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413309912175-4l4jp5rs2qrlli53lbt61kae4jcr8q3u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "413309912175-clkta4p9p7rlp19l9l10fn5s5ho9k0lp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.marsell.reboeng"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
