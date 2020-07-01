@@ -1,176 +1,161 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:reboeng/ui/Screens/Product/Detail/contants.dart';
 
-class DetailsScreen extends StatelessWidget {
+import 'detailsPage.dart';
+
+class DetailScreen extends StatefulWidget {
+  final String title;
+  DetailScreen(this.title);
+  @override
+  _DetailScreenState createState() => _DetailScreenState(title);
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  final String title;
+  _DetailScreenState(this.title);
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height =  MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
-        child: Column(
-          children: <Widget>[
-            Row(
+      backgroundColor: Color(0xFF21BFBD),
+      body: ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 15.0, left: 10.0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
+                IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).pop();
                   },
-                  child: SvgPicture.asset(
-                    "assets/icons/backward.svg",
-                    height: 11,
-                  ),
                 ),
-                SvgPicture.asset(
-                  "assets/icons/menu.svg",
-                  height: 11,
-                ),
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 30),
-              padding: EdgeInsets.all(6),
-              height: 305,
-              width: 305,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: kSecondaryColor,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/image_1_big.png"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: SvgPicture.asset(
-                      "assets/icons/forward.svg",
-                      height: 11,
-                    ),
-                  ),
-                ],
-              ),
-            ),
                 Container(
-                  padding: EdgeInsets.only(left: width*0.7),
-                  child: IconButton(
-                    icon: Icon(Icons.favorite_border, color: Colors.grey),
-                    onPressed: () {}
-                )
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Sayur Hijau\n",
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                      TextSpan(
-                        text: "Deskripsi",
-                        style: TextStyle(
-                          color: kTextColor.withOpacity(.5),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Text(
-                  "15.000",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline
-                      .copyWith(color: kSecondaryColor),
-                )
-              ],
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
-            ),
-            Spacer(),
-            Padding(
-              padding: EdgeInsets.only(bottom: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 27),
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor.withOpacity(.19),
-                      borderRadius: BorderRadius.circular(27),
-                    ),
+                    width: 125.0,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Tambah Keranjang",
-                          style: Theme.of(context).textTheme.button,
+                        IconButton(
+                          icon: Icon(Icons.filter_list),
+                          color: Colors.white,
+                          onPressed: () {},
                         ),
-                        SizedBox(width: 30),
-                        SvgPicture.asset(
-                          "assets/icons/forward.svg",
-                          height: 11,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: kPrimaryColor.withOpacity(.26),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(15),
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: kPrimaryColor,
-                          ),
-                          child: SvgPicture.asset("assets/icons/bag.svg"),
-                        ),
-                        Positioned(
-                          right: 15,
-                          bottom: 10,
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 28,
-                            width: 28,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: kWhiteColor,
-                            ),
-                            child: Text(
-                              "0",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button
-                                  .copyWith(color: kPrimaryColor, fontSize: 16),
-                            ),
-                          ),
+                        IconButton(
+                          icon: Icon(Icons.menu),
+                          color: Colors.white,
+                          onPressed: () {},
                         )
                       ],
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                    ))
+              ],
+            ),
+          ),
+          SizedBox(height: 25.0),
+          Padding(
+            padding: EdgeInsets.only(left: 40.0),
+            child: Row(
+              children: <Widget>[
+                Text(title,
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25.0)),
+                SizedBox(width: 10.0),
+                Text('Segar',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: 25.0))
+              ],
+            ),
+          ),
+          SizedBox(height: 40.0),
+          Container(
+            height: MediaQuery.of(context).size.height - 185.0,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(75.0)),
+            ),
+            child: ListView(
+              primary: false,
+              padding: EdgeInsets.only(left: 25.0, right: 20.0),
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(top: 45.0),
+                    child: Container(
+                        height: MediaQuery.of(context).size.height - 300.0,
+                        child: ListView(children: [
+                          _buildFoodItem('assets/sayur/sawi.png', 'Salmon bowl', '\$24.00'),
+                          _buildFoodItem('assets/sayur/paprika.png', 'Spring bowl', '\$22.00'),
+                          _buildFoodItem('assets/sayur/kubis.png', 'Avocado bowl', '\$26.00'),
+                          _buildFoodItem('assets/sayur/brocoli.png', 'Berry bowl', '\$24.00')
+                        ]))),
+              ],
+            ),
+          )
+        ],
       ),
     );
+  }
+
+  Widget _buildFoodItem(String imgPath, String foodName, String price) {
+    return Padding(
+        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+        child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price)
+              ));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                    child: Row(
+                        children: [
+                          Hero(
+                              tag: imgPath,
+                              child: Image(
+                                  image: AssetImage(imgPath),
+                                  fit: BoxFit.cover,
+                                  height: 75.0,
+                                  width: 75.0
+                              )
+                          ),
+                          SizedBox(width: 10.0),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children:[
+                                Text(
+                                    foodName,
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 17.0,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                ),
+                                Text(
+                                    price,
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 15.0,
+                                        color: Colors.grey
+                                    )
+                                )
+                              ]
+                          )
+                        ]
+                    )
+                ),
+                IconButton(
+                    icon: Icon(Icons.add),
+                    color: Colors.black,
+                    onPressed: () {}
+                )
+              ],
+            )
+        ));
   }
 }

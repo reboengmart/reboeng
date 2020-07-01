@@ -1,25 +1,22 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:flutter/cupertino.dart';
 
 class ProductCategory{
-  String id;
-  String nama;
-  String status;
-  String assets;
+  final String id;
+  final String nama;
+  final String status;
+  final String assets;
 
 //  ProductCategory();
-
-  ProductCategory.fromMap(Map<String, dynamic> data){
-    id = data['id'];
-    nama = data['nama'];
-    status = data['status'];
-    assets = data['assets'];
+ProductCategory({this.id,this.nama,this.status,this.assets});
+  Map<String,dynamic> toMap(){
+    return{
+      'nama' :nama,
+      'assets':assets,
+      'status':status,
+    };
   }
-
-//  Map<String, dynamic> toMap() {
-//    return {
-//      'category' : category,
-//      'assets' : assets
-//    };
-//  }
+  ProductCategory.fromFirestore(Map<String,dynamic> firestore)
+  : id=firestore['id'],
+        nama=firestore['nama'],
+  assets=firestore['assets'],
+  status=firestore['status'];
 }

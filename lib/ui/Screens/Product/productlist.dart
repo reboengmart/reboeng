@@ -68,8 +68,6 @@ class _ProductListState extends State<ProductList> {
       Color.fromRGBO(224, 255, 255, 1),
       Color.fromRGBO(152, 251, 152, 1),
       Color.fromRGBO(152, 251, 152, 1),
-      Color.fromRGBO(34, 139, 34, 10),
-      Color.fromRGBO(60, 179, 113, 5),
       Color.fromRGBO(172, 238, 238, 10),
       Color.fromRGBO(144, 238, 114, 10),
 
@@ -181,7 +179,7 @@ class _ProductListState extends State<ProductList> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailsScreen()));},
+                builder: (context) => DetailScreen(name)));},
       child: Container (
         width: 42.5 * SizeConfig.widthMultiplier,
         decoration: BoxDecoration(

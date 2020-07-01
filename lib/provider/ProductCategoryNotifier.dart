@@ -1,26 +1,21 @@
-import 'dart:collection';
-
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:reboeng/services/api/productCategory_api.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:reboeng/services/model/ProductCategory.dart';
 
-class ProductCategoryNotifier with ChangeNotifier{
-  List<ProductCategory> _productCategoryList = [];
 
-  ProductCategory _currentProductCategory;
+class ProductCategoryNotifier with ChangeNotifier {
+  final firestoreService=GetProductCategory();
+  String _nama;
+  String _status;
+  String _assets;
 
-  UnmodifiableListView<ProductCategory> get productCategoryList => UnmodifiableListView(_productCategoryList);
-
-  ProductCategory get currentProductCategory => _currentProductCategory;
-
-  set productCategoryList(List<ProductCategory> productCategoryList){
-    _productCategoryList = productCategoryList;
-    notifyListeners();
-  }
-
-  set currentProductCategory(ProductCategory productCategory){
-    _currentProductCategory = productCategory;
-    notifyListeners();
-  }
-
+  String get nama =>_nama;
+  String get status => _status;
+  String get assets=> _assets;
 
 }
+
+
+
