@@ -6,7 +6,7 @@ import 'package:reboeng/services/model/ProductList.dart';
 import 'package:reboeng/ui/Screens/Product/Detail/detail_screen.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
-
+import 'package:reboeng/provider/ProductListNotifier.dart';
 class ProductListItem extends StatefulWidget {
   final String title;
   ProductListItem(this.title);
@@ -76,7 +76,7 @@ class _ProductListItemState extends State<ProductListItem> {
       ];
     Random random = new Random();
 //    int indexColor = 0;
-    final productList = Provider.of<List<ProductList>>(context);
+
     return LayoutBuilder(
         builder: (context, constraints){
           return OrientationBuilder(
@@ -149,19 +149,28 @@ class _ProductListItemState extends State<ProductListItem> {
                                 ),
                               ),
                               Expanded(
-                                child: new StaggeredGridView.countBuilder(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 12,
-                                    mainAxisSpacing: 12,
-                                    itemCount: productList.length,
-                                    itemBuilder: (context, index){
-                                      var c = random.nextInt(colors.length);
-                                      final item = productList[index];
-                                      return _buildProductListItemCard(item.nama, item.assets, colors[c]);
+                                child: Consumer<ProductListNotifier>(
+                                    builder:(context,ProductListNotifier,_) {
+                                      List<ProductList> productList=ProductListNotifier.listOfProductList;
+                                      return new StaggeredGridView.countBuilder(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 12,
+                                          mainAxisSpacing: 12,
+                                          itemCount: productList.length,
+                                          itemBuilder: (context, index) {
+                                            var c = random.nextInt(
+                                                colors.length);
+                                            final item = productList[index];
+                                            return _buildProductListItemCard(
+                                                item.nama, item.assets,
+                                                colors[c]);
+                                          },
+                                          staggeredTileBuilder: (index) {
+                                            return new StaggeredTile.count(
+                                                1, index.isEven ? 1.6 : 1.9);
+                                          }
+                                      );
                                     },
-                                    staggeredTileBuilder: (index){
-                                      return new StaggeredTile.count(1, index.isEven ? 1.6 : 1.9);
-                                    }
                                 ),
                               ),
                             ],
