@@ -9,14 +9,15 @@ class ProductCategory{
 ProductCategory({this.id,this.nama,this.status,this.assets});
   Map<String,dynamic> toMap(){
     return{
+      'id' :id,
       'nama' :nama,
       'assets':assets,
       'status':status,
     };
   }
   ProductCategory.fromFirestore(Map<String,dynamic> firestore)
-  : id=firestore['id'],
+  :     id=firestore['id'],
         nama=firestore['nama'],
-  assets=firestore['assets'],
-  status=firestore['status'];
+        assets=firestore['assets'],
+        status=firestore['status'];
 }

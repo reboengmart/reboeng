@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:reboeng/provider/ProductCategoryNotifier.dart';
+//import 'package:reboeng/provider/ProductCategoryNotifier.dart';
 import 'package:reboeng/services/model/ProductCategory.dart';
+import 'package:reboeng/services/product.dart';
 import 'package:reboeng/ui/Screens/Product/productlist.dart';
 
 class CategoryGrid extends StatelessWidget {
@@ -78,11 +79,12 @@ class CategoryGrid extends StatelessWidget {
                     ),
                   ],
                 ),
-                onTap: () {
+                onTap: () async{
+                  await ProductServices.listProduct(categoryData.id);
                   (categoryData.status == 'available') ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductList(categoryData.nama),
+                        builder: (context) => ProductListItem(categoryData.nama),
                       )
                   ) : 0;
                 }

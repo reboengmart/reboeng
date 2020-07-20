@@ -1,56 +1,58 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
+import 'package:reboeng/services/model/ProductList.dart';
 import 'package:reboeng/ui/Screens/Product/Detail/detail_screen.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 
-class ProductList extends StatefulWidget {
+class ProductListItem extends StatefulWidget {
   final String title;
-  ProductList(this.title);
+  ProductListItem(this.title);
   @override
-  _ProductListState createState() => _ProductListState(title);
+  _ProductListItemState createState() => _ProductListItemState(title);
 }
 
-class _ProductListState extends State<ProductList> {
+class _ProductListItemState extends State<ProductListItem> {
   final String title;
-  _ProductListState(this.title);
+  _ProductListItemState(this.title);
 //  ScrollController _scrollController = new ScrollController();
 
-//  int _ProductListItem = 4;
+//  int _ProductListItemItem = 4;
   // ignore: non_constant_identifier_names
-  final _ProductList = [
-    {
-      'name': 'Sawi Putih',
-      'price': 12500,
-      'unit': 'kg',
-      'assets': 'assets/sayur/sawi.png'
-    },
-    {
-      'name': 'Paprika',
-      'price': 12500,
-      'unit': 'kg',
-      'assets': 'assets/sayur/paprika.png'
-    },
-    {
-      'name': 'Mentimun',
-      'price': 12500,
-      'unit': 'kg',
-      'assets': 'assets/sayur/mentimun.png'
-    },
-    {
-      'name': 'Kubis',
-      'price': 12500,
-      'unit': 'kg',
-      'assets': 'assets/sayur/kubis.png'
-    },
-    {
-      'name': 'Bawang Prei',
-      'price': 12500,
-      'unit': 'kg',
-      'assets': 'assets/sayur/bawangprei.png'
-    }
-  ];
+//  final _ProductListItem = [
+//    {
+//      'name': 'Sawi Putih',
+//      'price': 12500,
+//      'unit': 'kg',
+//      'assets': 'assets/sayur/sawi.png'
+//    },
+//    {
+//      'name': 'Paprika',
+//      'price': 12500,
+//      'unit': 'kg',
+//      'assets': 'assets/sayur/paprika.png'
+//    },
+//    {
+//      'name': 'Mentimun',
+//      'price': 12500,
+//      'unit': 'kg',
+//      'assets': 'assets/sayur/mentimun.png'
+//    },
+//    {
+//      'name': 'Kubis',
+//      'price': 12500,
+//      'unit': 'kg',
+//      'assets': 'assets/sayur/kubis.png'
+//    },
+//    {
+//      'name': 'Bawang Prei',
+//      'price': 12500,
+//      'unit': 'kg',
+//      'assets': 'assets/sayur/bawangprei.png'
+//    }
+//  ];
 
 
 
@@ -74,6 +76,7 @@ class _ProductListState extends State<ProductList> {
       ];
     Random random = new Random();
 //    int indexColor = 0;
+    final productList = Provider.of<List<ProductList>>(context);
     return LayoutBuilder(
         builder: (context, constraints){
           return OrientationBuilder(
@@ -150,11 +153,11 @@ class _ProductListState extends State<ProductList> {
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 12,
                                     mainAxisSpacing: 12,
-                                    itemCount: _ProductList.length,
+                                    itemCount: productList.length,
                                     itemBuilder: (context, index){
                                       var c = random.nextInt(colors.length);
-                                      final item = _ProductList[index];
-                                      return _buildProductListCard(item['name'], item['assets'], item['price'].toString(), item['unit'], colors[c]);
+                                      final item = productList[index];
+                                      return _buildProductListItemCard(item.nama, item.assets, colors[c]);
                                     },
                                     staggeredTileBuilder: (index){
                                       return new StaggeredTile.count(1, index.isEven ? 1.6 : 1.9);
@@ -173,7 +176,7 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
-  _buildProductListCard(String name, String asset, String price, String unit, Color color) {
+  _buildProductListItemCard(String name, String asset,Color color) {
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -235,18 +238,7 @@ class _ProductListState extends State<ProductList> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(price, style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 2.5 * SizeConfig.textMultiplier
-                      ),),
-                      Text("Per $unit", style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 1.3 * SizeConfig.textMultiplier
-                      ),),
+
                     ],
                   ),
                   Spacer(),

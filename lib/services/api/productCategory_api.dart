@@ -3,6 +3,12 @@ import 'package:reboeng/services/model/ProductCategory.dart';
 class GetProductCategory {
   Firestore _db = Firestore.instance;
    Stream<List<ProductCategory>> getCategory(){
-    return  _db.collection('category').orderBy('status').snapshots().map((snapshot) => snapshot.documents.map((document)=> ProductCategory.fromFirestore(document.data)).toList());
+    return  _db
+        .collection('category')
+        .orderBy('status')
+        .snapshots()
+        .map((snapshot)
+    => snapshot.documents.map((document)
+    => ProductCategory.fromFirestore(document.data)).toList());
    }
 }
