@@ -1,63 +1,39 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
+import 'package:reboeng/services/model/ProductCategory.dart';
 import 'package:reboeng/services/model/ProductList.dart';
 import 'package:reboeng/ui/Screens/Product/Detail/detail_screen.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 import 'package:reboeng/provider/ProductListNotifier.dart';
 class ProductListItem extends StatefulWidget {
-  final String title;
-  ProductListItem(this.title);
+//  final ProductCategory productcategory;
+//  ProductListItem({this.productcategory});
+  final String title,idcategory;
+  ProductListItem(this.title,this.idcategory);
   @override
-  _ProductListItemState createState() => _ProductListItemState(title);
+  _ProductListItemState createState() => _ProductListItemState(title,idcategory);
 }
 
 class _ProductListItemState extends State<ProductListItem> {
-  final String title;
-  _ProductListItemState(this.title);
-//  ScrollController _scrollController = new ScrollController();
+  final String title,idcategory;
+  _ProductListItemState(this.title,this.idcategory);
+  @override
+  void initState() {
+    ProductListNotifier productListNotifier=Provider.of<ProductListNotifier>(context,listen: false);
+    getProducts(productListNotifier,idcategory);
+    super.initState();
+  }
 
-//  int _ProductListItemItem = 4;
-  // ignore: non_constant_identifier_names
-//  final _ProductListItem = [
-//    {
-//      'name': 'Sawi Putih',
-//      'price': 12500,
-//      'unit': 'kg',
-//      'assets': 'assets/sayur/sawi.png'
-//    },
-//    {
-//      'name': 'Paprika',
-//      'price': 12500,
-//      'unit': 'kg',
-//      'assets': 'assets/sayur/paprika.png'
-//    },
-//    {
-//      'name': 'Mentimun',
-//      'price': 12500,
-//      'unit': 'kg',
-//      'assets': 'assets/sayur/mentimun.png'
-//    },
-//    {
-//      'name': 'Kubis',
-//      'price': 12500,
-//      'unit': 'kg',
-//      'assets': 'assets/sayur/kubis.png'
-//    },
-//    {
-//      'name': 'Bawang Prei',
-//      'price': 12500,
-//      'unit': 'kg',
-//      'assets': 'assets/sayur/bawangprei.png'
-//    }
-//  ];
 
 
 
   @override
   Widget build(BuildContext context) {
+    ProductListNotifier productNotifier=Provider.of<ProductListNotifier>(context);
     final String _title = title;
     var colors =[
       Color.fromRGBO(247, 220, 111, 1),
@@ -151,16 +127,17 @@ class _ProductListItemState extends State<ProductListItem> {
                               Expanded(
                                 child: Consumer<ProductListNotifier>(
                                     builder:(context,ProductListNotifier,_) {
-                                      List<ProductList> productList=ProductListNotifier.listOfProductList;
+//                                      List<ProductList> productList=ProductListNotifier.item;
+//                                      print('tes $productList');
                                       return new StaggeredGridView.countBuilder(
                                           crossAxisCount: 2,
                                           crossAxisSpacing: 12,
                                           mainAxisSpacing: 12,
-                                          itemCount: productList.length,
+                                          itemCount: productNotifier.productList.length,
                                           itemBuilder: (context, index) {
                                             var c = random.nextInt(
                                                 colors.length);
-                                            final item = productList[index];
+                                            final item = productNotifier.productList[index];
                                             return _buildProductListItemCard(
                                                 item.nama, item.assets,
                                                 colors[c]);
@@ -265,6 +242,20 @@ class _ProductListItemState extends State<ProductListItem> {
         ),
       ),
     );
+  }
+
+  void getProducts(ProductListNotifier productListNotifier,String id) async{
+//    List<ProductCategory> _items = [];
+//    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    QuerySnapshot snapshot=await Firestore.instance.collection('product').where('category_ref', isEqualTo: id).getDocuments();
+
+    List<ProductList> _ListProduct=[];
+    snapshot.documents.forEach((element) {
+      ProductList productList=ProductList.formMap(element.data);
+      _ListProduct.add(productList);
+    });
+
+    productListNotifier.productList=_ListProduct;
   }
 }
 

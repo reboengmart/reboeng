@@ -11,7 +11,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final firestoreService=GetProductCategory();
+//    final firestoreService=GetProductCategory();
     return StreamProvider.value(
       value: AuthServices.firebaseUserStream,
       child:  MultiProvider(
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => ProductListNotifier(),
           ),
-          StreamProvider(create: (context)=>firestoreService.getCategory()),
+//          StreamProvider(create: (context)=>firestoreService.getCategory()),
         ],
         child: MaterialApp(
           title: 'Reboeng',
