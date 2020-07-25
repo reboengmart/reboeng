@@ -1,20 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reboeng/provider/SubProductNotifier.dart';
+import 'package:reboeng/services/model/SubProduct.dart';
 
 import 'detailsPage.dart';
 
 class DetailScreen extends StatefulWidget {
-  final String title;
-  DetailScreen(this.title);
+  final String title,id;
+  DetailScreen(this.title,this.id);
   @override
-  _DetailScreenState createState() => _DetailScreenState(title);
+  _DetailScreenState createState() => _DetailScreenState(title,id);
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  final String title;
-  _DetailScreenState(this.title);
+  final String title,id;
+  _DetailScreenState(this.title,this.id);
+  @override
+  void initState() {
+    SubProductNotifier subProductNotifier=Provider.of<SubProductNotifier>(context,listen: false);
+    getsubProducts(subProductNotifier,id);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    SubProductNotifier subProductNotifier=Provider.of<SubProductNotifier>(context);
     return Scaffold(
       backgroundColor: Color(0xFF21BFBD),
       body: ListView(
@@ -84,14 +95,17 @@ class _DetailScreenState extends State<DetailScreen> {
               children: <Widget>[
                 Padding(
                     padding: EdgeInsets.only(top: 45.0),
-                    child: Container(
-                        height: MediaQuery.of(context).size.height - 300.0,
-                        child: ListView(children: [
-                          _buildFoodItem('assets/sayur/sawi.png', 'Salmon bowl', '\$24.00'),
-                          _buildFoodItem('assets/sayur/paprika.png', 'Spring bowl', '\$22.00'),
-                          _buildFoodItem('assets/sayur/kubis.png', 'Avocado bowl', '\$26.00'),
-                          _buildFoodItem('assets/sayur/brocoli.png', 'Berry bowl', '\$24.00')
-                        ]))),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height - 300.0,
+                            child: ListView.builder(
+                            itemCount: subProductNotifier.subproductList.length,
+                            itemBuilder: (context, index) {
+                            final item = subProductNotifier.subproductList[index];
+                            return _buildFoodItem(item.assets,item.name,item.price.toString());
+                            },
+                            ),
+                          )
+                    )
               ],
             ),
           )
@@ -157,5 +171,17 @@ class _DetailScreenState extends State<DetailScreen> {
               ],
             )
         ));
+  }
+
+  void getsubProducts(SubProductNotifier subProductNotifier, String id) async{
+    QuerySnapshot snapshot=await Firestore.instance.collection('sub_product').where('product_ref', isEqualTo: id).getDocuments();
+
+    List<SubProduct> _subListProduct=[];
+    snapshot.documents.forEach((element) {
+      SubProduct subproductList=SubProduct.formMap(element.data);
+      _subListProduct.add(subproductList);
+    });
+
+    subProductNotifier.subproductList=_subListProduct;
   }
 }

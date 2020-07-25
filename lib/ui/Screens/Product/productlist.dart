@@ -138,7 +138,7 @@ class _ProductListItemState extends State<ProductListItem> {
                                             var c = random.nextInt(
                                                 colors.length);
                                             final item = productNotifier.productList[index];
-                                            return _buildProductListItemCard(
+                                            return _buildProductListItemCard(item.id,
                                                 item.nama, item.assets,
                                                 colors[c]);
                                           },
@@ -162,13 +162,13 @@ class _ProductListItemState extends State<ProductListItem> {
     );
   }
 
-  _buildProductListItemCard(String name, String asset,Color color) {
+  _buildProductListItemCard(String id,String name, String asset,Color color) {
     return InkWell(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailScreen(name)));},
+                builder: (context) => DetailScreen(name,id)));},
       child: Container (
         width: 42.5 * SizeConfig.widthMultiplier,
         decoration: BoxDecoration(

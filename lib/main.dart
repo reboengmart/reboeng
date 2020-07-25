@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/ProductCategoryNotifier.dart';
 import 'package:reboeng/provider/ProductListNotifier.dart';
+import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/services/auth.dart';
 import 'package:reboeng/services/wrapper.dart';
 import 'package:reboeng/services/api/productCategory_api.dart';
@@ -21,6 +22,8 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => ProductListNotifier(),
+          ), ChangeNotifierProvider(
+            create: (context) => SubProductNotifier(),
           ),
 //          StreamProvider(create: (context)=>firestoreService.getCategory()),
         ],
