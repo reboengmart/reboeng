@@ -1,17 +1,13 @@
 import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
-import 'package:reboeng/services/model/ProductCategory.dart';
-import 'package:reboeng/services/model/ProductList.dart';
+import 'package:reboeng/services/refresh.dart';
 import 'package:reboeng/ui/Screens/Product/Detail/detail_screen.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 import 'package:reboeng/provider/ProductListNotifier.dart';
 class ProductListItem extends StatefulWidget {
-//  final ProductCategory productcategory;
-//  ProductListItem({this.productcategory});
   final String title,idcategory;
   ProductListItem(this.title,this.idcategory);
   @override
@@ -22,9 +18,9 @@ class _ProductListItemState extends State<ProductListItem> {
   final String title,idcategory;
   _ProductListItemState(this.title,this.idcategory);
   @override
-  void initState() {
+  void initState(){
     ProductListNotifier productListNotifier=Provider.of<ProductListNotifier>(context,listen: false);
-    getProducts(productListNotifier,idcategory);
+    RefreshServices.productListRefresh(productListNotifier, idcategory);
     super.initState();
   }
 
@@ -242,20 +238,6 @@ class _ProductListItemState extends State<ProductListItem> {
         ),
       ),
     );
-  }
-
-  void getProducts(ProductListNotifier productListNotifier,String id) async{
-//    List<ProductCategory> _items = [];
-//    final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    QuerySnapshot snapshot=await Firestore.instance.collection('product').where('category_ref', isEqualTo: id).getDocuments();
-
-    List<ProductList> _ListProduct=[];
-    snapshot.documents.forEach((element) {
-      ProductList productList=ProductList.formMap(element.data);
-      _ListProduct.add(productList);
-    });
-
-    productListNotifier.productList=_ListProduct;
   }
 }
 

@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
-import 'package:reboeng/services/model/SubProduct.dart';
+import 'package:reboeng/services/refresh.dart';
 
 import 'detailsPage.dart';
 
@@ -20,7 +19,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     SubProductNotifier subProductNotifier=Provider.of<SubProductNotifier>(context,listen: false);
-    getsubProducts(subProductNotifier,id);
+    RefreshServices.subProductRefresh(subProductNotifier, id);
     super.initState();
   }
   @override
@@ -74,11 +73,6 @@ class _DetailScreenState extends State<DetailScreen> {
                         fontWeight: FontWeight.bold,
                         fontSize: 25.0)),
                 SizedBox(width: 10.0),
-                Text('Segar',
-                    style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        color: Colors.white,
-                        fontSize: 25.0))
               ],
             ),
           ),
@@ -164,24 +158,12 @@ class _DetailScreenState extends State<DetailScreen> {
                     )
                 ),
                 IconButton(
-                    icon: Icon(Icons.add),
+                    icon: Icon(Icons.add_shopping_cart),
                     color: Colors.black,
                     onPressed: () {}
                 )
               ],
             )
         ));
-  }
-
-  void getsubProducts(SubProductNotifier subProductNotifier, String id) async{
-    QuerySnapshot snapshot=await Firestore.instance.collection('sub_product').where('product_ref', isEqualTo: id).getDocuments();
-
-    List<SubProduct> _subListProduct=[];
-    snapshot.documents.forEach((element) {
-      SubProduct subproductList=SubProduct.formMap(element.data);
-      _subListProduct.add(subproductList);
-    });
-
-    subProductNotifier.subproductList=_subListProduct;
   }
 }

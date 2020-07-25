@@ -90,33 +90,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
 
-    var themeSwitcher = ThemeSwitcher(
-      builder: (context) {
-        return AnimatedCrossFade(
-          duration: Duration(milliseconds: 200),
-          crossFadeState:
-          ThemeProvider.of(context).brightness == Brightness.dark
-              ? CrossFadeState.showFirst
-              : CrossFadeState.showSecond,
-          firstChild: GestureDetector(
-            onTap: () =>
-                ThemeSwitcher.of(context).changeTheme(theme: kLightTheme),
-            child: Icon(
-              LineAwesomeIcons.sun,
-              size: ScreenUtil().setSp(kSpacingUnit.w * 3),
-            ),
-          ),
-          secondChild: GestureDetector(
-            onTap: () =>
-                ThemeSwitcher.of(context).changeTheme(theme: kDarkTheme),
-            child: Icon(
-              LineAwesomeIcons.moon,
-              size: ScreenUtil().setSp(kSpacingUnit.w * 3),
-            ),
-          ),
-        );
-      },
-    );
+//    var themeSwitcher = ThemeSwitcher(
+//      builder: (context) {
+//        return AnimatedCrossFade(
+//          duration: Duration(milliseconds: 200),
+//          crossFadeState:
+//          ThemeProvider.of(context).brightness == Brightness.dark
+//              ? CrossFadeState.showFirst
+//              : CrossFadeState.showSecond,
+//          firstChild: GestureDetector(
+//            onTap: () =>
+//                ThemeSwitcher.of(context).changeTheme(theme: kLightTheme),
+//            child: Icon(
+//              LineAwesomeIcons.sun,
+//              size: ScreenUtil().setSp(kSpacingUnit.w * 3),
+//            ),
+//          ),
+//          secondChild: GestureDetector(
+//            onTap: () =>
+//                ThemeSwitcher.of(context).changeTheme(theme: kDarkTheme),
+//            child: Icon(
+//              LineAwesomeIcons.moon,
+//              size: ScreenUtil().setSp(kSpacingUnit.w * 3),
+//            ),
+//          ),
+//        );
+//      },
+//    );
 
     var header = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

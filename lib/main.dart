@@ -5,7 +5,6 @@ import 'package:reboeng/provider/ProductListNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/services/auth.dart';
 import 'package:reboeng/services/wrapper.dart';
-import 'package:reboeng/services/api/productCategory_api.dart';
 
 void main() => runApp(MyApp());
 

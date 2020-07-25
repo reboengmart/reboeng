@@ -1,18 +1,10 @@
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:reboeng/services/api/productList_api.dart';
-import 'package:http/http.dart' as http;
-import 'package:reboeng/services/model/ProductCategory.dart';
 import 'package:reboeng/services/model/ProductList.dart';
-import 'dart:convert';
 
 class ProductListNotifier with ChangeNotifier {
-//  List<ProductList> _items = [];
-//  List<ProductList> item = [];
-//  List listOfProduct;
 
   List<ProductList> _productList=[];
   ProductList _currentProduct;
