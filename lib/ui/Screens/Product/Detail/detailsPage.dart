@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reboeng/provider/SubProductNotifier.dart';
 
 class DetailsPage extends StatefulWidget {
   final heroTag;
   final foodName;
   final foodPrice;
-
-  DetailsPage({this.heroTag, this.foodName, this.foodPrice});
+  final foodStock;
+  DetailsPage({this.heroTag, this.foodName, this.foodPrice,this.foodStock});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -13,7 +15,21 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   var selectedCard = 'WEIGHT';
+  int _totalproduct;
+  int subtotalproduct;
+  void _subproduct(int product){
+   setState(() {
+     subtotalproduct= int.parse(widget.foodPrice) * product;
+   });
+  }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _totalproduct = 1;
+    _subproduct(_totalproduct);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +94,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(widget.foodName,
+                    Text(widget.foodName + " Stok Tersisa " + widget.foodStock,
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 22.0,
@@ -103,7 +119,12 @@ class _DetailsPageState extends State<DetailsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  if (_totalproduct !=1 ){
+                                  _totalproduct -=1;
+                                  _subproduct(_totalproduct);
+                                  }
+                                },
                                 child: Container(
                                   height: 25.0,
                                   width: 25.0,
@@ -119,13 +140,16 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                 ),
                               ),
-                              Text('2',
+                              Text(_totalproduct.toString(),
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Montserrat',
                                       fontSize: 15.0)),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  _totalproduct +=1;
+                                  _subproduct(_totalproduct);
+                                },
                                 child: Container(
                                   height: 25.0,
                                   width: 25.0,
@@ -140,7 +164,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     ),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         )
@@ -173,7 +197,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           height: 50.0,
                           child: Center(
                             child: Text(
-                              '\$52.00',
+                              'Rp.'+subtotalproduct.toString(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Montserrat'

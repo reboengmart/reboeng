@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:reboeng/services/model/SubProduct.dart';
 
 class SubProductNotifier with ChangeNotifier{
+
   List<SubProduct> _subproductList=[];
   SubProduct _currentsubProduct;
 

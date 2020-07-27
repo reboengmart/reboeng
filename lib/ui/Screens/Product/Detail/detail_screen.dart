@@ -95,7 +95,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             itemCount: subProductNotifier.subproductList.length,
                             itemBuilder: (context, index) {
                             final item = subProductNotifier.subproductList[index];
-                            return _buildFoodItem(item.assets,item.name,item.price.toString());
+                            return _buildFoodItem(item.assets,item.name,item.price.toString(),item.stock.toString());
                             },
                             ),
                           )
@@ -108,13 +108,13 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget _buildFoodItem(String imgPath, String foodName, String price) {
+  Widget _buildFoodItem(String imgPath, String foodName, String price,String stock) {
     return Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: InkWell(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price)
+                  builder: (context) => DetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price, foodStock : stock)
               ));
             },
             child: Row(
@@ -146,6 +146,14 @@ class _DetailScreenState extends State<DetailScreen> {
                                 ),
                                 Text(
                                     price,
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 15.0,
+                                        color: Colors.grey
+                                    )
+                                ),
+                                Text(
+                                    "Stok Tersisa "+stock,
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 15.0,
