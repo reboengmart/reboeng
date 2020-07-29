@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/services/model/Cart.dart';
 import 'package:reboeng/services/model/SubProduct.dart';
@@ -19,13 +18,19 @@ class CartApi{
    getauth();
     return  _db.collection('cart').where('uid',isEqualTo:uid).snapshots().map((snapshot) => snapshot.documents.map((document)=> Cart.fromFirestore(document.data)).toList());
   }
-  static Future<void> subproductReference(SubProductNotifier subProductNotifier, String sub_product_reference) async {
+  static Future<void> subproductReference(SubProductNotifier subProductNotifier, String sub_product_reference, int cartItemLength) async {
     Firestore _db = Firestore.instance;
     List<SubProduct> _subProduct = [];
+//    _subProduct.isEmpty;
     QuerySnapshot snapshot=await _db.collection('sub_product').where('id', isEqualTo: sub_product_reference).getDocuments();
     snapshot.documents.forEach((element) {
       SubProduct productCategory=SubProduct.formMap(element.data);
-      _subProduct.add(productCategory);
+//      subProductNotifier.subproductList.add(productCategory);
+      if(_subProduct.length < cartItemLength){
+        _subProduct.add(productCategory);
+      }else if(_subProduct.length > cartItemLength){
+        _subProduct.clear();
+      }
     });
     return subProductNotifier.subproductList=_subProduct;
   }
