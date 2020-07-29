@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -7,7 +8,8 @@ class DetailsPage extends StatefulWidget {
   final foodName;
   final foodPrice;
   final foodStock;
-  DetailsPage({this.heroTag, this.foodName, this.foodPrice,this.foodStock});
+  final foodId;
+  DetailsPage({this.heroTag, this.foodName, this.foodPrice,this.foodStock,this.foodId});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -32,6 +34,7 @@ class _DetailsPageState extends State<DetailsPage> {
   }
   @override
   Widget build(BuildContext context) {
+    CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
     return Scaffold(
         backgroundColor: Color(0xFF7A9BEE),
         appBar: AppBar(
@@ -189,21 +192,26 @@ class _DetailsPageState extends State<DetailsPage> {
                     SizedBox(height: 20.0),
                       Padding(
                         padding: EdgeInsets.only(bottom:5.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0), bottomLeft: Radius.circular(25.0), bottomRight: Radius.circular(25.0)),
-                            color: Colors.black
-                          ),
-                          height: 50.0,
-                          child: Center(
-                            child: Text(
-                              'Rp.'+subtotalproduct.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Montserrat'
-                              )
+                        child: InkWell(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0), bottomLeft: Radius.circular(25.0), bottomRight: Radius.circular(25.0)),
+                              color: Colors.black
+                            ),
+                            height: 50.0,
+                            child: Center(
+                              child: Text(
+                                'Rp.'+subtotalproduct.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Montserrat'
+                                )
+                              ),
                             ),
                           ),
+                          onTap: () {
+                            subCartNotifier.saveCartPage(_totalproduct, widget.foodId);
+                          },
                         ),
                       )
                   ],

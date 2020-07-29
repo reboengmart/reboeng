@@ -34,5 +34,13 @@ class CartNotifier with ChangeNotifier{
     cartApi.saveCart(newCart);
 
   }
+  void saveCartPage(int qty,String subProduct) async {
+    final FirebaseAuth _auth=FirebaseAuth.instance;
+    final FirebaseUser user=await  _auth.currentUser();
+    uid=user.uid;
+    var newCart=Cart(id:uuid.v1(),qty:qty,sub_product_ref:subProduct,user_ref:uid);
+    cartApi.saveCart(newCart);
+
+  }
 
 }

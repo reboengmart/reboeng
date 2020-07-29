@@ -111,13 +111,13 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id) {
-    CartNotifier subProductNotifier=Provider.of<CartNotifier>(context);
+    CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
     return Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: InkWell(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price, foodStock : stock)
+                  builder: (context) => DetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price, foodStock : stock,foodId: id,)
               ));
             },
             child: Row(
@@ -172,7 +172,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     icon: Icon(Icons.add_shopping_cart),
                     color: Colors.black,
                     onPressed: () {
-                      subProductNotifier.saveCart(id);
+                      subCartNotifier.saveCart(id);
                     }
                 )
               ],
