@@ -29,15 +29,17 @@ class CartApi{
     });
     return subProductNotifier.subproductList=_subProduct;
   }
-
-
+  //delete data
+  static Future<void> removeCart(String id) {
+    return Firestore.instance.collection('cart').document(id).delete();
+  }
   }
   //Create Data
 //  Future<void> saveCart(Cart cart){
 //   return Firestore.instance.collection('cart').document(cart.id).setData(cart.toMap());
 //  }
 
-  //delete data
+
 //static Future<void> deleteCart(Cart cart,Function cartDeleted)async{
 //    await Firestore.instance.collection('cart').document(cart.id).delete();
 //  cartDeleted(cart);

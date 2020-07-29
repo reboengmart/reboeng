@@ -18,10 +18,8 @@ class CartNotifier with ChangeNotifier{
   String get user_ref=> _user_ref;
 
   static void deleteCart(String id) {
-    removeCart(id);
+    CartApi.removeCart(id);
   }
- static Future<void> removeCart(String id) {
-    return Firestore.instance.collection('cart').document(id).delete();
-  }
+
 
 }
