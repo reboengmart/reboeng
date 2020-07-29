@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/services/refresh.dart';
 import 'package:reboeng/ui/Screens/CartList/cartlist.dart';
@@ -96,7 +97,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             itemCount: subProductNotifier.subproductList.length,
                             itemBuilder: (context, index) {
                             final item = subProductNotifier.subproductList[index];
-                            return _buildFoodItem(item.assets,item.name,item.price.toString(),item.stock.toString());
+                            return _buildFoodItem(item.assets,item.name,item.price.toString(),item.stock.toString(),item.id);
                             },
                             ),
                           )
@@ -109,7 +110,8 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget _buildFoodItem(String imgPath, String foodName, String price,String stock) {
+  Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id) {
+    CartNotifier subProductNotifier=Provider.of<CartNotifier>(context);
     return Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: InkWell(
@@ -169,7 +171,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 IconButton(
                     icon: Icon(Icons.add_shopping_cart),
                     color: Colors.black,
-                    onPressed: () {}
+                    onPressed: () {
+                      subProductNotifier.saveCart(id);
+                    }
                 )
               ],
             )

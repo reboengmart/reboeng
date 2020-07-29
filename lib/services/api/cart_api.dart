@@ -33,11 +33,12 @@ class CartApi{
   static Future<void> removeCart(String id) {
     return Firestore.instance.collection('cart').document(id).delete();
   }
-  }
   //Create Data
-//  Future<void> saveCart(Cart cart){
-//   return Firestore.instance.collection('cart').document(cart.id).setData(cart.toMap());
-//  }
+  Future<void> saveCart(Cart cart){
+    return Firestore.instance.collection('cart').document(cart.id).setData(cart.toMap());
+  }
+  }
+
 
 
 //static Future<void> deleteCart(Cart cart,Function cartDeleted)async{
