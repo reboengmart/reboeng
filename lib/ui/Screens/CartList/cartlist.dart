@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/services/api/cart_api.dart';
 import 'package:reboeng/services/model/Cart.dart';
@@ -120,7 +121,9 @@ class _CartListState extends State<CartList> {
                           padding: EdgeInsets.all(0.0),
                           color: kPrimaryColor,
                           child: Icon(Icons.clear, color: Colors.white,),
-                          onPressed: () {},
+                          onPressed: () {
+                            CartNotifier.deleteCart(cartData.id);
+                          },
                         ),
                       ),
                     )
