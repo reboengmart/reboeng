@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
+import 'package:reboeng/provider/WishListNotifier.dart';
 import 'package:reboeng/services/refresh.dart';
 import 'package:reboeng/ui/Screens/CartList/cartlist.dart';
 
@@ -112,6 +113,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id) {
     CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
+    WishListNotifier wishListNotifier=Provider.of<WishListNotifier>(context);
     return Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: InkWell(
@@ -167,6 +169,13 @@ class _DetailScreenState extends State<DetailScreen> {
                           )
                         ]
                     )
+                ),
+                IconButton(
+                    icon: Icon(Icons.favorite),
+                    color: Colors.red,
+                    onPressed: () {
+                      wishListNotifier.saveWishList(id);
+                    }
                 ),
                 IconButton(
                     icon: Icon(Icons.add_shopping_cart),

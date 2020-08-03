@@ -4,7 +4,11 @@ import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/ProductCategoryNotifier.dart';
 import 'package:reboeng/provider/ProductListNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
+import 'package:reboeng/provider/UserNotifier.dart';
+import 'package:reboeng/provider/WishListNotifier.dart';
 import 'package:reboeng/services/api/cart_api.dart';
+import 'package:reboeng/services/api/user_api.dart';
+import 'package:reboeng/services/api/wishlist_api.dart';
 import 'package:reboeng/services/auth.dart';
 import 'package:reboeng/services/wrapper.dart';
 
@@ -13,7 +17,9 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final firestoreService=CartApi();
+    final firestoreService=UserApi();
+    final cartApi=CartApi();
+    final cartwishList=WishListApi();
     return StreamProvider.value(
       value: AuthServices.firebaseUserStream,
       child:  MultiProvider(
@@ -27,8 +33,14 @@ class MyApp extends StatelessWidget {
             create: (context) => SubProductNotifier(),
           ),ChangeNotifierProvider(
             create: (context) => CartNotifier(),
+          ), ChangeNotifierProvider(
+            create: (context) => UserNotifier(),
+          ),ChangeNotifierProvider(
+            create: (context) => WishListNotifier(),
           ),
-          StreamProvider(create: (context)=>firestoreService.getCart()),
+          StreamProvider(create: (context)=>firestoreService.getUser()),
+          StreamProvider(create: (context)=>cartApi.getCart()),
+          StreamProvider(create: (context)=>cartwishList.getWishList()),
         ],
         child: MaterialApp(
           title: 'Reboeng',

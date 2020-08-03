@@ -16,7 +16,7 @@ class CartApi{
   }
   Stream<List<Cart>> getCart() {
    getauth();
-    return  _db.collection('cart').where('uid',isEqualTo:uid).snapshots().map((snapshot) => snapshot.documents.map((document)=> Cart.fromFirestore(document.data)).toList());
+    return  _db.collection('user').document(uid).collection('cart').snapshots().map((snapshot) => snapshot.documents.map((document)=> Cart.fromFirestore(document.data)).toList());
   }
   static Future<void> subproductReference(SubProductNotifier subProductNotifier, String sub_product_reference, int cartItemLength) async {
     Firestore _db = Firestore.instance;
@@ -35,12 +35,16 @@ class CartApi{
     return subProductNotifier.subproductList=_subProduct;
   }
   //delete data
-  static Future<void> removeCart(String id) {
-    return Firestore.instance.collection('cart').document(id).delete();
+  static Future<void> removeCart(String id) async {
+    final FirebaseAuth _auth=FirebaseAuth.instance;
+    final FirebaseUser user=await  _auth.currentUser();
+    String uid=user.uid;
+    return Firestore.instance.collection('user').document(uid).collection('cart').document(id).delete();
   }
   //Create Data
   Future<void> saveCart(Cart cart){
-    return Firestore.instance.collection('cart').document(cart.id).setData(cart.toMap());
+    getauth();
+    return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
   }
   }
 
