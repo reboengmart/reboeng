@@ -6,6 +6,7 @@ class SubProduct{
   String product_ref;
   int stock;
   String unit;
+  String status;
 
   SubProduct.formMap(Map<String,dynamic> data){
     id=data['id'];
@@ -15,5 +16,6 @@ class SubProduct{
     product_ref=data['product_ref'];
     stock=data['stock'];
     unit=data['unit'];
+    status=data['status'];
   }
 }

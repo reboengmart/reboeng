@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:reboeng/provider/ProductCategoryNotifier.dart';
 import 'package:reboeng/services/model/ProductCategory.dart';
 import 'package:reboeng/services/refresh.dart';
+import 'package:reboeng/ui/Screens/Product/detail_promo/detail_screen.dart';
 import 'package:reboeng/ui/Screens/Product/productlist.dart';
 
 class CategoryGrid extends StatefulWidget {
@@ -43,14 +44,28 @@ class _FeedState extends State<CategoryGrid>{
                   ],
                 ),
                 onTap: () async{
-//                  await ProductServices.listProduct(categoryData.id);
-                  (categoryData.status == 'available') ? Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductListItem(categoryData.nama,categoryData.id ),
-                      )
-                  // ignore: unnecessary_statements
-                  ) : 0;
+                  switch(categoryData.status){
+                    case "available" :
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductListItem(categoryData.nama,categoryData.id ),
+                          )
+                        // ignore: unnecessary_statements
+                      );
+                      break;
+                    case "comingsoon":
+                      0;
+                      break;
+                    default:
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PromoDetailScreen(categoryData.nama,categoryData.status ),
+                          )
+                        // ignore: unnecessary_statements
+                      );
+                  }
                 }
             );
           }),

@@ -5,7 +5,7 @@ import 'package:reboeng/services/model/ProductCategory.dart';
 class ProductCategoryApi {
 
  static Future<void> getProductCategory(ProductCategoryNotifier categoryNotifier) async{
-  QuerySnapshot snapshot=await Firestore.instance.collection('category').orderBy('status').getDocuments();
+  QuerySnapshot snapshot=await Firestore.instance.collection('category').orderBy('priority').getDocuments();
 
   List<ProductCategory> _ListCategory=[];
   snapshot.documents.forEach((element) {
