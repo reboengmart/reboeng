@@ -15,8 +15,8 @@ class CartApi{
     uid=user.uid;
   }
   Stream<List<Cart>> getCart() {
-   getauth();
-    return  _db.collection('user').document(uid).collection('cart').snapshots().map((snapshot) => snapshot.documents.map((document)=> Cart.fromFirestore(document.data)).toList());
+  getauth();
+    return  _db.collection('user').document("3X5i43n1RzSiCk2mOrGqziiOjNJ3").collection('cart').snapshots().map((snapshot) => snapshot.documents.map((document)=> Cart.fromFirestore(document.data)).toList());
   }
   static Future<void> subproductReference(SubProductNotifier subProductNotifier, String sub_product_reference, int cartItemLength) async {
     Firestore _db = Firestore.instance;

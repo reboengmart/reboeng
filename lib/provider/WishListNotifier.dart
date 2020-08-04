@@ -14,14 +14,14 @@ class WishListNotifier with ChangeNotifier{
   String get id =>_id;
   String get sub_product_ref=> _sub_product_ref;
 
-  static void deleteWishList(String id) {
+   void deleteWishList(String id) {
     WishListApi.removeWishlist(id);
   }
   void saveWishList(String subProduct) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
-    var newCart=WishList(id:uuid.v1(),sub_product_ref:subProduct);
+    var newCart=WishListModel(id:uuid.v1(),sub_product_ref:subProduct);
     cartwishList.saveWishlist(newCart);
 
 

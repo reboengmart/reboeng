@@ -1,10 +1,10 @@
-class WishList {
+class WishListModel{
   final String id;
   final String sub_product_ref;
 
-  WishList({this.id, this.sub_product_ref});
+  WishListModel({this.id, this.sub_product_ref});
 
-  WishList.fromFirestore(Map<String, dynamic> firestore)
+  WishListModel.fromFirestore(Map<String, dynamic> firestore)
       : id=firestore['id'],
         sub_product_ref=firestore['sub_product_ref'];
 
