@@ -290,8 +290,8 @@ class _WishListState extends State<WishList> {
                                                           ),
                                                         ),
                                                         onTap: () {
-                                                          wishListNotifier.deleteWishList(wishId);
                                                           setState(() {
+                                                            wishListNotifier.deleteWishList(wishId);
 //                                                            wishlistItemList.removeAt(index);
 //                                                            wishlistItem--;
                                                           });
@@ -325,8 +325,9 @@ class _WishListState extends State<WishList> {
                                                         color: Colors.teal),
                                                   ),
                                                   onTap: () {
-                                                    subCartNotifier.saveCart(productid);
+
                                                     setState(() {
+                                                      subCartNotifier.saveCart(productid);
                                                       wishListNotifier.deleteWishList(wishId);
 //                                                      wishlistItemList.removeAt(index);
 //                                                      wishlistItem--;

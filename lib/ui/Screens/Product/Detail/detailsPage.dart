@@ -210,7 +210,9 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                           ),
                           onTap: () {
+                            setState(() {
                             subCartNotifier.saveCartPage(_totalproduct, widget.foodId);
+                             });
                           },
                         ),
                       )

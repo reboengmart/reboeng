@@ -174,14 +174,18 @@ class _DetailScreenState extends State<DetailScreen> {
                     icon: Icon(Icons.favorite),
                     color: Colors.red,
                     onPressed: () {
+                      setState(() {
                       wishListNotifier.saveWishList(id);
+                      });
                     }
                 ),
                 IconButton(
                     icon: Icon(Icons.add_shopping_cart),
                     color: Colors.black,
                     onPressed: () {
+                     setState(() {
                       subCartNotifier.saveCart(id);
+                     });
                     }
                 )
               ],
