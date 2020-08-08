@@ -128,236 +128,248 @@ class _WishListState extends State<WishList> {
                                 ),
                               )
                                   : Expanded(
-                                    child: ListView.builder(
-                                itemCount: wishlistItem.length,
-                                itemBuilder: (context, index) {
-                                  return FutureBuilder(
-                                  future: Firestore.instance.collection('sub_product').where('id', isEqualTo: wishlistItem[index].sub_product_ref).getDocuments(),
-                                  builder: (BuildContext context, AsyncSnapshot snap) {
-                                    String wishId = wishlistItem[index].id;
-                                    String productid = snap.data.documents
-                                        .toList()[0].data['id'];
-                                    String productAssets = snap.data.documents
-                                        .toList()[0].data['assets'];
-                                    String productName = snap.data.documents
-                                        .toList()[0].data['name'];
-                                    int productPrice = snap.data.documents
-                                        .toList()[0].data['price'];
-                                    String productUnit = snap.data.documents
-                                        .toList()[0].data['unit'];
-                                    final item = wishlistItem[index];
-                                    return Container(
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                            top: 2, right: 5, left: 5),
-                                        height: height * 0.23,
-                                        child: Card(
-                                            elevation: 1.0,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .start,
-                                              crossAxisAlignment: CrossAxisAlignment
-                                                  .center,
-                                              children: <Widget>[
-                                                Column(
+                                    child: StreamBuilder<QuerySnapshot>(
+                                        stream: Firestore.instance.collection('user').document('$uid').collection('wishlist').snapshots(),
+                              builder: (context, cartSnapshot) {
+                                if (!cartSnapshot.hasData) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                else{
+                                  return ListView.builder(
+                                    itemCount: wishlistItem.length,
+                                    itemBuilder: (context, index) {
+                                      return FutureBuilder(
+                                          future: Firestore.instance.collection('sub_product').where('id', isEqualTo: wishlistItem[index].sub_product_ref).getDocuments(),
+                                          builder: (BuildContext context, AsyncSnapshot snap) {
+                                            String wishId = wishlistItem[index].id;
+                                            String productid = snap.data.documents
+                                                .toList()[0].data['id'];
+                                            String productAssets = snap.data.documents
+                                                .toList()[0].data['assets'];
+                                            String productName = snap.data.documents
+                                                .toList()[0].data['name'];
+                                            int productPrice = snap.data.documents
+                                                .toList()[0].data['price'];
+                                            String productUnit = snap.data.documents
+                                                .toList()[0].data['unit'];
+                                            final item = wishlistItem[index];
+                                            return Container(
+                                              child: Container(
+                                                padding: EdgeInsets.only(
+                                                    top: 2, right: 5, left: 5),
+                                                height: height * 0.23,
+                                                child: Card(
+                                                    elevation: 1.0,
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment
+                                                          .start,
+                                                      crossAxisAlignment: CrossAxisAlignment
+                                                          .center,
+                                                      children: <Widget>[
+                                                        Column(
 //                                              crossAxisAlignment: CrossAxisAlignment.center,
 //                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Container(
-                                                      width: width * 0.35,
-                                                      height: height * 0.15,
-                                                      child: Image(
-                                                        image: AssetImage(
-                                                            productAssets),
-                                                        fit: BoxFit.fitWidth,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.all(10.0),
-                                                  width: (width * 0.40),
-                                                  height: height * 0.35,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment
-                                                        .start,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        '${productName}',
-                                                        style: TextStyle(
-                                                          fontSize: 2.9 *
-                                                              SizeConfig
-                                                                  .textMultiplier,
-                                                          fontWeight: FontWeight
-                                                              .bold,
+                                                          children: <Widget>[
+                                                            Container(
+                                                              width: width * 0.35,
+                                                              height: height * 0.15,
+                                                              child: Image(
+                                                                image: AssetImage(
+                                                                    productAssets),
+                                                                fit: BoxFit.fitWidth,
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 7.0,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment
-                                                            .start,
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                        children: <Widget>[
-                                                          Text(
-                                                            'Price:',
-                                                            style: TextStyle(
-                                                              color: Colors
-                                                                  .grey,
-                                                              fontSize: 2.3 *
-                                                                  SizeConfig
-                                                                      .textMultiplier,
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 10.0,
-                                                          ),
-                                                          Text(
-                                                            'Rp. ${productPrice}',
-                                                            style: TextStyle(
-                                                              color: Colors
-                                                                  .blue,
-                                                              fontSize: 2.3 *
-                                                                  SizeConfig
-                                                                      .textMultiplier,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 7.0,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment
-                                                            .start,
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                        children: <Widget>[
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              text: 'Unit:  ',
-                                                              style: TextStyle(
-                                                                  fontSize: 2.4 *
+                                                        Container(
+                                                          padding: EdgeInsets.all(10.0),
+                                                          width: (width * 0.40),
+                                                          height: height * 0.35,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment
+                                                                .start,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                '${productName}',
+                                                                style: TextStyle(
+                                                                  fontSize: 2.9 *
                                                                       SizeConfig
                                                                           .textMultiplier,
-                                                                  color: Colors
-                                                                      .grey),
-                                                              children: <
-                                                                  TextSpan>[
-                                                                TextSpan(
-                                                                    text: '  ${productUnit}',
+                                                                  fontWeight: FontWeight
+                                                                      .bold,
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 7.0,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment
+                                                                    .start,
+                                                                crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    'Price:',
                                                                     style: TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      fontSize: 2.3 *
+                                                                          SizeConfig
+                                                                              .textMultiplier,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 10.0,
+                                                                  ),
+                                                                  Text(
+                                                                    'Rp. ${productPrice}',
+                                                                    style: TextStyle(
+                                                                      color: Colors
+                                                                          .blue,
+                                                                      fontSize: 2.3 *
+                                                                          SizeConfig
+                                                                              .textMultiplier,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 7.0,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment
+                                                                    .start,
+                                                                crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                                children: <Widget>[
+                                                                  RichText(
+                                                                    text: TextSpan(
+                                                                      text: 'Unit:  ',
+                                                                      style: TextStyle(
+                                                                          fontSize: 2.4 *
+                                                                              SizeConfig
+                                                                                  .textMultiplier,
+                                                                          color: Colors
+                                                                              .grey),
+                                                                      children: <
+                                                                          TextSpan>[
+                                                                        TextSpan(
+                                                                            text: '  ${productUnit}',
+                                                                            style: TextStyle(
+                                                                                fontSize: 2.4 *
+                                                                                    SizeConfig
+                                                                                        .textMultiplier,
+                                                                                color: Colors
+                                                                                    .blue)),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              InkWell(
+                                                                child: Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(top: 10),
+                                                                  padding: EdgeInsets
+                                                                      .all(3.0),
+                                                                  child: Container(
+                                                                    decoration: new BoxDecoration(
+                                                                      borderRadius: BorderRadius
+                                                                          .circular(7),
+                                                                      color: Colors
+                                                                          .redAccent,
+                                                                    ),
+                                                                    padding: EdgeInsets
+                                                                        .all(4),
+                                                                    child: Text('Hapus',
+                                                                      style: TextStyle(
                                                                         fontSize: 2.4 *
                                                                             SizeConfig
                                                                                 .textMultiplier,
+                                                                        fontWeight: FontWeight
+                                                                            .bold,
                                                                         color: Colors
-                                                                            .blue)),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      InkWell(
-                                                        child: Container(
-                                                          margin: EdgeInsets
-                                                              .only(top: 10),
-                                                          padding: EdgeInsets
-                                                              .all(3.0),
-                                                          child: Container(
-                                                            decoration: new BoxDecoration(
-                                                              borderRadius: BorderRadius
-                                                                  .circular(7),
-                                                              color: Colors
-                                                                  .redAccent,
-                                                            ),
-                                                            padding: EdgeInsets
-                                                                .all(4),
-                                                            child: Text('Hapus',
-                                                              style: TextStyle(
-                                                                fontSize: 2.4 *
-                                                                    SizeConfig
-                                                                        .textMultiplier,
-                                                                fontWeight: FontWeight
-                                                                    .bold,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        onTap: () {
-                                                          setState(() {
-                                                            wishListNotifier.deleteWishList(wishId);
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    wishListNotifier.deleteWishList(wishId);
 //                                                            wishlistItemList.removeAt(index);
 //                                                            wishlistItem--;
-                                                          });
+                                                                  });
 
-                                                          // Then show a snackbar.
-                                                          Scaffold.of(context)
-                                                              .showSnackBar(
-                                                              SnackBar(
-                                                                content:
-                                                                Text(
-                                                                  "Produk Harapan Telah Dihapus",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black54),),
-                                                                backgroundColor: Colors
-                                                                    .white,
-                                                              ));
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                InkWell(
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 15),
-                                                    padding: EdgeInsets.all(
-                                                        3.0),
-                                                    child: Icon(
-                                                        Icons.add_shopping_cart,
-                                                        color: Colors.teal),
-                                                  ),
-                                                  onTap: () {
+                                                                  // Then show a snackbar.
+                                                                  Scaffold.of(context)
+                                                                      .showSnackBar(
+                                                                      SnackBar(
+                                                                        content:
+                                                                        Text(
+                                                                          "Produk Harapan Telah Dihapus",
+                                                                          style: TextStyle(
+                                                                              color: Colors
+                                                                                  .black54),),
+                                                                        backgroundColor: Colors
+                                                                            .white,
+                                                                      ));
+                                                                },
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          child: Container(
+                                                            margin: EdgeInsets.only(
+                                                                left: 15),
+                                                            padding: EdgeInsets.all(
+                                                                3.0),
+                                                            child: Icon(
+                                                                Icons.add_shopping_cart,
+                                                                color: Colors.teal),
+                                                          ),
+                                                          onTap: () {
 
-                                                    setState(() {
-                                                      subCartNotifier.saveCart(productid);
-                                                      wishListNotifier.deleteWishList(wishId);
+                                                            setState(() {
+                                                              subCartNotifier.saveCart(productid);
+                                                              wishListNotifier.deleteWishList(wishId);
 //                                                      wishlistItemList.removeAt(index);
 //                                                      wishlistItem--;
-                                                    });
+                                                            });
 
-                                                    // Then show a snackbar.
-                                                    Scaffold.of(context)
-                                                        .showSnackBar(
-                                                        SnackBar(
-                                                          content:
-                                                          Text(
-                                                            "Produk Harapan Telah Dipindahkan",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black54),),
-                                                          backgroundColor: Colors
-                                                              .white,
-                                                        ));
-                                                  },
-                                                ),
-                                              ],
-                                            )),
-                                      ),
-                                    );
-                                  }
+                                                            // Then show a snackbar.
+                                                            Scaffold.of(context)
+                                                                .showSnackBar(
+                                                                SnackBar(
+                                                                  content:
+                                                                  Text(
+                                                                    "Produk Harapan Telah Dipindahkan",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black54),),
+                                                                  backgroundColor: Colors
+                                                                      .white,
+                                                                ));
+                                                          },
+                                                        ),
+                                                      ],
+                                                    )),
+                                              ),
+                                            );
+                                          }
+                                      );
+                                    },
                                   );
-                                },
-                              ),
-                                  ),
+                                }
+                              }
+                  ),
                             ),
+                            )
                           ],
                         ),
                       ),
