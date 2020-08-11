@@ -98,7 +98,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             itemCount: subProductNotifier.subproductList.length,
                             itemBuilder: (context, index) {
                             final item = subProductNotifier.subproductList[index];
-                            return _buildFoodItem(item.assets,item.name,item.price.toString(),item.stock.toString(),item.id);
+                            return _buildFoodItem(item.assets,item.name,item.price.toString(),item.stock.toString(),item.id,item.status,item.unit);
                             },
                             ),
                           )
@@ -111,7 +111,7 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id) {
+  Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id,String status,String unit) {
     CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
     WishListNotifier wishListNotifier=Provider.of<WishListNotifier>(context);
     return Padding(
@@ -119,7 +119,7 @@ class _DetailScreenState extends State<DetailScreen> {
         child: InkWell(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price, foodStock : stock,foodId: id,)
+                  builder: (context) => DetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price, foodStock : stock,foodId: id,status:status,unit:unit)
               ));
             },
             child: Row(
@@ -150,7 +150,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                     )
                                 ),
                                 Text(
-                                    price,
+                                    price.toString(),
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 15.0,
@@ -179,15 +179,15 @@ class _DetailScreenState extends State<DetailScreen> {
                       });
                     }
                 ),
-                IconButton(
-                    icon: Icon(Icons.add_shopping_cart),
-                    color: Colors.black,
-                    onPressed: () {
-                     setState(() {
-                      subCartNotifier.saveCart(id);
-                     });
-                    }
-                )
+//                IconButton(
+//                    icon: Icon(Icons.add_shopping_cart),
+//                    color: Colors.black,
+//                    onPressed: () {
+//                     setState(() {
+//                      subCartNotifier.saveCart(foodName,price,imgPath,status,unit);
+//                     });
+//                    }
+//                )
               ],
             )
         ));

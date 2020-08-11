@@ -1,21 +1,32 @@
 class Cart{
   final String id;
   final int qty;
-  final String sub_product_ref;
+  final String name;
+  final String price;
+  final String assets;
+  final String status;
+  final String unit;
 
-  Cart({this.id,this.qty,this.sub_product_ref});
+  Cart({this.id,this.qty,this.name,this.price,this.assets,this.status,this.unit});
   Cart.fromFirestore(Map<String,dynamic> firestore)
       : id=firestore['id'],
         qty=firestore['qty'],
-        sub_product_ref=firestore['sub_product_ref'];
+        name=firestore['name'],
+        price=firestore['price'],
+        assets=firestore['assets'],
+        status=firestore['status'],
+        unit=firestore['unit'];
 
 
   Map<String,dynamic> toMap(){
       return{
         'id':id,
         'qty':qty,
-        'sub_product_ref':sub_product_ref
-
+        'name':name,
+        'price':price,
+        'assets':assets,
+        'status':status,
+        'unit':unit
       };
   }
 }

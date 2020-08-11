@@ -97,7 +97,7 @@ class _PromoDetailScreenState extends State<PromoDetailScreen> {
                             itemCount: subProductNotifier.subproductList.length,
                             itemBuilder: (context, index) {
                             final item = subProductNotifier.subproductList[index];
-                            return _buildFoodItem(item.assets,item.name,item.price.toString(),item.stock.toString(),item.id);
+                            return _buildFoodItem(item.assets,item.name,item.price.toString(),item.stock.toString(),item.id,item.status,item.unit);
                             },
                             ),
                           )
@@ -110,14 +110,14 @@ class _PromoDetailScreenState extends State<PromoDetailScreen> {
     );
   }
 
-  Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id) {
+  Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id,String status,String unit) {
     CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
     return Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: InkWell(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PromoDetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price, foodStock : stock,foodId: id,)
+                  builder: (context) => PromoDetailsPage(heroTag: imgPath, foodName: foodName, foodPrice: price, foodStock : stock,foodId: id,status:status,unit:unit)
               ));
             },
             child: Row(
@@ -148,7 +148,7 @@ class _PromoDetailScreenState extends State<PromoDetailScreen> {
                                     )
                                 ),
                                 Text(
-                                    price,
+                                    price.toString(),
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 15.0,
@@ -168,13 +168,13 @@ class _PromoDetailScreenState extends State<PromoDetailScreen> {
                         ]
                     )
                 ),
-                IconButton(
-                    icon: Icon(Icons.add_shopping_cart),
-                    color: Colors.black,
-                    onPressed: () {
-                      subCartNotifier.saveCart(id);
-                    }
-                )
+//                IconButton(
+//                    icon: Icon(Icons.add_shopping_cart),
+//                    color: Colors.black,
+//                    onPressed: () {
+//                      subCartNotifier.saveCart(foodName,price,imgPath,status,unit);
+//                    }
+//                )
               ],
             )
         ));

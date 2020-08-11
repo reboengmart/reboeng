@@ -9,7 +9,9 @@ class DetailsPage extends StatefulWidget {
   final foodPrice;
   final foodStock;
   final foodId;
-  DetailsPage({this.heroTag, this.foodName, this.foodPrice,this.foodStock,this.foodId});
+  final status;
+  final unit;
+  DetailsPage({this.heroTag, this.foodName, this.foodPrice,this.foodStock,this.foodId,this.status,this.unit});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -211,7 +213,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           onTap: () {
                             setState(() {
-                            subCartNotifier.saveCartPage(_totalproduct, widget.foodId);
+                            subCartNotifier.saveCartPage(_totalproduct, widget.foodName,widget.foodPrice,widget.heroTag,widget.status,widget.unit);
                              });
                           },
                         ),

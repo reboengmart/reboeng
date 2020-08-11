@@ -8,7 +8,9 @@ class PromoDetailsPage extends StatefulWidget {
   final foodPrice;
   final foodStock;
   final foodId;
-  PromoDetailsPage({this.heroTag, this.foodName, this.foodPrice,this.foodStock,this.foodId});
+  final status;
+  final unit;
+  PromoDetailsPage({this.heroTag, this.foodName, this.foodPrice,this.foodStock,this.foodId,this.status,this.unit});
 
   @override
   _PromoDetailsPageState createState() => _PromoDetailsPageState();
@@ -209,7 +211,7 @@ class _PromoDetailsPageState extends State<PromoDetailsPage> {
                             ),
                           ),
                           onTap: () {
-                            subCartNotifier.saveCartPage(_totalproduct, widget.foodId);
+                            subCartNotifier.saveCartPage(_totalproduct, widget.foodName,widget.foodPrice,widget.heroTag,widget.status,widget.unit);
                           },
                         ),
                       )

@@ -35,7 +35,7 @@ class MainPageScreen extends StatefulWidget {
 
 class _MainPageScreenState extends State<MainPageScreen> {
   int _currentIndex = 0;
-  
+
 
   final List<Widget> _children = [
     HomeScreen(),
