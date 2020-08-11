@@ -68,6 +68,30 @@ class _CartListState extends State<CartList> {
     });
   }
 
+  int subTotal = 0;
+  int deliveryTotal = 0;
+  int cartTotal = 0;
+
+  void subTotalFormulas(String operator, int price, int totalBuy){
+    int formulasTotal;
+    switch(operator){
+      case 'tambah':
+        formulasTotal =  price * totalBuy;
+        setState(() {
+          subTotal += formulasTotal;
+          cartTotal += formulasTotal;
+        });
+        break;
+      case 'kurang':
+        formulasTotal =  price * totalBuy;
+        setState(() {
+          subTotal -= formulasTotal;
+          cartTotal -= formulasTotal;
+        });
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 //    final cartNotifierList = Provider.of<List<Cart>>(context);
@@ -111,6 +135,7 @@ class _CartListState extends State<CartList> {
                                   String productName = carts[index].name;
                                   String productPrice = carts[index].price;
                                   String productUnit = carts[index].unit;
+//                                  subTotalFormulas('tambah', int.parse(productPrice), qty);
                                   return Stack(
                                     children: <Widget>[
                                       Container(
@@ -146,34 +171,30 @@ class _CartListState extends State<CartList> {
                                                       Text(
                                                         productName,
                                                         style: TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .bold),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 20.0,
+                                                            fontSize: 2 * SizeConfig.textMultiplier,
+                                                            fontWeight: FontWeight.bold
+                                                        ),
                                                       ),
                                                       Text(
-                                                        "${productPrice}",
+                                                        "Harga: Rp. ${productPrice} per $productUnit",
                                                         style: TextStyle(
                                                             fontWeight:
                                                             FontWeight.bold,
-                                                            fontSize: 18.0),
+                                                            fontSize: 1.4 * SizeConfig.textMultiplier),
                                                       ),
-                                                      Text(
-                                                        "${qty} $productUnit",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                            FontWeight.bold,
-                                                            fontSize: 18.0),
-                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
+                                                  child: Row(
+                                                    children: <Widget>[
                                                       InkWell(
                                                         onTap: () {
                                                           if (qty != 1) {
                                                             qty -= 1;
-                                                            _subproduct(
-                                                                _totalproduct);
+                                                            _subproduct(_totalproduct);
+//                                                            subTotalFormulas('kurang', int.parse(productPrice), qty);
                                                           }
                                                         },
                                                         child: Container(
@@ -196,18 +217,21 @@ class _CartListState extends State<CartList> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Text(
-                                                        "${qty}",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                            FontWeight.bold,
-                                                            fontSize: 18.0),
+                                                      Container(
+                                                        margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.01, right: MediaQuery.of(context).size.width * 0.01),
+                                                        child: Text(
+                                                          "${qty} $productUnit",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                              FontWeight.bold,
+                                                              fontSize: 18.0),
+                                                        ),
                                                       ),
                                                       InkWell(
                                                         onTap: () {
                                                           qty += 1;
-                                                          _subproduct(
-                                                              _totalproduct);
+                                                          _subproduct(_totalproduct);
+//                                                          subTotalFormulas('tambah', int.parse(productPrice), qty);
                                                         },
                                                         child: Container(
                                                           height: 25.0,
@@ -231,7 +255,7 @@ class _CartListState extends State<CartList> {
                                                       ),
                                                     ],
                                                   ),
-                                                ),
+                                                )
                                               ],
                                             ),
                                           ),
@@ -285,7 +309,7 @@ class _CartListState extends State<CartList> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    "Subtotal      \$50",
+                    "Subtotal      Rp. ${subTotal}",
                     style: TextStyle(
                       color: Colors.grey.shade700,
                       fontSize: 2.6 * SizeConfig.textMultiplier,
@@ -295,7 +319,7 @@ class _CartListState extends State<CartList> {
                     height: 5.0,
                   ),
                   Text(
-                    "Delivery       \$05",
+                    "Delivery       Rp. 0",
                     style: TextStyle(
                       color: Colors.grey.shade700,
                       fontSize: 2.6 * SizeConfig.textMultiplier,
@@ -305,7 +329,7 @@ class _CartListState extends State<CartList> {
                     height: 10.0,
                   ),
                   Text(
-                    "Total Keranjang     \$55",
+                    "Total Keranjang     Rp. ${cartTotal}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 2.9 * SizeConfig.textMultiplier,

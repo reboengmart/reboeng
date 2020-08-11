@@ -8,6 +8,7 @@ import 'package:reboeng/ui/Screens/Profile/myprofile.dart';
 import 'package:reboeng/ui/Screens/WishList/wishlist.dart';
 import 'package:reboeng/ui/components/app_bar.dart';
 import 'package:reboeng/ui/components/bottom_bar_navigation_pattern/animated_bottom_bar.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 
 
@@ -68,31 +69,40 @@ class _MainPageScreenState extends State<MainPageScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<DrawerProvider>(create: (context) { return DrawerProvider(); },)
-        ],
-        child: Scaffold(
-          // ignore: unrelated_type_equality_checks
-          appBar: (_currentIndex == 3 ) ? null : homeAppBar(context, search[_currentIndex].searchString),
-          body: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            child: _children[_currentIndex],
-          ),
-          bottomNavigationBar: AnimatedBottomBar(
-              barItems: barItems,
-              animationDuration: const Duration(milliseconds: 150),
-              barStyle: BarStyle(
-                  fontSize: 15.0,
-                  iconSize: 25.0
-              ),
-              onBarTap: (index) {
-                onTappedBar(index);
-              }),
-        ),
-      ),
+    return LayoutBuilder(
+        builder: (context, constraints){
+          return OrientationBuilder(
+            builder: (context, Orientation orientation) {
+              SizeConfig().init(constraints, orientation);
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                home: MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider<DrawerProvider>(create: (context) { return DrawerProvider(); },)
+                  ],
+                  child: Scaffold(
+                    // ignore: unrelated_type_equality_checks
+                    appBar: (_currentIndex == 3 ) ? null : homeAppBar(context, search[_currentIndex].searchString),
+                    body: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      child: _children[_currentIndex],
+                    ),
+                    bottomNavigationBar: AnimatedBottomBar(
+                        barItems: barItems,
+                        animationDuration: const Duration(milliseconds: 150),
+                        barStyle: BarStyle(
+                            fontSize: 15.0,
+                            iconSize: 25.0
+                        ),
+                        onBarTap: (index) {
+                          onTappedBar(index);
+                        }),
+                  ),
+                ),
+              );
+            },
+          );
+        }
     );
   }
 }
