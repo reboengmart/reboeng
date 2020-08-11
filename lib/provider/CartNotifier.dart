@@ -45,5 +45,11 @@ class CartNotifier with ChangeNotifier{
     cartApi.saveCart(newCart);
 
   }
+//  void _subproduct(int product) {
+//      subtotalproduct= int.parse(price) * product;
+//  }
+  static void kurangqty(String id,int qty) {
+    CartApi.removeqty(id,qty);
+  }
 
 }

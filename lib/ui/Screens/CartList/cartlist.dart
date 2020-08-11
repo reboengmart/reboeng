@@ -29,9 +29,9 @@ class _CartListState extends State<CartList> {
   int subtotalproduct;
 
   void _subproduct(int product) {
-    setState(() {
+//    setState(() {
 //      subtotalproduct= int.parse(productPrice) * product;
-    });
+//    });
   }
 
   @override
@@ -97,6 +97,7 @@ class _CartListState extends State<CartList> {
 //    final cartNotifierList = Provider.of<List<Cart>>(context);
 //    SubProductNotifier subProductNotifier=Provider.of<SubProductNotifier>(context);
     final carts = Provider.of<List<Cart>>(context);
+    CartNotifier cartss=Provider.of<CartNotifier>(context);
 //    print('test  '+ carts.length.toString());
 //    userList = List<User>.generate(users.length, (index) => users[index]);
 //    cartList =carts;
@@ -193,7 +194,9 @@ class _CartListState extends State<CartList> {
                                                         onTap: () {
                                                           if (qty != 1) {
                                                             qty -= 1;
-                                                            _subproduct(_totalproduct);
+                                                            CartNotifier.kurangqty(cartId, qty);
+//                                                            _subproduct(_totalproduct);
+//                                                            cartss.kurangiqty(_totalproduct);
 //                                                            subTotalFormulas('kurang', int.parse(productPrice), qty);
                                                           }
                                                         },
@@ -230,7 +233,8 @@ class _CartListState extends State<CartList> {
                                                       InkWell(
                                                         onTap: () {
                                                           qty += 1;
-                                                          _subproduct(_totalproduct);
+//                                                          _subproduct(_totalproduct);
+                                                          CartNotifier.kurangqty(cartId, qty);
 //                                                          subTotalFormulas('tambah', int.parse(productPrice), qty);
                                                         },
                                                         child: Container(

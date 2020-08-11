@@ -46,6 +46,12 @@ class CartApi{
     getauth();
     return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
   }
+  static Future<void> removeqty(String id,int qty) async {
+    final FirebaseAuth _auth=FirebaseAuth.instance;
+    final FirebaseUser user=await  _auth.currentUser();
+    String uid=user.uid;
+    return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':qty});
+  }
   }
 
 
