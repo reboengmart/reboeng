@@ -94,6 +94,7 @@ class _CartListState extends State<CartList> {
 
   @override
   Widget build(BuildContext context) {
+    int cartTotal;
 //    final cartNotifierList = Provider.of<List<Cart>>(context);
 //    SubProductNotifier subProductNotifier=Provider.of<SubProductNotifier>(context);
     final carts = Provider.of<List<Cart>>(context);
@@ -194,7 +195,7 @@ class _CartListState extends State<CartList> {
                                                         onTap: () {
                                                           if (qty != 1) {
                                                             qty -= 1;
-                                                            CartNotifier.kurangqty(cartId, qty);
+                                                            CartNotifier.kurangqty(cartId, qty,int.parse(productPrice),cartTotal);
 //                                                            _subproduct(_totalproduct);
 //                                                            cartss.kurangiqty(_totalproduct);
 //                                                            subTotalFormulas('kurang', int.parse(productPrice), qty);
@@ -234,7 +235,7 @@ class _CartListState extends State<CartList> {
                                                         onTap: () {
                                                           qty += 1;
 //                                                          _subproduct(_totalproduct);
-                                                          CartNotifier.kurangqty(cartId, qty);
+                                                          CartNotifier.kurangqty(cartId, qty,int.parse(productPrice),cartTotal);
 //                                                          subTotalFormulas('tambah', int.parse(productPrice), qty);
                                                         },
                                                         child: Container(
@@ -312,32 +313,19 @@ class _CartListState extends State<CartList> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    "Subtotal      Rp. ${subTotal}",
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontSize: 2.6 * SizeConfig.textMultiplier,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Text(
-                    "Delivery       Rp. 0",
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontSize: 2.6 * SizeConfig.textMultiplier,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    "Total Keranjang     Rp. ${cartTotal}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 2.9 * SizeConfig.textMultiplier,
-                    ),
+                  StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance.collection('user').where('uid', isEqualTo: '$uid').snapshots(),
+                    builder: (context, snapshot) {
+                        final _cartTotal = List.generate(snapshot.data.documents.length, (index) => snapshot.data.documents[index].data['cartTotal']);
+                        cartTotal=int.parse(_cartTotal[0].toString());
+                      return Text(
+                        "Total Keranjang     Rp. ${_cartTotal[0].toString()}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 2.6 * SizeConfig.textMultiplier,
+                        ),
+                      );
+                    }
                   ),
                   SizedBox(
                     height: 20.0,
@@ -347,7 +335,7 @@ class _CartListState extends State<CartList> {
                         borderRadius: BorderRadius.circular(12)),
                     color: kPrimaryColor,
                     child: Text(
-                      "Bayar".toUpperCase(),
+                      "checkout".toUpperCase(),
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {

@@ -42,15 +42,21 @@ class CartApi{
     return Firestore.instance.collection('user').document(uid).collection('cart').document(id).delete();
   }
   //Create Data
-  Future<void> saveCart(Cart cart){
+  Future<void> saveCart(Cart cart)async{
     getauth();
+    QuerySnapshot snapshot=await Firestore.instance.collection('user').where('uid', isEqualTo: '$uid').getDocuments();
+    final _cartTotal = List.generate(snapshot.documents.length, (index) => snapshot.documents[index].data['cartTotal']);
+    int cartTotal=int.parse(_cartTotal[0].toString());
+    Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':cartTotal + int.parse(cart.price)});
     return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
   }
-  static Future<void> removeqty(String id,int qty) async {
+  static Future<void> removeqty(String id,int qty, int price, int total) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     String uid=user.uid;
-    return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':qty});
+    int hasil = total-price*qty;
+    Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':hasil});
+    return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':qty,'price':price});
   }
   }
 
