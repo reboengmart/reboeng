@@ -27,13 +27,11 @@ class _CartListState extends State<CartList> {
   String uid;
   int _totalproduct;
   int subtotalproduct;
-
   void _subproduct(int product) {
 //    setState(() {
 //      subtotalproduct= int.parse(productPrice) * product;
 //    });
   }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -235,7 +233,7 @@ class _CartListState extends State<CartList> {
                                                         onTap: () {
                                                           qty += 1;
 //                                                          _subproduct(_totalproduct);
-                                                          CartNotifier.kurangqty(cartId, qty,int.parse(productPrice),cartTotal);
+                                                          CartNotifier.tambahqty(cartId,qty,int.parse(productPrice),cartTotal);
 //                                                          subTotalFormulas('tambah', int.parse(productPrice), qty);
                                                         },
                                                         child: Container(
@@ -284,7 +282,7 @@ class _CartListState extends State<CartList> {
                                               color: Colors.white,
                                             ),
                                             onPressed: () {
-                                              CartNotifier.deleteCart(cartId);
+                                              CartNotifier.deleteCart(cartId,int.parse(productPrice),cartTotal,qty);
                                             },
                                           ),
                                         ),

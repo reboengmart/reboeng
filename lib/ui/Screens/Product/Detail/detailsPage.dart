@@ -213,7 +213,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           onTap: () {
                             setState(() {
-                            subCartNotifier.saveCartPage(_totalproduct, widget.foodName,subtotalproduct.toString(),widget.heroTag,widget.status,widget.unit);
+                            subCartNotifier.saveCartPage(_totalproduct, widget.foodName,widget.foodPrice,widget.heroTag,widget.status,widget.unit);
                              });
                           },
                         ),

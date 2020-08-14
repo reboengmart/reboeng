@@ -35,10 +35,12 @@ class CartApi{
     return subProductNotifier.subproductList=_subProduct;
   }
   //delete data
-  static Future<void> removeCart(String id) async {
+  static Future<void> removeCart(String id,int price,int total,int qty) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     String uid=user.uid;
+    int hasil = total-price*qty;
+    Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':hasil});
     return Firestore.instance.collection('user').document(uid).collection('cart').document(id).delete();
   }
   //Create Data
@@ -47,16 +49,26 @@ class CartApi{
     QuerySnapshot snapshot=await Firestore.instance.collection('user').where('uid', isEqualTo: '$uid').getDocuments();
     final _cartTotal = List.generate(snapshot.documents.length, (index) => snapshot.documents[index].data['cartTotal']);
     int cartTotal=int.parse(_cartTotal[0].toString());
-    Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':cartTotal + int.parse(cart.price)});
+    Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':cartTotal + int.parse(cart.price)*cart.qty});
     return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
   }
   static Future<void> removeqty(String id,int qty, int price, int total) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     String uid=user.uid;
-    int hasil = total-price*qty;
+    int hasil = total-price;
+    int pricee=price-price;
     Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':hasil});
-    return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':qty,'price':price});
+    return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':qty});
+  }
+  static Future<void> addqty(String id,int qty, int price, int total) async {
+    final FirebaseAuth _auth=FirebaseAuth.instance;
+    final FirebaseUser user=await  _auth.currentUser();
+    String uid=user.uid;
+    int hasil = total+price;
+    int pricee=price+price;
+    Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':hasil});
+    return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':qty});
   }
   }
 

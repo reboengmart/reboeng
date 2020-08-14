@@ -25,8 +25,8 @@ class CartNotifier with ChangeNotifier{
 //  String get sub_product_ref=> _sub_product_ref;
 //  String get user_ref=> _user_ref;
 
-  static void deleteCart(String id) {
-    CartApi.removeCart(id);
+  static void deleteCart(String id,int price,int total,int qty) {
+    CartApi.removeCart(id,price,total,qty);
   }
   void saveCart(String name,String price,String assets,String status,String unit) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
@@ -41,15 +41,16 @@ class CartNotifier with ChangeNotifier{
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
+    int total=int.parse(price) * qty;
     var newCart=Cart(id:uuid.v1(),qty:qty,name:name,price: price,assets: assets,status: status,unit: unit);
     cartApi.saveCart(newCart);
 
   }
-//  void _subproduct(int product) {
-//      subtotalproduct= int.parse(price) * product;
-//  }
   static void kurangqty(String id,int qty, int price, int total) {
     CartApi.removeqty(id,qty,price,total);
   }
-
+  static void tambahqty(String id,int qty, int price, int total){
+    CartApi.addqty(id, qty, price, total);
+  }
+  
 }
