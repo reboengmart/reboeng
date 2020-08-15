@@ -17,6 +17,7 @@ class PromoDetailsPage extends StatefulWidget {
 }
 
 class _PromoDetailsPageState extends State<PromoDetailsPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var selectedCard = 'WEIGHT';
   int _totalproduct;
   int subtotalproduct;
@@ -33,11 +34,26 @@ class _PromoDetailsPageState extends State<PromoDetailsPage> {
     _totalproduct = 1;
     _subproduct(_totalproduct);
   }
+  void _showSnackBar(String operator){
+    switch(operator){
+      case 'habis':
+        final _snackBar = SnackBar(content: Text("Stok Habis"));
+
+        _scaffoldKey.currentState.showSnackBar(_snackBar);
+        break;
+      case 'lebih':
+        final _snackBar = SnackBar(content: Text("Qty Melebihi Stok Kami"));
+
+        _scaffoldKey.currentState.showSnackBar(_snackBar);
+        break;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
     return Scaffold(
         backgroundColor: Color.fromRGBO(22, 160, 133, 1),
+        key: _scaffoldKey,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -211,8 +227,22 @@ class _PromoDetailsPageState extends State<PromoDetailsPage> {
                             ),
                           ),
                           onTap: () {
-                            subCartNotifier.saveCartPage(widget.foodId,widget.foodStock,_totalproduct, widget.foodName,widget.foodPrice,widget.heroTag,widget.status,widget.unit);
-                          },
+                            if(int.parse(widget.foodStock) ==0){
+                              _showSnackBar('habis');
+                            }if(int.parse(widget.foodStock)< _totalproduct){
+                              _showSnackBar('lebih');
+                            }else {
+                              subCartNotifier.saveCartPage(
+                                  widget.foodId,
+                                  widget.foodStock,
+                                  _totalproduct,
+                                  widget.foodName,
+                                  widget.foodPrice,
+                                  widget.heroTag,
+                                  widget.status,
+                                  widget.unit);
+                            }
+                            },
                         ),
                       )
                   ],

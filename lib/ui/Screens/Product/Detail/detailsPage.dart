@@ -28,11 +28,25 @@ class _DetailsPageState extends State<DetailsPage> {
      subtotalproduct= int.parse(widget.foodPrice) * product;
    });
   }
-  void _showSnackBar()
-  {
-    final _snackBar = SnackBar(content: Text("Stok Habis"));
+//  void _showSnackBar()
+//  {
+//    final _snackBar = SnackBar(content: Text("Stok Habis"));
+//
+//    _scaffoldKey.currentState.showSnackBar(_snackBar);
+//  }
+  void _showSnackBar(String operator){
+    switch(operator){
+      case 'habis':
+        final _snackBar = SnackBar(content: Text("Stok Habis"));
 
-    _scaffoldKey.currentState.showSnackBar(_snackBar);
+        _scaffoldKey.currentState.showSnackBar(_snackBar);
+        break;
+      case 'lebih':
+        final _snackBar = SnackBar(content: Text("Qty Melebihi Stok Kami"));
+
+        _scaffoldKey.currentState.showSnackBar(_snackBar);
+        break;
+    }
   }
   @override
   void initState() {
@@ -221,7 +235,9 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                           onTap: () {
                             if(int.parse(widget.foodStock) ==0){
-                              _showSnackBar();
+                              _showSnackBar('habis');
+                            }if(int.parse(widget.foodStock)< _totalproduct){
+                              _showSnackBar('lebih');
                             }else {
                               setState(() {
                                 subCartNotifier.saveCartPage(
