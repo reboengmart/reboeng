@@ -211,7 +211,7 @@ class _PromoDetailsPageState extends State<PromoDetailsPage> {
                             ),
                           ),
                           onTap: () {
-                            subCartNotifier.saveCartPage(_totalproduct, widget.foodName,widget.foodPrice,widget.heroTag,widget.status,widget.unit);
+                            subCartNotifier.saveCartPage(widget.foodId,widget.foodStock,_totalproduct, widget.foodName,widget.foodPrice,widget.heroTag,widget.status,widget.unit);
                           },
                         ),
                       )

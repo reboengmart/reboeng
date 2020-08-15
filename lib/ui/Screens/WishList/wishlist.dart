@@ -17,6 +17,7 @@ class WishList extends StatefulWidget {
 }
 
 class _WishListState extends State<WishList> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<SubProduct> itemlist = new List();
   List<SubProduct> itemlist2 = new List();
   String uid;
@@ -55,7 +56,12 @@ class _WishListState extends State<WishList> {
 ////     itemlist = List<SubProduct>.generate(itemListUngenerated.length, (index) => itemListUngenerated[index]);
 //    });
 //  }
+  void _showSnackBar()
+  {
+    final _snackBar = SnackBar(content: Text("Stok Habis"));
 
+    _scaffoldKey.currentState.showSnackBar(_snackBar);
+  }
   @override
   Widget build(BuildContext context) {
     final wishlistItem = Provider.of<List<WishListModel>>(context);
@@ -64,6 +70,7 @@ class _WishListState extends State<WishList> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+        key: _scaffoldKey,
         body: Center(
           child: Container(
             padding: EdgeInsets.only(left: 5, right: 5),
@@ -177,6 +184,10 @@ class _WishListState extends State<WishList> {
                                           .data.documents
                                           .toList()[0]
                                           .data['price'];
+                                      int productStock = snap
+                                          .data.documents
+                                          .toList()[0]
+                                          .data['stock'];
                                       String productUnit = snap
                                           .data.documents
                                           .toList()[0]
@@ -339,16 +350,28 @@ class _WishListState extends State<WishList> {
                                                                             .teal),
                                                                   ),
                                                                   onTap: () {
-                                                                    setState(() {
-                                                                      subCartNotifier
-                                                                          .saveCart(
-                                                                          productName,productPrice.toString(),productAssets,productstatus,productUnit);
-                                                                      wishListNotifier
-                                                                          .deleteWishList(
-                                                                          wishId);
+                                                                if(productStock ==0){
+                                                                _showSnackBar();
+                                                                }else {
+                                                                  setState(() {
+                                                                    subCartNotifier
+                                                                        .saveCart(
+                                                                        productid,
+                                                                        productStock
+                                                                            .toString(),
+                                                                        productName,
+                                                                        productPrice
+                                                                            .toString(),
+                                                                        productAssets,
+                                                                        productstatus,
+                                                                        productUnit);
+                                                                    wishListNotifier
+                                                                        .deleteWishList(
+                                                                        wishId);
 //                                                      wishlistItemList.removeAt(index);
 //                                                      wishlistItem--;
-                                                                    });
+                                                                  });
+                                                                }
 
                                                                     // Then show a snackbar.
                                                                     Scaffold.of(

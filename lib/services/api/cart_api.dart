@@ -44,11 +44,13 @@ class CartApi{
     return Firestore.instance.collection('user').document(uid).collection('cart').document(id).delete();
   }
   //Create Data
-  Future<void> saveCart(Cart cart)async{
+  Future<void> saveCart(Cart cart,String id,String stock_awal)async{
     getauth();
     QuerySnapshot snapshot=await Firestore.instance.collection('user').where('uid', isEqualTo: '$uid').getDocuments();
     final _cartTotal = List.generate(snapshot.documents.length, (index) => snapshot.documents[index].data['cartTotal']);
     int cartTotal=int.parse(_cartTotal[0].toString());
+    int hasil=int.parse(stock_awal)-cart.qty;
+    Firestore.instance.collection('sub_product').document(id).updateData({'stock':hasil});
     Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':cartTotal + int.parse(cart.price)*cart.qty});
     return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
   }

@@ -28,22 +28,22 @@ class CartNotifier with ChangeNotifier{
   static void deleteCart(String id,int price,int total,int qty) {
     CartApi.removeCart(id,price,total,qty);
   }
-  void saveCart(String name,String price,String assets,String status,String unit) async {
+  void saveCart(String id,String stock_awal,String name,String price,String assets,String status,String unit) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
     var newCart=Cart(id:uuid.v1(),qty:1,name:name,price: price,assets: assets,status: status,unit: unit);
-    cartApi.saveCart(newCart);
+    cartApi.saveCart(newCart,id,stock_awal);
 
 
   }
-  void saveCartPage(int qty,String name,String price,String assets,String status,String unit) async {
+  void saveCartPage(String id,String stock_awal,int qty,String name,String price,String assets,String status,String unit) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
     int total=int.parse(price) * qty;
     var newCart=Cart(id:uuid.v1(),qty:qty,name:name,price: price,assets: assets,status: status,unit: unit);
-    cartApi.saveCart(newCart);
+    cartApi.saveCart(newCart,id,stock_awal);
 
   }
   static void kurangqty(String id,int qty, int price, int total) {

@@ -13,11 +13,13 @@ class DetailsPage extends StatefulWidget {
   final unit;
   DetailsPage({this.heroTag, this.foodName, this.foodPrice,this.foodStock,this.foodId,this.status,this.unit});
 
+
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var selectedCard = 'WEIGHT';
   int _totalproduct;
   int subtotalproduct;
@@ -26,7 +28,12 @@ class _DetailsPageState extends State<DetailsPage> {
      subtotalproduct= int.parse(widget.foodPrice) * product;
    });
   }
+  void _showSnackBar()
+  {
+    final _snackBar = SnackBar(content: Text("Stok Habis"));
 
+    _scaffoldKey.currentState.showSnackBar(_snackBar);
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -37,8 +44,9 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
-    return Scaffold(
+     return Scaffold(
         backgroundColor: Color(0xFF7A9BEE),
+         key: _scaffoldKey,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -212,9 +220,21 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                           ),
                           onTap: () {
-                            setState(() {
-                            subCartNotifier.saveCartPage(_totalproduct, widget.foodName,widget.foodPrice,widget.heroTag,widget.status,widget.unit);
-                             });
+                            if(int.parse(widget.foodStock) ==0){
+                              _showSnackBar();
+                            }else {
+                              setState(() {
+                                subCartNotifier.saveCartPage(
+                                    widget.foodId,
+                                    widget.foodStock,
+                                    _totalproduct,
+                                    widget.foodName,
+                                    widget.foodPrice,
+                                    widget.heroTag,
+                                    widget.status,
+                                    widget.unit);
+                              });
+                            }
                           },
                         ),
                       )
@@ -296,3 +316,5 @@ class _DetailsPageState extends State<DetailsPage> {
     });
   }
 }
+
+
