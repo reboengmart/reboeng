@@ -313,16 +313,33 @@ class _CartListState extends State<CartList> {
                 children: <Widget>[
                   StreamBuilder<QuerySnapshot>(
                       stream: Firestore.instance.collection('user').where('uid', isEqualTo: '$uid').snapshots(),
+                    // ignore: missing_return
                     builder: (context, snapshot) {
                         final _cartTotal = List.generate(snapshot.data.documents.length, (index) => snapshot.data.documents[index].data['cartTotal']);
                         cartTotal=int.parse(_cartTotal[0].toString());
-                      return Text(
-                        "Total Keranjang     Rp. ${_cartTotal[0].toString()}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 2.6 * SizeConfig.textMultiplier,
-                        ),
-                      );
+                        if (snapshot.hasError) {
+                          return Text(snapshot.error);
+                        }
+                        if(snapshot.hasData){
+                          return Text(
+                            "Total Keranjang     Rp. ${_cartTotal[0].toString()}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 2.6 * SizeConfig.textMultiplier,
+                            ),
+                          );
+                        }
+                        if (snapshot.connectionState !=
+                            ConnectionState.done) {
+                          return Center(
+                            child: CircularProgressIndicator(backgroundColor: Colors.red,),
+                          );
+                        }
+                        if(!snapshot.hasData || snapshot.data.documents.isEmpty){
+                          return Center(
+                            child: CircularProgressIndicator(backgroundColor: Colors.red,),
+                          );
+                        }
                     }
                   ),
                   SizedBox(

@@ -6,6 +6,7 @@ import 'package:reboeng/services/refresh.dart';
 import 'package:reboeng/ui/Screens/Home/components/category_item.dart';
 import 'package:reboeng/ui/Screens/Home/components/fruits_header.dart';
 import 'package:reboeng/ui/Screens/Home/components/popular_fruits.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/screens/home/components/category_grid.dart';
 import 'package:reboeng/ui/screens/home/components/discount_card.dart';
 import 'package:reboeng/ui/screens/home/components/item_list.dart';
@@ -42,7 +43,7 @@ class _BodyState extends State<Body> {
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          height: MediaQuery.of(context).size.height * 1.4,
+          height: SizeConfig.heightMultiplier * 170,
           child: Column(
             children: <Widget>[
               Expanded(

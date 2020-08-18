@@ -46,6 +46,11 @@ class _DetailsPageState extends State<DetailsPage> {
 
         _scaffoldKey.currentState.showSnackBar(_snackBar);
         break;
+      case 'create':
+        final _snackBar = SnackBar(content: Text("Sukses Menambahkan Barang di Cart"));
+
+        _scaffoldKey.currentState.showSnackBar(_snackBar);
+        break;
     }
   }
   @override
@@ -240,6 +245,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               _showSnackBar('lebih');
                             }else {
                               setState(() {
+                                _showSnackBar('create');
                                 subCartNotifier.saveCartPage(
                                     widget.foodId,
                                     widget.foodStock,
