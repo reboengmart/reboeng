@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 
 class AddressScreen extends StatelessWidget {
@@ -46,6 +47,25 @@ class AddressScreen extends StatelessWidget {
           color: Colors.black,
         ),
         title: Text('Alamat Anda', style: TextStyle(color: kTextColor),),
+        actions: <Widget>[
+          Center(
+            child: InkWell(
+              onTap: (){},
+              child: Container(
+                padding: EdgeInsets.only(right: SizeConfig.widthMultiplier * 4),
+                child: Text(
+                  "Tambah Alamat",
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 2.6 * SizeConfig.textMultiplier,
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
       body: Container(
         child: Center(

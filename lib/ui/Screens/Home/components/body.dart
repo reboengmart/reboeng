@@ -43,12 +43,12 @@ class _BodyState extends State<Body> {
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          height: SizeConfig.heightMultiplier * 192,
+          height: SizeConfig.heightMultiplier * 135,
           child: Column(
             children: <Widget>[
-              Expanded(flex: 18, child: DiscountCard()),
+              Expanded(flex: 15, child: DiscountCard()),
               Expanded(
-                  flex: 20,
+                  flex: 17,
                   child: Container(
                     padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 2, right: SizeConfig.widthMultiplier * 2),
                     color: Color.fromRGBO(189, 195, 199, 0.2),
@@ -78,25 +78,25 @@ class _BodyState extends State<Body> {
                               alignment: Alignment.bottomLeft,
                               child: MostItem()),
                         ),
-                        Expanded(flex: 3, child: ItemList()),
+                        Expanded(flex: 4, child: ItemList()),
                       ],
                     ),
                   )),
-              Expanded(
-                flex: 26,
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 7,
-                        child: Container(
-                            alignment: Alignment.bottomLeft, child: FruitsHeader()),
-                      ),
-                      Expanded(flex: 27, child: PopularFruits()),
-                    ],
-                  ),
-                ),
-              )
+//              Expanded(
+//                flex: 21,
+//                child: Container(
+//                  child: Column(
+//                    children: <Widget>[
+//                      Expanded(
+//                        flex: 7,
+//                        child: Container(
+//                            alignment: Alignment.bottomLeft, child: FruitsHeader()),
+//                      ),
+//                      Expanded(flex: 27, child: PopularFruits()),
+//                    ],
+//                  ),
+//                ),
+//              )
             ],
           ),
         ),

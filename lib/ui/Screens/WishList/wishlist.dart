@@ -229,10 +229,10 @@ class _WishListState extends State<WishList> {
                                                                       Widget>[
                                                                     Container(
                                                                       width: width *
-                                                                          0.35,
+                                                                          0.30,
                                                                       height:
-                                                                          height *
-                                                                              0.15,
+                                                                      width *
+                                                                          0.30,
                                                                       child:
                                                                           Image(
                                                                         image: AssetImage(

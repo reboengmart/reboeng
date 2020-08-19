@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:reboeng/services/wrapper.dart';
 import 'package:reboeng/ui/Screens/Profile/address/addressmainscreen.dart';
+import 'package:reboeng/ui/Screens/Profile/myprofile.dart';
 import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 
 
@@ -105,7 +108,13 @@ class CheckOutScreen extends StatelessWidget {
               FlatButton(
                 child: Text('Simpan'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Wrapper(),
+                      )
+                    // ignore: unnecessary_statements
+                  );
                 },
               ),
             ],
@@ -139,7 +148,7 @@ class CheckOutScreen extends StatelessWidget {
             const SizedBox(height: 20.0),
             RoundedContainer(
               width: width * 0.95,
-                height: height * 0.25,
+                height: height * 0.15,
                 margin: const EdgeInsets.symmetric(
                   vertical: 8.0,
                   horizontal: 8.0,
@@ -197,7 +206,44 @@ class CheckOutScreen extends StatelessWidget {
                 trailing: Icon(Icons.arrow_forward_ios),
               ),
             ),
-            const SizedBox(height: 20.0),
+            SizedBox(height: SizeConfig.heightMultiplier * 5),
+            Container(
+              alignment: Alignment.bottomRight,
+              padding: EdgeInsets.only(right: SizeConfig.widthMultiplier * 5),
+              width: MediaQuery.of(context).size.width * 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    "Total Keranjang Rp. 5000",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 2.6 * SizeConfig.textMultiplier,
+                    ),
+                  ),
+                  Text(
+                    "Total Ongkos Kirim Rp. 4500",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 2.6 * SizeConfig.textMultiplier,
+                    ),
+                  ),
+                  Text(
+                    "Total Bayar Rp. 9500",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 2.6 * SizeConfig.textMultiplier,
+                    ),
+                  )
+                ],
+              ),
+            ),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(

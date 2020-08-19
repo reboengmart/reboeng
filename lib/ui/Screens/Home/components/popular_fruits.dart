@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/screens/home/components/item_card.dart';
 
 class PopularFruits extends StatelessWidget {
@@ -10,27 +11,30 @@ class PopularFruits extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(
-        children: <Widget>[
-          ItemCard(
-            svgSrc: "assets/buah/avocado.png",
-            title: "Alpukat",
-            shopName: "Tersisa 8 kg",
-            press: () {},
-          ),
-          ItemCard(
-            svgSrc: "assets/buah/kelapa.png",
-            title: "Kelapa",
-            shopName: "Tersisa 15 kg",
-            press: () {},
-          ),
-          ItemCard(
-            svgSrc: "assets/buah/durian.png",
-            title: "Durian",
-            shopName: "Tersisa 5 kg",
-            press: () {},
-          )
-        ],
+      child: Container(
+        padding: EdgeInsets.all(SizeConfig.widthMultiplier * 5),
+        child: Row(
+          children: <Widget>[
+            ItemCard(
+              svgSrc: "assets/buah/avocado.png",
+              title: "Alpukat",
+              shopName: "Tersisa 8 kg",
+              press: () {},
+            ),
+            ItemCard(
+              svgSrc: "assets/buah/kelapa.png",
+              title: "Kelapa",
+              shopName: "Tersisa 15 kg",
+              press: () {},
+            ),
+            ItemCard(
+              svgSrc: "assets/buah/durian.png",
+              title: "Durian",
+              shopName: "Tersisa 5 kg",
+              press: () {},
+            )
+          ],
+        ),
       ),
     );
   }

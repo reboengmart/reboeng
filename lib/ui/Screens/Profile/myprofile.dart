@@ -1,20 +1,15 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:reboeng/services/auth.dart';
 import 'package:reboeng/ui/Screens/Profile/address/addressmainscreen.dart';
 import 'package:reboeng/ui/Screens/Profile/components/constants.dart';
 import 'package:reboeng/ui/Screens/Profile/settings/ProfileSettings.dart';
-//import 'package:reboeng/ui/Screens/Profile/settings/ProfileSettings.dart';
-//import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
-//import 'package:reboeng/ui/constants.dart';
 
 import 'components/profile_list_item.dart';
-
-
 
 class MyProfile extends StatelessWidget {
   // This widget is the root of your a pplication.
@@ -41,9 +36,21 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  FirebaseUser userFirebase;
+
+  void firebaseUserAuth() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    setState(() {
+      userFirebase = user;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, height: 896, width: 414, allowFontScaling: true);
+
+    firebaseUserAuth();
 
     var profileInfo = Expanded(
       child: Column(
@@ -63,12 +70,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           SizedBox(height: kSpacingUnit.w * 2),
           Text(
-            'Reboeng User',
+            '${userFirebase.uid}',
             style: kTitleTextStyle,
           ),
           SizedBox(height: kSpacingUnit.w * 0.5),
           Text(
-            'user@user.com',
+            '${userFirebase.email}',
             style: kCaptionTextStyle,
           ),
           SizedBox(height: kSpacingUnit.w * 2),
@@ -144,9 +151,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: <Widget>[
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => AddressScreen()
-                          ));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddressScreen()));
                         },
                         child: ProfileListItem(
                           icon: LineAwesomeIcons.user_shield,
@@ -166,9 +174,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => ProfileSettings()
-                          ));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileSettings()));
                         },
                         child: ProfileListItem(
                           icon: LineAwesomeIcons.cog,
@@ -182,7 +191,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         hasNavigation: 'true',
                       ),
                       InkWell(
-                        onTap: () async { await AuthServices.signOut();},
+                        onTap: () async {
+                          await AuthServices.signOut();
+                        },
                         child: ProfileListItem(
                           icon: LineAwesomeIcons.alternate_sign_out,
                           text: 'Logout',
@@ -200,7 +211,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
 
 //class MyProfile extends StatefulWidget {
 //  @override
@@ -546,4 +556,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
 //    );
 //  }
 //}
-
