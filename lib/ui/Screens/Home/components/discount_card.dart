@@ -1,5 +1,6 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 
 class DiscountCard extends StatelessWidget {
@@ -21,7 +22,7 @@ class DiscountCard extends StatelessWidget {
           Container(
             margin: EdgeInsets.symmetric(vertical: 20),
             width: double.infinity,
-            height: 166,
+            height: SizeConfig.heightMultiplier * 30,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(

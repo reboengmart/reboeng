@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 
 class AnimatedBottomBar extends StatefulWidget {
@@ -25,11 +26,11 @@ class _AnimatedBottomBarState extends State<AnimatedBottomBar>
     return Material(
       elevation: 5.0,
       child: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 5.0,
-          top: 5.0,
-          left: 10.0,
-          right: 10.0,
+        padding: EdgeInsets.only(
+          left: SizeConfig.widthMultiplier * 1,
+          right: SizeConfig.widthMultiplier * 1,
+          top: SizeConfig.heightMultiplier * 1,
+          bottom: SizeConfig.heightMultiplier * 1
         ),
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -69,7 +70,7 @@ class _AnimatedBottomBarState extends State<AnimatedBottomBar>
                 size: widget.barStyle.iconSize,
               ),
               SizedBox(
-                width: 10.0,
+                width: 4.0,
               ),
               AnimatedSize(
                 duration: widget.animationDuration,

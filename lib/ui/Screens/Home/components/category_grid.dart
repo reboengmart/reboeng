@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/ProductCategoryNotifier.dart';
-import 'package:reboeng/services/model/ProductCategory.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/services/refresh.dart';
 import 'package:reboeng/ui/Screens/Product/detail_promo/detail_screen.dart';
 import 'package:reboeng/ui/Screens/Product/productlist.dart';
@@ -23,7 +23,7 @@ class _FeedState extends State<CategoryGrid>{
   ProductCategoryNotifier categoryNotifier=Provider.of<ProductCategoryNotifier>(context);
 
       return Container(
-        padding: EdgeInsets.only(left: 15.0, right: 15.0),
+        padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 1.5, right: SizeConfig.widthMultiplier * 1.5),
         alignment: Alignment.center,
         child: (categoryNotifier.categoryList !=null) ? GridView.count(
             physics: new NeverScrollableScrollPhysics(),
@@ -32,7 +32,7 @@ class _FeedState extends State<CategoryGrid>{
             crossAxisSpacing: 0,
             mainAxisSpacing: 15,
             crossAxisCount: 4,
-          children: List.generate(categoryNotifier.categoryList.length, (index) {
+          children: List.generate(8, (index) {
             final categoryData = categoryNotifier.categoryList[index];
             return InkWell(
                 child: Column(

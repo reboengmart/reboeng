@@ -19,16 +19,17 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-
   @override
   void initState() {
-    ProductCategoryNotifier productCategoryNotifier=Provider.of<ProductCategoryNotifier>(context,listen: false);
+    ProductCategoryNotifier productCategoryNotifier =
+        Provider.of<ProductCategoryNotifier>(context, listen: false);
     RefreshServices.homeRefresh(productCategoryNotifier);
     super.initState();
   }
 
   Future<void> _refreshNow() async {
-    ProductCategoryNotifier productCategoryNotifier=Provider.of<ProductCategoryNotifier>(context,listen: false);
+    ProductCategoryNotifier productCategoryNotifier =
+        Provider.of<ProductCategoryNotifier>(context, listen: false);
     await setState(() {
       RefreshServices.homeRefresh(productCategoryNotifier);
     });
@@ -37,74 +38,65 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-
     return new RefreshIndicator(
       onRefresh: _refreshNow,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          height: SizeConfig.heightMultiplier * 170,
+          height: SizeConfig.heightMultiplier * 192,
           child: Column(
             children: <Widget>[
+              Expanded(flex: 18, child: DiscountCard()),
               Expanded(
-                  flex: 15,
-                  child: DiscountCard()
-              ),
-              Expanded(
-                  flex: 18,
+                  flex: 20,
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 2, right: SizeConfig.widthMultiplier * 2),
                     color: Color.fromRGBO(189, 195, 199, 0.2),
                     child: Column(
                       children: <Widget>[
                         Expanded(
-                          flex: 4,
+                          flex: 6,
                           child: Container(
                               alignment: Alignment.bottomLeft,
-                              child: CategoryItem()
-                          ),
+                              child: CategoryItem()),
                         ),
-                        Expanded(
-                            flex: 11,
-                            child: CategoryGrid()
-                        ),
+                        Expanded(flex: 16, child: CategoryGrid()),
                       ],
                     ),
-                  )
-              ),
+                  )),
               Expanded(
-                  flex: 21,
+                  flex: 19,
                   child: Container(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.03),
+                    padding: EdgeInsets.only(
+                        bottom: SizeConfig.heightMultiplier * 3),
                     color: Color.fromRGBO(236, 240, 241, 0.5),
                     child: Column(
                       children: <Widget>[
                         Expanded(
-                          flex: 5,
+                          flex: 2,
                           child: Container(
                               alignment: Alignment.bottomLeft,
-                              child: MostItem()
-                          ),
+                              child: MostItem()),
                         ),
-                        Expanded(
-                            flex: 16,
-                            child: ItemList()
-                        ),
+                        Expanded(flex: 3, child: ItemList()),
                       ],
                     ),
-                  )
-              ),
+                  )),
               Expanded(
-                flex: 5,
+                flex: 26,
                 child: Container(
-                    alignment: Alignment.bottomLeft,
-                    child: FruitsHeader()
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                            alignment: Alignment.bottomLeft, child: FruitsHeader()),
+                      ),
+                      Expanded(flex: 27, child: PopularFruits()),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                  flex: 18,
-                  child: PopularFruits()
-              ),
+              )
             ],
           ),
         ),
@@ -112,6 +104,3 @@ class _BodyState extends State<Body> {
     );
   }
 }
-
-
-
