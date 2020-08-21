@@ -55,7 +55,7 @@ class CartApi{
 //    final _namabarang = List.generate(snapshot.documents.length, (index) => snapshot.documents[index].data['name']);
 //    String namabarang=_namabarang[0].toString();
     int hasil=int.parse(stock_awal)-cart.qty;
-//    int hasil1 = total+price;
+    int hasil1 = cartTotal+int.parse(cart.price);
     // ignore: missing_return
 //    validateEnvironment(cart.name,id,cart.id).then((value) {
 //      if (!value) {
@@ -80,6 +80,7 @@ class CartApi{
         Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':cartTotal + int.parse(cart.price)*cart.qty});
         return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
       }else{
+        Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':hasil1});
         return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':cart.qty});
       }
     });
