@@ -47,12 +47,63 @@ class CartApi{
   Future<void> saveCart(Cart cart,String id,String stock_awal)async{
     getauth();
     QuerySnapshot snapshot=await Firestore.instance.collection('user').where('uid', isEqualTo: '$uid').getDocuments();
+    QuerySnapshot snapshotnama=await Firestore.instance.collection('user').document('$uid').collection('cart').where('id',isEqualTo: id).getDocuments();
     final _cartTotal = List.generate(snapshot.documents.length, (index) => snapshot.documents[index].data['cartTotal']);
     int cartTotal=int.parse(_cartTotal[0].toString());
+//    final _namabarang = List.generate(snapshotnama.documents.length, (index) => snapshotnama.documents[index].data['name']);
+//    String namebarang=_namabarang[0].toString();
+//    final _namabarang = List.generate(snapshot.documents.length, (index) => snapshot.documents[index].data['name']);
+//    String namabarang=_namabarang[0].toString();
     int hasil=int.parse(stock_awal)-cart.qty;
-    Firestore.instance.collection('sub_product').document(id).updateData({'stock':hasil});
-    Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':cartTotal + int.parse(cart.price)*cart.qty});
-    return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
+//    int hasil1 = total+price;
+    // ignore: missing_return
+//    validateEnvironment(cart.name,id,cart.id).then((value) {
+//      if (!value) {
+//        //file not found do dome stuff
+//        Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':cartTotal + int.parse(cart.price)*cart.qty});
+//        return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
+//      } else {
+//      //document exists do some stuff
+////        Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':hasil1});
+//        return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':cart.qty});
+////        addqty(id, cart.qty, int.parse(cart.price), cartTotal+int.parse(cart.price));
+//      }
+//    });
+//    if(namabarang != null){
+//      addqty(id, cart.qty, int.parse(cart.price), cartTotal+int.parse(cart.price));
+//    }else{
+//      Firestore.instance.collection('sub_product').document(id).updateData({'stock':hasil});
+
+//    }
+    validateEnvironment(cart.id).then((value){
+      if(!value){
+        Firestore.instance.collection('user').document('$uid').updateData({'cartTotal':cartTotal + int.parse(cart.price)*cart.qty});
+        return Firestore.instance.collection('user').document(uid).collection('cart').document(cart.id).setData(cart.toMap());
+      }else{
+        return Firestore.instance.collection('user').document(uid).collection('cart').document(id).updateData({'qty':cart.qty});
+      }
+    });
+
+  }
+  static Future<bool> validateEnvironment(String idcart) async {
+    bool exists = false;
+    final FirebaseAuth _auth=FirebaseAuth.instance;
+    final FirebaseUser user=await  _auth.currentUser();
+    final uidd=user.uid;
+//    QuerySnapshot snapshotnama=await Firestore.instance.collection('user').document('$uid').collection('cart').where('id',isEqualTo: idcart).getDocuments();
+//    final _namabarang = List.generate(snapshotnama.documents.length, (index) => snapshotnama.documents[index].data['name']);
+//    String namebarang=_namabarang[0].toString();
+    try {
+      await Firestore.instance.collection("user").document(uidd).collection("cart").document(idcart).get().then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
   }
   static Future<void> removeqty(String id,int qty, int price, int total) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;

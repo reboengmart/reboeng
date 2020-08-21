@@ -42,8 +42,8 @@ class CartNotifier with ChangeNotifier{
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
     int total=int.parse(price) * qty;
-    var newCart=Cart(id:uuid.v1(),qty:qty,name:name,price: price,assets: assets,status: status,unit: unit);
-    cartApi.saveCart(newCart,id,stock_awal);
+    var newCart=Cart(id:name,qty:qty,name:name,price: price,assets: assets,status: status,unit: unit);
+    cartApi.saveCart(newCart,name,stock_awal);
 
   }
   static void kurangqty(String id,int qty, int price, int total) {
