@@ -160,10 +160,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                   children: <Widget>[
                                     InkWell(
                                       onTap: () {
-                                        if (_totalproduct !=1 ){
-                                        _totalproduct -=1;
-                                        _subproduct(_totalproduct);
+                                        if (_totalproduct >=1 ){
+                                        setState(() {
+                                          _totalproduct -=1;
+                                          _subproduct(_totalproduct);
+                                        });
+
                                         }
+
                                       },
                                       child: Container(
                                         height: 25.0,
@@ -187,8 +191,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                             fontSize: 15.0)),
                                     InkWell(
                                       onTap: () {
-                                        _totalproduct +=1;
-                                        _subproduct(_totalproduct);
+                                        setState(() {
+                                          (int.parse(widget.foodStock) <= _totalproduct)? _totalproduct=widget.foodStock :_totalproduct;
+                                          _totalproduct +=1;
+                                          _subproduct(_totalproduct);
+                                        });
                                       },
                                       child: Container(
                                         height: 25.0,
@@ -245,6 +252,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                             'Rp.'+subtotalproduct.toString(),
                                             style: TextStyle(
                                                 color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
                                                 fontFamily: 'Montserrat'
                                             )
                                         ),
@@ -253,8 +262,6 @@ class _DetailsPageState extends State<DetailsPage> {
                                     onTap: () {
                                       if(int.parse(widget.foodStock) ==0){
                                         _showSnackBar('habis');
-                                      }if(int.parse(widget.foodStock)< _totalproduct){
-                                        _showSnackBar('lebih');
                                       }else {
                                         setState(() {
                                           _showSnackBar('create');

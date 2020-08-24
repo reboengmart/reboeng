@@ -21,8 +21,7 @@ class _FeedState extends State<CategoryGrid>{
   @override
   Widget build(BuildContext context) {
   ProductCategoryNotifier categoryNotifier=Provider.of<ProductCategoryNotifier>(context);
-
-      return Container(
+      return (categoryNotifier ==null)?Container(child: CircularProgressIndicator()):Container(
         padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 1.5, right: SizeConfig.widthMultiplier * 1.5),
         alignment: Alignment.center,
         child: (categoryNotifier.categoryList !=null) ? GridView.count(
