@@ -25,7 +25,7 @@ class _FeedState extends State<CategoryGrid>{
       return Container(
         padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 1.5, right: SizeConfig.widthMultiplier * 1.5),
         alignment: Alignment.center,
-        child: (categoryNotifier.categoryList !=null) ? GridView.count(
+        child: (categoryNotifier.categoryList.length !=null) ? GridView.count(
             physics: new NeverScrollableScrollPhysics(),
             primary: false,
             padding:  const EdgeInsets.all(0),

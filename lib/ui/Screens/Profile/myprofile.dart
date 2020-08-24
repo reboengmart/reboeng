@@ -7,6 +7,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:reboeng/services/auth.dart';
 import 'package:reboeng/ui/Screens/Profile/address/addressmainscreen.dart';
 import 'package:reboeng/ui/Screens/Profile/components/constants.dart';
+import 'package:reboeng/ui/Screens/Profile/payment_history/main_payment.dart';
 import 'package:reboeng/ui/Screens/Profile/settings/ProfileSettings.dart';
 
 import 'components/profile_list_item.dart';
@@ -162,10 +163,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           hasNavigation: 'true',
                         ),
                       ),
-                      ProfileListItem(
-                        icon: LineAwesomeIcons.history,
-                        text: 'Purchase History',
-                        hasNavigation: 'true',
+                      InkWell(
+                        onTap: (){
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => MainPaymentHistory(0))
+                          );
+                        },
+                        child: ProfileListItem(
+                          icon: LineAwesomeIcons.history,
+                          text: 'Purchase History',
+                          hasNavigation: 'true',
+                        ),
                       ),
                       ProfileListItem(
                         icon: LineAwesomeIcons.question_circle,
