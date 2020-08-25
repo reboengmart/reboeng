@@ -19,14 +19,19 @@ class AddressApi{
     final FirebaseUser user = await _auth.currentUser();
     uid = user.uid;
     List<Address> _ListAddress=[];
-
+    List<Address> _ListAddress2=[];
     QuerySnapshot snapshot = await _db.collection('user').document('$uid').collection('address').getDocuments();
-
+    QuerySnapshot snapshot2 = await _db.collection('user').document('$uid').collection('address').where('notSelected',isEqualTo: false).getDocuments();
     snapshot.documents.forEach((element) {
       Address address=Address.formMap(element.data);
       _ListAddress.add(address);
     });
+    snapshot2.documents.forEach((element) {
+      Address address=Address.formMap(element.data);
+      _ListAddress2.add(address);
+    });
 
+     addressNotifier.addressList2=_ListAddress2;
     return addressNotifier.addressList=_ListAddress;
   }
 

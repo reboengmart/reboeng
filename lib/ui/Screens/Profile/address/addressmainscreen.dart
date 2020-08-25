@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -74,17 +76,31 @@ class _AddressScreenState extends State<AddressScreen> {
     });
     await Future.delayed(Duration(milliseconds: 1500));
   }
-
+  String uid;
+  void firebaseUid() async {
+    await new Future.delayed(const Duration(seconds: 2));
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
+    setState(() {
+      uid = user.uid;
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    firebaseUid();
     AddressNotifier addressNotifier=Provider.of<AddressNotifier>(context);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    List<Address> listdetail=addressNotifier.addressList.where((element) => element.notSelected=false).toList();
-//    List<Address> selectedAddress = addressNotifier.addressList.firstWhere((element) => element.notSelected=false);
-//    selectedAddress=.where((i) => i.isAnimated).toList();
-    var selectedAddress = List<Address>.generate(listdetail.length, (index) => listdetail[index]);
-    final detailll = selectedAddress[0];
+//    List<Address> listdetail=addressNotifier.addressList.where((element) => element.notSelected=false).toList();
+//
+////    var selectedAddress = List<Address>.generate(listdetail.length, (index) => listdetail[index]);
+////    final detailll = selectedAddress[0];
+//    List<Address> item2 = List<Address>.generate(addressNotifier.addressList2.length, (index) => addressNotifier.addressList2[index]);
+//
+////    List<Address> selectedAddress = addressNotifier.addressList2.firstWhere((element) => element.notSelected=false);
+//    List<Address> selectedAddress=item2.where((i) => i.notSelected).toList();
+//
+//    print("Tes MUncul  ${selectedAddress[0].detail}");
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () => Navigator.of(context).pop(),),
@@ -118,18 +134,53 @@ class _AddressScreenState extends State<AddressScreen> {
         child: Center(
           child: Column(
             children: <Widget>[
-              Container(
-                width: width * 0.9,
-                height: height * 0.25,
-                margin: EdgeInsets.only(top: height * 0.02),
-                decoration: new BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Color.fromRGBO(22,160,133, 0.08)
-                ),
-                child: Center(
-                  child: Text('${detailll.detail}'),
-                ),
-              ),
+              StreamBuilder<QuerySnapshot>(
+                  stream: Firestore.instance
+                      .collection('user')
+                      .document("$uid")
+                      .collection('address')
+                      .where('status',isEqualTo: 'primary')
+                      .snapshots(),
+                  // ignore: missing_return
+                  builder: (context, snapshot) {
+                    List _cartTotal;
+                    if (snapshot.data.documents.length != null) {
+                      _cartTotal = List.generate(
+                          snapshot.data.documents.length,
+                              (index) => snapshot
+                              .data.documents[index].data['detail']);
+//                      cartTotal = int.parse(_cartTotal[0].toString());
+                    }
+                    if (_cartTotal.length == 0) {
+                      return CircularProgressIndicator(
+                        backgroundColor: Colors.red,
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Text(snapshot.error);
+                    }
+                    if (_cartTotal.length != 0) {
+                      return Container(
+                        width: width * 0.9,
+                        height: height * 0.25,
+                        margin: EdgeInsets.only(top: height * 0.02),
+                        decoration: new BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: Color.fromRGBO(22,160,133, 0.08)
+                        ),
+                        child: Center(
+                          child: Text(_cartTotal[0].toString()),
+                        ),
+                      );
+                    }
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
+                  }),
               Expanded(
                 child: Container(
                   height: height * 0.45,

@@ -7,6 +7,7 @@ class Address{
   GeoPoint geo;
   String detail;
   String icon;
+  String status;
   Address.formMap(Map<String,dynamic> data){
     id=data['id'];
     nama=data['nama'];
@@ -14,5 +15,6 @@ class Address{
     geo=data['geo'];
     detail=data['detail'];
     icon=data['icon'];
+    status=data['status'];
   }
 }
