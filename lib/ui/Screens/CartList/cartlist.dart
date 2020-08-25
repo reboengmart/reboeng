@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
+import 'package:reboeng/provider/TransactionNotifier.dart';
 import 'package:reboeng/provider/UserNotifier.dart';
 import 'package:reboeng/services/api/cart_api.dart';
 import 'package:reboeng/services/model/Cart.dart';
@@ -96,10 +97,12 @@ class _CartListState extends State<CartList> {
   Widget build(BuildContext context) {
     String cartHasDataa;
     int cartTotal;
+    bool oralengkap =true;
 //    final cartNotifierList = Provider.of<List<Cart>>(context);
 //    SubProductNotifier subProductNotifier=Provider.of<SubProductNotifier>(context);
     final carts = Provider.of<List<Cart>>(context);
     CartNotifier cartss = Provider.of<CartNotifier>(context);
+    TransactionNotifier transactionNotifier=Provider.of<TransactionNotifier>(context);
 //    print('test  '+ carts.length.toString());
 //    userList = List<User>.generate(users.length, (index) => users[index]);
 //    cartList =carts;
@@ -138,6 +141,7 @@ class _CartListState extends State<CartList> {
                             itemCount: cartSnapshot.data.documents.length,
                             itemBuilder: (context, index) {
 //                    DocumentSnapshot subSnapshot = cartSnapshot.data.documents[index];
+                            oralengkap = false;
                               return FutureBuilder(
                                 builder:
                                     (BuildContext context, AsyncSnapshot snap) {
@@ -356,7 +360,7 @@ class _CartListState extends State<CartList> {
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(20.0),
-              child: Column(
+              child: (!oralengkap) ?  Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   StreamBuilder<QuerySnapshot>(
@@ -414,7 +418,11 @@ class _CartListState extends State<CartList> {
                     },
                   ),
                 ],
-              )
+              ) : Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.green,
+                ),
+              ),
             )
           ],
         ),
