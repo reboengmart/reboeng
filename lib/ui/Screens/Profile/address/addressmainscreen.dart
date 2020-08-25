@@ -1,46 +1,93 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:reboeng/provider/AddressNotifier.dart';
+import 'package:reboeng/services/api/address_api.dart';
+import 'package:reboeng/services/model/address.dart';
 import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 
-class AddressScreen extends StatelessWidget {
-  final ListAlamat = [
-    {
-      'nama' : 'Rumah',
-      'icon' : LineAwesomeIcons.home,
-      'notSelected' : false
-    },
-    {
-      'nama' : 'Kantor',
-      'icon' : LineAwesomeIcons.building,
-      'notSelected' : true
-    },
-    {
-      'nama' : 'Tetangga',
-      'icon' : LineAwesomeIcons.building,
-      'notSelected' : true
-    },
-    {
-      'nama' : 'Gudang',
-      'icon' : LineAwesomeIcons.building,
-      'notSelected' : true
-    },
-    {
-      'nama' : 'Gudang',
-      'icon' : LineAwesomeIcons.building,
-      'notSelected' : true
-    }
-  ];
+//class AddressScreen extends StatelessWidget {
+//
+////  final ListAlamat = [
+////    {
+////      'nama' : 'Rumah',
+////      'icon' : 'rumah',
+////      'notSelected' : false
+////    },
+////    {
+////      'nama' : 'Kantor',
+////      'icon' : 'kantor',
+////      'notSelected' : true
+////    },
+////    {
+////      'nama' : 'Tetangga',
+////      'icon' : 'lain',
+////      'notSelected' : true
+////    },
+////    {
+////      'nama' : 'Gudang',
+////      'icon' : 'lain',
+////      'notSelected' : true
+////    },
+////    {
+////      'nama' : 'Gudang',
+////      'icon' : 'lain',
+////      'notSelected' : true
+////    }
+////  ];
+//
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return MaterialApp(
+//      debugShowCheckedModeBanner: false,
+//      home: AddressScreen(),
+//      theme: ThemeData.light(),
+//    );
+//  }
+//}
+
+
+class AddressScreen extends StatefulWidget {
+  @override
+  _AddressScreenState createState() => _AddressScreenState();
+}
+
+class _AddressScreenState extends State<AddressScreen> {
 
 
   @override
+  void initState() {
+    AddressNotifier addressNotifier = Provider.of<AddressNotifier>(context, listen: false);
+    AddressApi().getUserAddress(addressNotifier);
+    super.initState();
+  }
+
+  Future<void> _refreshNow() async {
+    AddressNotifier addressNotifier =
+    Provider.of<AddressNotifier>(context, listen: false);
+    await setState(() {
+      AddressApi().getUserAddress(addressNotifier);
+    });
+    await Future.delayed(Duration(milliseconds: 1500));
+  }
+
+  @override
   Widget build(BuildContext context) {
+    AddressNotifier addressNotifier=Provider.of<AddressNotifier>(context);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    List<Address> listdetail=addressNotifier.addressList.where((element) => element.notSelected=false).toList();
+//    List<Address> selectedAddress = addressNotifier.addressList.firstWhere((element) => element.notSelected=false);
+//    selectedAddress=.where((i) => i.isAnimated).toList();
+    var selectedAddress = List<Address>.generate(listdetail.length, (index) => listdetail[index]);
+    final detailll = selectedAddress[0];
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () => Navigator.of(context).pop(),),
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(
@@ -80,7 +127,7 @@ class AddressScreen extends StatelessWidget {
                     color: Color.fromRGBO(22,160,133, 0.08)
                 ),
                 child: Center(
-                  child: Text('Ini adalah Alamat Utama .... '),
+                  child: Text('${detailll.detail}'),
                 ),
               ),
               Expanded(
@@ -88,28 +135,43 @@ class AddressScreen extends StatelessWidget {
                   height: height * 0.45,
                   margin: EdgeInsets.only(top: height * 0.02),
                   alignment: Alignment.center,
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: ListAlamat.length,
-                    itemBuilder: (context, position) {
-                      final item = ListAlamat[position];
-                      return Container(
-                        margin: EdgeInsets.only(top: height * 0.01),
-                        padding: EdgeInsets.only(left: width * 0.07, right: width * 0.07),
-                        child: RoundedContainer(
-                          padding: const EdgeInsets.all(3.0),
-                          borderColor: (item['notSelected']) ? kTextColor : kPrimaryColor,
-                          child: ListTile(
-                            leading: Icon(
-                              item['icon'],
-                              color: kPrimaryColor,
+                  child: RefreshIndicator(
+                    onRefresh: _refreshNow,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: addressNotifier.addressList.length,
+                      itemBuilder: (context, position) {
+                        IconData iconn;
+                        final item = addressNotifier.addressList[position];
+                        switch(item.icon){
+                          case 'rumah':
+                            iconn = LineAwesomeIcons.home;
+                            break;
+                          case 'kantor':
+                            iconn = Icons.location_city;
+                            break;
+                          case 'lain':
+                            iconn = LineAwesomeIcons.building;
+                            break;
+                        }
+                        return Container(
+                          margin: EdgeInsets.only(top: height * 0.01),
+                          padding: EdgeInsets.only(left: width * 0.07, right: width * 0.07),
+                          child: RoundedContainer(
+                            padding: const EdgeInsets.all(3.0),
+                            borderColor: (item.notSelected == true) ? kTextColor : kPrimaryColor,
+                            child: ListTile(
+                              leading: Icon(
+                                iconn,
+                                color: kPrimaryColor,
+                              ),
+                              title: Text(item.nama, style: TextStyle(color: kTextColor),),
+                              trailing: (item.notSelected==true) ? Icon(Icons.arrow_forward_ios) : Icon(Icons.check, color: kPrimaryColor,),
                             ),
-                            title: Text(item['nama'], style: TextStyle(color: kTextColor),),
-                            trailing: (item['notSelected']) ? Icon(Icons.arrow_forward_ios) : Icon(Icons.check, color: kPrimaryColor,),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -120,4 +182,5 @@ class AddressScreen extends StatelessWidget {
     );
   }
 }
+
 
