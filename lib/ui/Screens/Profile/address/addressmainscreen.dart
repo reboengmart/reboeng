@@ -67,7 +67,7 @@ class _AddressScreenState extends State<AddressScreen> {
     AddressApi().getUserAddress(addressNotifier);
     super.initState();
   }
-
+  bool isLoading = true;
   Future<void> _refreshNow() async {
     AddressNotifier addressNotifier =
     Provider.of<AddressNotifier>(context, listen: false);
@@ -83,6 +83,7 @@ class _AddressScreenState extends State<AddressScreen> {
     FirebaseUser user = await _auth.currentUser();
     setState(() {
       uid = user.uid;
+      isLoading=false;
     });
   }
   @override
@@ -91,6 +92,7 @@ class _AddressScreenState extends State<AddressScreen> {
     AddressNotifier addressNotifier=Provider.of<AddressNotifier>(context);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
 //    List<Address> listdetail=addressNotifier.addressList.where((element) => element.notSelected=false).toList();
 //
 ////    var selectedAddress = List<Address>.generate(listdetail.length, (index) => listdetail[index]);
@@ -112,7 +114,7 @@ class _AddressScreenState extends State<AddressScreen> {
         title: Text('Alamat Anda', style: TextStyle(color: kTextColor),),
         actions: <Widget>[
           Center(
-            child: InkWell(
+            child:InkWell(
               onTap: (){},
               child: Container(
                 padding: EdgeInsets.only(right: SizeConfig.widthMultiplier * 4),
@@ -181,7 +183,15 @@ class _AddressScreenState extends State<AddressScreen> {
                       );
                     }
                   }),
-              Expanded(
+              isLoading ?Center(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: SizeConfig.heightMultiplier * 35),
+                    CircularProgressIndicator(backgroundColor: Colors.red,),
+                  ],
+                ),
+              )
+                  :  Expanded(
                 child: Container(
                   height: height * 0.45,
                   margin: EdgeInsets.only(top: height * 0.02),
