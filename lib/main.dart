@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reboeng/provider/AddressNotifier.dart';
 import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/ProductCategoryNotifier.dart';
 import 'package:reboeng/provider/ProductListNotifier.dart';
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
       value: AuthServices.firebaseUserStream,
       child:  MultiProvider(
         providers: [
+          ChangeNotifierProvider(
+            create: (context) => AddressNotifier(),
+          ),
           ChangeNotifierProvider(
             create: (context) => ProductCategoryNotifier(),
           ),
