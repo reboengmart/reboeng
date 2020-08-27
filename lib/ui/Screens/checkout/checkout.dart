@@ -152,7 +152,7 @@ class CheckOutScreen extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     int cartTotal = 0;
-    int ongkos_kirim = 4500;
+    int ongkos_kirim = 3000;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

@@ -360,7 +360,7 @@ class _CartListState extends State<CartList> {
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(20.0),
-              child: (!oralengkap) ?  Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   StreamBuilder<QuerySnapshot>(
@@ -418,10 +418,6 @@ class _CartListState extends State<CartList> {
                     },
                   ),
                 ],
-              ) : Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.green,
-                ),
               ),
             )
           ],

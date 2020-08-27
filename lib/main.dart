@@ -9,6 +9,7 @@ import 'package:reboeng/provider/TransactionNotifier.dart';
 import 'package:reboeng/provider/UserNotifier.dart';
 import 'package:reboeng/provider/WishListNotifier.dart';
 import 'package:reboeng/services/api/cart_api.dart';
+import 'package:reboeng/services/api/cart_total.dart';
 import 'package:reboeng/services/api/user_api.dart';
 import 'package:reboeng/services/api/wishlist_api.dart';
 import 'package:reboeng/services/auth.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
     final firestoreService=UserApi();
     final cartApi=CartApi();
     final cartwishList=WishListApi();
+    final cartTotal=CartTotalApi();
     return StreamProvider.value(
       value: AuthServices.firebaseUserStream,
       child:  MultiProvider(
@@ -49,6 +51,7 @@ class MyApp extends StatelessWidget {
           StreamProvider(create: (context)=>firestoreService.getUser()),
           StreamProvider(create: (context)=>cartApi.getCart()),
           StreamProvider(create: (context)=>cartwishList.getWishList()),
+          StreamProvider(create: (context)=>cartTotal.getUser()),
         ],
         child: MaterialApp(
           title: 'Reboeng',

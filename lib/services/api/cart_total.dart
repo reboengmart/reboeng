@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reboeng/services/model/User.dart';
 
-class UserApi {
-  //List Data
+class CartTotalApi {
   Firestore _db = Firestore.instance;
 
   String uid, id;
@@ -18,7 +17,7 @@ class UserApi {
     getauth();
     return _db
         .collection('user')
-        .where('uid', isEqualTo: uid)
+        .where('uid', isEqualTo: '$uid')
         .snapshots()
         .map((snapshot) => snapshot.documents
             .map((document) => User.fromFirestore(document.data))
