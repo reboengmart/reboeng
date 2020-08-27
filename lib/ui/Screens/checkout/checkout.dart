@@ -7,7 +7,7 @@ import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
-
+import 'package:intl/intl.dart';
 class CheckOutScreen extends StatefulWidget {
   @override
   _CheckOutScreenState createState() => _CheckOutScreenState();
@@ -39,6 +39,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     final image = 'assets/img/3.jpg';
     final TextStyle subtitle = TextStyle(fontSize: 12.0, color: Colors.grey);
     final TextStyle label = TextStyle(fontSize: 14.0, color: Colors.grey);
+    int totalCart=0;
+    int kirimongkos=3000;
+    DateTime now = DateTime.now();
+    String formattanggal = DateFormat('d MMMM y').format(now);
+    String formattime = DateFormat('kk:mm:ss').format(now);
     Future<void> _showMyDialog() async {
       return showDialog<void>(
         context: context,
@@ -50,76 +55,118 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 padding: const EdgeInsets.all(3.0),
                 child: Column(
                   children: <Widget>[
-                    Text(
-                      "Thank You!",
-                      style: TextStyle(color: Colors.green),
-                    ),
-                    Text(
-                      "Your transaction was successful",
-                      style: label,
-                    ),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "DATE",
-                          style: label,
-                        ),
-                        Text("TIME", style: label)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text("2, April 2019"),
-                        Text("9:10 AM")
-                      ],
-                    ),
-                    SizedBox(height: 20.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "TO",
-                              style: label,
-                            ),
-                            Text("Manny Moto"),
-                            Text(
-                              "manny.moto@gmail.com",
-                              style: subtitle,
-                            ),
-                          ],
-                        ),
-                        CircleAvatar(
-                          backgroundColor: Colors.green,
-                          backgroundImage: AssetImage(image),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 20.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "AMOUNT",
-                              style: label,
-                            ),
-                            Text("\$ 15000"),
-                          ],
-                        ),
-                        Text(
-                          "COMPLETED",
-                          style: label,
-                        )
-                      ],
-                    ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance
+                            .collection('user')
+                            .where('uid',
+                            isEqualTo:
+                            "$uid")
+                            .snapshots(),
+                        // ignore: missing_return
+                        builder: (context, snapshot) {
+                          List _cartTotal;
+                          if (snapshot.hasData && snapshot.data.documents.isNotEmpty) {
+                            _cartTotal = List.generate(
+                                snapshot.data.documents.length,
+                                    (index) => snapshot
+                                    .data
+                                    .documents[index]
+                                    .data['cartTotal']);
+                            totalCart =
+                                int.parse(_cartTotal[0].toString()) +
+                                    kirimongkos;
+                          }
+                          if (_cartTotal == null) {
+                            return CircularProgressIndicator();
+                          }
+                          if (snapshot.hasError) {
+                            return Text(snapshot.error);
+                          }
+                          if (_cartTotal != null) {
+                            return Column(
+                              children: <Widget>[
+                                Text(
+                                  "Thank You!",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                                Text(
+                                  "Your transaction was successful",
+                                  style: label,
+                                ),
+                                Divider(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      "DATE",
+                                      style: label,
+                                    ),
+                                    Text("TIME", style: label)
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("$formattanggal"),
+                                    Text("$formattime")
+                                  ],
+                                ),
+                                SizedBox(height: 20.0),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "TO",
+                                          style: label,
+                                        ),
+                                        Text("Manny Moto"),
+                                        Text(
+                                          "manny.moto@gmail.com",
+                                          style: subtitle,
+                                        ),
+                                      ],
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.green,
+                                      backgroundImage: AssetImage(image),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 20.0),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "AMOUNT",
+                                          style: label,
+                                        ),
+                                        Text("Rp .${totalCart.toString()}"),
+                                      ],
+                                    ),
+                                    Text(
+                                      "COMPLETED",
+                                      style: label,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            );
+                          }
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+                        }),
                     SizedBox(height: 20.0),
                     Container(
                       padding: EdgeInsets.all(10.0),
@@ -305,7 +352,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                           .collection('user')
                                           .where('uid',
                                           isEqualTo:
-                                          "3X5i43n1RzSiCk2mOrGqziiOjNJ3")
+                                          "$uid")
                                           .snapshots(),
                                       // ignore: missing_return
                                       builder: (context, snapshot) {
