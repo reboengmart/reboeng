@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/ProductCategoryNotifier.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
-import 'package:reboeng/services/refresh.dart';
 import 'package:reboeng/ui/Screens/Product/detail_promo/detail_screen.dart';
 import 'package:reboeng/ui/Screens/Product/productlist.dart';
 
@@ -24,7 +22,7 @@ class _FeedState extends State<CategoryGrid>{
       return (categoryNotifier ==null)?Container(child: CircularProgressIndicator()):Container(
         padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 1.5, right: SizeConfig.widthMultiplier * 1.5),
         alignment: Alignment.center,
-        child: (categoryNotifier.categoryList.length !=null) ? GridView.count(
+        child: (categoryNotifier.categoryList !=null) ? GridView.count(
             physics: new NeverScrollableScrollPhysics(),
             primary: false,
             padding:  const EdgeInsets.all(0),

@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:reboeng/provider/ProductCategoryNotifier.dart';
 import 'package:reboeng/services/refresh.dart';
 import 'package:reboeng/ui/Screens/Home/components/category_item.dart';
-import 'package:reboeng/ui/Screens/Home/components/fruits_header.dart';
-import 'package:reboeng/ui/Screens/Home/components/popular_fruits.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/screens/home/components/category_grid.dart';
 import 'package:reboeng/ui/screens/home/components/discount_card.dart';

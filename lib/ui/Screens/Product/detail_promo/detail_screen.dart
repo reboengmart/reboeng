@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
-import 'package:reboeng/services/api/productCategory_api.dart';
 import 'package:reboeng/services/api/subproduct.dart';
-import 'package:reboeng/services/refresh.dart';
 import 'package:reboeng/ui/Screens/Product/detail_promo/detailsPage.dart';
 
 class PromoDetailScreen extends StatefulWidget {

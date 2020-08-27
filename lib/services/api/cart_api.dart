@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
+import 'package:reboeng/services/auth.dart';
 import 'package:reboeng/services/model/Cart.dart';
 import 'package:reboeng/services/model/SubProduct.dart';
 
 class CartApi {
   //List Data
   Firestore _db = Firestore.instance;
+//  Stream<FirebaseUser> firebaseUserStream = AuthServices.firebaseUserStream;
+//  FirebaseUser firebaseUser;
+//
+
 
   String uid;
   void getauth() async {
@@ -16,10 +21,9 @@ class CartApi {
   }
 
   Stream<List<Cart>> getCart() {
-    getauth();
     return _db
         .collection('user')
-        .document('${uid}')
+        .document('${AuthServices().reloadCurrentUser().then((value) {return value.uid;})}')
         .collection('cart')
         .snapshots()
         .map((snapshot) => snapshot.documents

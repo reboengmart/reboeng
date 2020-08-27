@@ -6,7 +6,6 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/AddressNotifier.dart';
 import 'package:reboeng/services/api/address_api.dart';
-import 'package:reboeng/services/model/address.dart';
 import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
@@ -145,23 +144,18 @@ class _AddressScreenState extends State<AddressScreen> {
                       .snapshots(),
                   // ignore: missing_return
                   builder: (context, snapshot) {
-                    List _cartTotal;
-                    if (snapshot.data.documents.length != null) {
-                      _cartTotal = List.generate(
-                          snapshot.data.documents.length,
-                              (index) => snapshot
-                              .data.documents[index].data['detail']);
-//                      cartTotal = int.parse(_cartTotal[0].toString());
-                    }
-                    if (_cartTotal.length == 0) {
-                      return CircularProgressIndicator(
-                        backgroundColor: Colors.red,
-                      );
-                    }
+                    String _detail;
                     if (snapshot.hasError) {
                       return Text(snapshot.error);
                     }
-                    if (_cartTotal.length != 0) {
+                    if (snapshot.data.documents.isNotEmpty) {
+                      _detail = snapshot.data.documents[0].data['detail'];
+                    }
+                    if(_detail == null){
+                      isLoading = true;
+                    }
+                    if(_detail != null){
+                      isLoading = false;
                       return Container(
                         width: width * 0.9,
                         height: height * 0.25,
@@ -171,67 +165,72 @@ class _AddressScreenState extends State<AddressScreen> {
                             color: Color.fromRGBO(22,160,133, 0.08)
                         ),
                         child: Center(
-                          child: Text(_cartTotal[0].toString()),
+                          child: Text(_detail),
                         ),
                       );
                     }
                     if (snapshot.connectionState != ConnectionState.done) {
                       return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.green,
-                        ),
+                        child: Text(''),
+                      );
+                    }
+                    if (snapshot.data.documents.isEmpty) {
+                      return Center(
+                        child: Text(''),
                       );
                     }
                   }),
-              isLoading ?Center(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: SizeConfig.heightMultiplier * 35),
-                    CircularProgressIndicator(backgroundColor: Colors.red,),
-                  ],
-                ),
-              )
-                  :  Expanded(
-                child: Container(
-                  height: height * 0.45,
-                  margin: EdgeInsets.only(top: height * 0.02),
-                  alignment: Alignment.center,
-                  child: RefreshIndicator(
-                    onRefresh: _refreshNow,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: addressNotifier.addressList.length,
-                      itemBuilder: (context, position) {
-                        IconData iconn;
-                        final item = addressNotifier.addressList[position];
-                        switch(item.icon){
-                          case 'rumah':
-                            iconn = LineAwesomeIcons.home;
-                            break;
-                          case 'kantor':
-                            iconn = Icons.location_city;
-                            break;
-                          case 'lain':
-                            iconn = LineAwesomeIcons.building;
-                            break;
-                        }
-                        return Container(
-                          margin: EdgeInsets.only(top: height * 0.01),
-                          padding: EdgeInsets.only(left: width * 0.07, right: width * 0.07),
-                          child: RoundedContainer(
-                            padding: const EdgeInsets.all(3.0),
-                            borderColor: (item.notSelected == true) ? kTextColor : kPrimaryColor,
-                            child: ListTile(
-                              leading: Icon(
-                                iconn,
-                                color: kPrimaryColor,
+              Container(
+                child: isLoading ?Center(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: SizeConfig.heightMultiplier * 35),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                )
+                    :  Expanded(
+                  child: Container(
+                    height: height * 0.45,
+                    margin: EdgeInsets.only(top: height * 0.02),
+                    alignment: Alignment.center,
+                    child: RefreshIndicator(
+                      onRefresh: _refreshNow,
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: addressNotifier.addressList.length,
+                        itemBuilder: (context, position) {
+                          IconData iconn;
+                          final item = addressNotifier.addressList[position];
+                          switch(item.icon){
+                            case 'rumah':
+                              iconn = LineAwesomeIcons.home;
+                              break;
+                            case 'kantor':
+                              iconn = Icons.location_city;
+                              break;
+                            case 'lain':
+                              iconn = LineAwesomeIcons.building;
+                              break;
+                          }
+                          return Container(
+                            margin: EdgeInsets.only(top: height * 0.01),
+                            padding: EdgeInsets.only(left: width * 0.07, right: width * 0.07),
+                            child: RoundedContainer(
+                              padding: const EdgeInsets.all(3.0),
+                              borderColor: (item.notSelected == true) ? kTextColor : kPrimaryColor,
+                              child: ListTile(
+                                leading: Icon(
+                                  iconn,
+                                  color: kPrimaryColor,
+                                ),
+                                title: Text(item.nama, style: TextStyle(color: kTextColor),),
+                                trailing: (item.notSelected==true) ? Icon(Icons.arrow_forward_ios) : Icon(Icons.check, color: kPrimaryColor,),
                               ),
-                              title: Text(item.nama, style: TextStyle(color: kTextColor),),
-                              trailing: (item.notSelected==true) ? Icon(Icons.arrow_forward_ios) : Icon(Icons.check, color: kPrimaryColor,),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

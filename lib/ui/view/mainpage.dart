@@ -14,28 +14,43 @@ import 'package:reboeng/ui/constants.dart';
 
 class MainPage extends StatefulWidget {
   final FirebaseUser firebaseUser;
-  MainPage(this.firebaseUser);
+  final int indexScreen;
+  MainPage(this.firebaseUser, this.indexScreen);
   @override
-  _MainPageState createState() => _MainPageState();
+  _MainPageState createState() => _MainPageState(indexScreen);
 }
 
 class _MainPageState extends State<MainPage> {
+
+  final int indexScreen;
+  _MainPageState(this.indexScreen);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainPageScreen(),
+      home: MainPageScreen(indexScreen),
     );
   }
 }
 
 class MainPageScreen extends StatefulWidget {
+  final int indexScreen;
+  MainPageScreen(this.indexScreen);
   @override
-  _MainPageScreenState createState() => _MainPageScreenState();
+  _MainPageScreenState createState() => _MainPageScreenState(indexScreen);
 }
 
 class _MainPageScreenState extends State<MainPageScreen> {
-  int _currentIndex = 0;
+  int _currentIndex;
+  final int indexScreen;
+  _MainPageScreenState(this.indexScreen);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _currentIndex = indexScreen;
+  }
 
 
   final List<Widget> _children = [
@@ -88,6 +103,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
                       child: _children[_currentIndex],
                     ),
                     bottomNavigationBar: AnimatedBottomBar(
+                        barIndex: _currentIndex,
                         barItems: barItems,
                         animationDuration: const Duration(milliseconds: 150),
                         barStyle: BarStyle(

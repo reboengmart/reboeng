@@ -44,6 +44,14 @@ class AuthServices{
   }
 
   static Stream<FirebaseUser> get firebaseUserStream => _auth.onAuthStateChanged;
+
+  Future<FirebaseUser> reloadCurrentUser() async {
+    FirebaseUser oldUser = await FirebaseAuth.instance.currentUser();
+    oldUser.reload();
+    FirebaseUser newUser = await FirebaseAuth.instance.currentUser();
+    // Add newUser to a Stream, maybe merge this Stream with onAuthStateChanged?
+    return newUser;
+  }
 }
 //static Future<FirebaseUser> signUp(String email, String password) async{
 //  try{

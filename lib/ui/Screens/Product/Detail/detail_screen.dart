@@ -5,7 +5,7 @@ import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/provider/WishListNotifier.dart';
 import 'package:reboeng/services/refresh.dart';
-import 'package:reboeng/ui/Screens/CartList/cartlist.dart';
+import 'package:reboeng/ui/view/mainpage.dart';
 
 import 'detailsPage.dart';
 
@@ -45,7 +45,6 @@ class _DetailScreenState extends State<DetailScreen> {
                   },
                 ),
                 Container(
-                    width: 125.0,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -53,6 +52,17 @@ class _DetailScreenState extends State<DetailScreen> {
                           icon: Icon(Icons.filter_list),
                           color: Colors.white,
                           onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.shopping_cart),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => MainPageScreen(2)
+                              )
+                            );
+                          },
                         ),
                         IconButton(
                           icon: Icon(Icons.menu),

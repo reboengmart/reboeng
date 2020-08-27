@@ -70,15 +70,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           SizedBox(height: kSpacingUnit.w * 2),
-          Text(
-            '${userFirebase.uid}',
-            style: kTitleTextStyle,
-          ),
-          SizedBox(height: kSpacingUnit.w * 0.5),
-          Text(
-            '${userFirebase.email}',
-            style: kCaptionTextStyle,
-          ),
+          (userFirebase != null) ? Column(
+            children: <Widget>[
+              Text(
+                '${userFirebase.uid}',
+                style: kTitleTextStyle,
+              ),
+              SizedBox(height: kSpacingUnit.w * 0.5),
+              Text(
+                '${userFirebase.email}',
+                style: kCaptionTextStyle,
+              ),
+            ],
+          ) :Center(child: CircularProgressIndicator(),),
           SizedBox(height: kSpacingUnit.w * 2),
           Container(
             height: kSpacingUnit.w * 4,
