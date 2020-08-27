@@ -9,13 +9,31 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
 
-class CheckOutScreen extends StatelessWidget {
+class CheckOutScreen extends StatefulWidget {
+  @override
+  _CheckOutScreenState createState() => _CheckOutScreenState();
   static const TextStyle boldText = TextStyle(
-    fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.bold,
   );
+}
 
+class _CheckOutScreenState extends State<CheckOutScreen> {
+  String uid;
+  bool isLoading = true;
+  void firebaseUid() async {
+    await new Future.delayed(const Duration(seconds: 2));
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser user = await _auth.currentUser();
+    new Future.delayed(new Duration(seconds: 4), () {
+      setState(() {
+        uid = user.uid;
+        isLoading=false;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    firebaseUid();
     final image = 'assets/img/3.jpg';
     final TextStyle subtitle = TextStyle(fontSize: 12.0, color: Colors.grey);
     final TextStyle label = TextStyle(fontSize: 14.0, color: Colors.grey);
@@ -139,8 +157,8 @@ class CheckOutScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => Wrapper(),
                       )
-                      // ignore: unnecessary_statements
-                      );
+                    // ignore: unnecessary_statements
+                  );
                 },
               ),
             ],
@@ -165,25 +183,64 @@ class CheckOutScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Text(
-              "Pilih Cara Pembayaran",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24.0,
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            RoundedContainer(
-              width: width * 0.95,
-              height: height * 0.15,
-              margin: const EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: 8.0,
-              ),
-              child: Center(
-                child: Text('alamat ..... '),
-              ),
-            ),
+            StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance
+                    .collection('user')
+                    .document("$uid")
+                    .collection('address')
+                    .where('status',isEqualTo: 'primary')
+                    .snapshots(),
+                // ignore: missing_return
+                builder: (context, snapshot) {
+                  List _cartTotal;
+                  if (snapshot.data.documents.length != null) {
+                    _cartTotal = List.generate(
+                        snapshot.data.documents.length,
+                            (index) => snapshot
+                            .data.documents[index].data['detail']);
+//                      cartTotal = int.parse(_cartTotal[0].toString());
+                  }
+                  if (_cartTotal.length == 0) {
+                    return CircularProgressIndicator(
+                      backgroundColor: Colors.red,
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Text(snapshot.error);
+                  }
+                  if (_cartTotal.length != 0) {
+                    return Column(
+                      children: <Widget>[
+                      Text(
+                      "Pilih Cara Pembayaran",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                     RoundedContainer(
+                      width: width * 0.95,
+                      height: height * 0.15,
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: 8.0,
+                      ),
+                      child: Center(
+                        child: Text(_cartTotal[0].toString()),
+                      ),
+                    )
+                  ],
+                  );
+                  }
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  }
+                }),
             Container(
               width: width * 0.9,
               alignment: Alignment.bottomRight,
@@ -194,7 +251,12 @@ class CheckOutScreen extends StatelessWidget {
                 },
                 child: Text(
                   'Ganti Alamat Pengiriman ->',
-                  style: boldText,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat'
+                    )
                 ),
               ),
             ),
@@ -247,7 +309,7 @@ class CheckOutScreen extends StatelessWidget {
                       stream: Firestore.instance
                           .collection('user')
                           .where('uid',
-                              isEqualTo: "3X5i43n1RzSiCk2mOrGqziiOjNJ3")
+                          isEqualTo: "3X5i43n1RzSiCk2mOrGqziiOjNJ3")
                           .snapshots(),
                       // ignore: missing_return
                       builder: (context, snapshot) {
@@ -255,7 +317,7 @@ class CheckOutScreen extends StatelessWidget {
                         if (snapshot.data.documents.length != null) {
                           _cartTotal = List.generate(
                               snapshot.data.documents.length,
-                              (index) => snapshot
+                                  (index) => snapshot
                                   .data.documents[index].data['cartTotal']);
                           cartTotal = int.parse(_cartTotal[0].toString()) +
                               ongkos_kirim;
