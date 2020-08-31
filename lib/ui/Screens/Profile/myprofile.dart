@@ -170,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       InkWell(
                         onTap: (){
                           Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => MainPaymentHistory(0))
+                              MaterialPageRoute(builder: (context) => MainPaymentHistory(0))
                           );
                         },
                         child: ProfileListItem(

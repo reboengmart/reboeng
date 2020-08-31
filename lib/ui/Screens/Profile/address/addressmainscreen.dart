@@ -6,6 +6,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/AddressNotifier.dart';
 import 'package:reboeng/services/api/address_api.dart';
+import 'package:reboeng/ui/Screens/Profile/address/addaddressmainscreen.dart';
 import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
@@ -114,7 +115,12 @@ class _AddressScreenState extends State<AddressScreen> {
         actions: <Widget>[
           Center(
             child:InkWell(
-              onTap: (){},
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddAddressScreen()));
+              },
               child: Container(
                 padding: EdgeInsets.only(right: SizeConfig.widthMultiplier * 4),
                 child: Text(
