@@ -35,5 +35,18 @@ class AddressApi{
     return addressNotifier.addressList=_ListAddress;
   }
 
+  Future<void> getLatlng(AddressNotifier addressNotifier, String id) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    uid = user.uid;
+    List<Address> _ListAddress=[];
+    QuerySnapshot snapshot = await _db.collection('user').document('${uid}').collection('address').where('id', isEqualTo: '$id').getDocuments();
+    snapshot.documents.forEach((element) {
+      Address address=Address.formMap(element.data);
+      _ListAddress.add(address);
+    });
+    return addressNotifier.addressList=_ListAddress;
+  }
+
 
 }

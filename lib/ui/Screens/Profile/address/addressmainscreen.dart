@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:reboeng/provider/AddressNotifier.dart';
 import 'package:reboeng/services/api/address_api.dart';
 import 'package:reboeng/ui/Screens/Profile/address/addaddressmainscreen.dart';
+import 'package:reboeng/ui/Screens/Profile/address/show_geo_location.dart';
 import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
@@ -219,19 +220,28 @@ class _AddressScreenState extends State<AddressScreen> {
                               iconn = LineAwesomeIcons.building;
                               break;
                           }
-                          return Container(
-                            margin: EdgeInsets.only(top: height * 0.01),
-                            padding: EdgeInsets.only(left: width * 0.07, right: width * 0.07),
-                            child: RoundedContainer(
-                              padding: const EdgeInsets.all(3.0),
-                              borderColor: (item.notSelected == true) ? kTextColor : kPrimaryColor,
-                              child: ListTile(
-                                leading: Icon(
-                                  iconn,
-                                  color: kPrimaryColor,
+                          return InkWell(
+                            onTap: (){
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => ShowGeoLocation(item.id)
+                                )
+                              );
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(top: height * 0.01),
+                              padding: EdgeInsets.only(left: width * 0.07, right: width * 0.07),
+                              child: RoundedContainer(
+                                padding: const EdgeInsets.all(3.0),
+                                borderColor: (item.notSelected == true) ? kTextColor : kPrimaryColor,
+                                child: ListTile(
+                                  leading: Icon(
+                                    iconn,
+                                    color: kPrimaryColor,
+                                  ),
+                                  title: Text(item.nama, style: TextStyle(color: kTextColor),),
+                                  trailing: (item.notSelected==true) ? Icon(Icons.arrow_forward_ios) : Icon(Icons.check, color: kPrimaryColor,),
                                 ),
-                                title: Text(item.nama, style: TextStyle(color: kTextColor),),
-                                trailing: (item.notSelected==true) ? Icon(Icons.arrow_forward_ios) : Icon(Icons.check, color: kPrimaryColor,),
                               ),
                             ),
                           );
