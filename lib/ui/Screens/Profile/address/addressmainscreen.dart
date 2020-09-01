@@ -155,7 +155,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     if (snapshot.hasError) {
                       return Text(snapshot.error);
                     }
-                    if (snapshot.data.documents.isNotEmpty) {
+                    if ( snapshot.hasData && snapshot.data.documents.isNotEmpty) {
                       _detail = snapshot.data.documents[0].data['detail'];
                     }
                     if(_detail == null){
