@@ -47,6 +47,11 @@ class AddressApi{
     });
     return addressNotifier.addressList=_ListAddress;
   }
-
+  Future<void> saveAddress(Address address) async{
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    uid = user.uid;
+    return Firestore.instance.collection('user').document('${uid}').collection('address').document(address.id).setData(address.toMap());
+  }
 
 }
