@@ -216,7 +216,7 @@ class _AddressScreenState extends State<AddressScreen> {
                             case 'kantor':
                               iconn = Icons.location_city;
                               break;
-                            case 'lain':
+                            case 'lain-lain':
                               iconn = LineAwesomeIcons.building;
                               break;
                           }
