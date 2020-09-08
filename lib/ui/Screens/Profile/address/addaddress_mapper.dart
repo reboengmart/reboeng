@@ -23,7 +23,7 @@ class _AddAddressMapperState extends State<AddAddressMapper> {
   _onMapCreated(GoogleMapController googleMapController){
     _controller.complete(googleMapController);
   }
-
+  List<Marker> myMarker=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +33,12 @@ class _AddAddressMapperState extends State<AddAddressMapper> {
           GoogleMap(
               initialCameraPosition: CameraPosition(target: LatLng(-7.8757537, 111.4518134), zoom: 11.0),
             onMapCreated: _onMapCreated,
+            onTap: _handleTap,
             mapType: _currentMapType,
-            markers: Set<Marker>.of(_markers.values),
+            markers: Set.from(myMarker),
             myLocationButtonEnabled: true,
             onCameraMove: (CameraPosition position) {
-              if(_markers.length > 0) {
+              if(myMarker.length > 0) {
                 MarkerId markerId = MarkerId(_markerIdVal());
                 Marker marker = _markers[markerId];
                 Marker updatedMarker = marker.copyWith(
@@ -53,5 +54,19 @@ class _AddAddressMapperState extends State<AddAddressMapper> {
         ],
       ),
     );
+  }
+  _handleTap(LatLng point) {
+    setState(() {
+      myMarker=[];
+      myMarker.add(Marker(
+        markerId: MarkerId(point.toString()),
+        position: point,
+        infoWindow: InfoWindow(
+          title: point.toString(),
+        ),
+        icon:
+        BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
+      ));
+    });
   }
 }
