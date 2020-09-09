@@ -77,7 +77,7 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
             mapType: _currentMapType,
-//            markers: _markers,
+            markers: _markers,
             onCameraMove: _onCameraMove,
           ),
         ],

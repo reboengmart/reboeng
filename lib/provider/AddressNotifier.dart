@@ -75,7 +75,7 @@ class AddressNotifier with ChangeNotifier{
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
-    var newAddress=Address(id:uuid.v1(),nama:nama,notSelected: false,geo:geo,detail:detail,icon:icon,status:'not primary');
+    var newAddress=Address(id:uuid.v1(),nama:nama,notSelected: true,geo:geo,detail:detail,icon:icon,status:'not primary');
     addressAPI.saveAddress(newAddress);
   }
 }
