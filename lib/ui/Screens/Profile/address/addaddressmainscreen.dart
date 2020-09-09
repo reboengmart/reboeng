@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/AddressNotifier.dart';
 import 'package:reboeng/ui/Screens/Profile/address/addaddress_mapper.dart';
@@ -20,6 +20,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   ListAlamat listAlamat;
   List<int> selectedItems = [];
   final List<DropdownMenuItem> items = [];
+  AddressNotifier addressProviderr;
+  String locationString;
 
   static const String appTitle = "Search Choices demo";
   final String loremIpsum =
@@ -68,11 +70,26 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     ]);
   }
 
+  Future<void> getAddresss() async {
+    var _address = await Geocoder.local.findAddressesFromCoordinates(Coordinates(addressProviderr.geo.latitude, addressProviderr.geo.longitude));
+    setState(() {
+      locationString = _address.first.addressLine;
+    });
+  }
+
+  void setAddProvider(AddressNotifier addressNotifier){
+    setState(() {
+      addressProviderr = addressNotifier;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final addressProvider = Provider.of<AddressNotifier>(context);
-
+    setAddProvider(addressProvider);
+    if(addressProvider.geo != null){
+      getAddresss();
+    }
     Map<String, Widget> widgets;
     widgets = {
       "Pilih Jenis Alamat": SearchableDropdown.single(
@@ -101,6 +118,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         length: widgets.length,
         child: Scaffold(
           appBar: AppBar(
+            leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: (){
+              addressProvider.resetAll();
+              Navigator.of(context).pop();
+            }),
             title: const Text(appTitle),
             actions: appBarActions,
             bottom: TabBar(
@@ -152,7 +173,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               ),
               Container(
                 child: RoundedButton(
-                  text: "Pilih Detail Alamat di peta",
+                  text: (addressProvider.geo == null) ? 'Pilih Detail Alamat di peta' : '$locationString',
                   press: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => AddAddressMapper())
@@ -199,6 +220,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 child: Text("Simpan"),
                 onPressed: (){
                   addressProvider.saveAddress();
+                  Navigator.of(context).pop();
                 }
                 ),
             ],
@@ -216,7 +238,7 @@ class ListAlamat{
   static final Map<int, String> map = {
     0: "rumah",
     1: "kantor",
-    2: "lain-Lain",
+    2: "lain-lain",
   };
 
   String get numberString {

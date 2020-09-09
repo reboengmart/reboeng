@@ -216,9 +216,8 @@ class _AddressScreenState extends State<AddressScreen> {
                             case 'kantor':
                               iconn = Icons.location_city;
                               break;
-                            case 'lain-lain':
+                            default:
                               iconn = LineAwesomeIcons.building;
-                              break;
                           }
                           return InkWell(
                             onTap: (){

@@ -1,7 +1,12 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:reboeng/provider/AddressNotifier.dart';
+import 'package:reboeng/ui/components/rounded_button.dart';
+import 'package:reboeng/ui/components/sizeconfig.dart';
 
 class AddAddressMapper extends StatefulWidget {
   @override
@@ -12,6 +17,7 @@ class _AddAddressMapperState extends State<AddAddressMapper> {
   Completer<GoogleMapController> _controller = Completer();
   MapType _currentMapType = MapType.normal;
   int _markerIdCounter = 0;
+  AddressNotifier addressProvider;
   Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
   String _markerIdVal({bool increment = false}) {
     String val = 'marker_id_$_markerIdCounter';
@@ -19,13 +25,23 @@ class _AddAddressMapperState extends State<AddAddressMapper> {
     return val;
   }
 
+  bool itsOkay = false;
+
 
   _onMapCreated(GoogleMapController googleMapController){
     _controller.complete(googleMapController);
   }
+
+  void setAddProvider(AddressNotifier addressNotifier){
+    setState(() {
+      addressProvider = addressNotifier;
+    });
+  }
   List<Marker> myMarker=[];
   @override
   Widget build(BuildContext context) {
+    final addressProvider = Provider.of<AddressNotifier>(context);
+    setAddProvider(addressProvider);
     return Scaffold(
       appBar: AppBar(title: Text('Pilih Lokasi Anda'),),
       body: Stack(
@@ -44,18 +60,29 @@ class _AddAddressMapperState extends State<AddAddressMapper> {
                 Marker updatedMarker = marker.copyWith(
                   positionParam: position.target,
                 );
-
                 setState(() {
                   _markers[markerId] = updatedMarker;
                 });
               }
             },
           ),
+          Container(
+            padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 20, right:  SizeConfig.widthMultiplier * 20),
+            alignment: Alignment.bottomCenter,
+            margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier * 13),
+            child: (itsOkay) ? RoundedButton(
+              text: "Simpan Lokasi",
+              press: () {
+                Navigator.of(context).pop();
+              },
+            ) : Container(child: Text(''), decoration: BoxDecoration(color: Colors.transparent),),
+          ),
         ],
       ),
     );
   }
   _handleTap(LatLng point) {
+    addressProvider.changeGeo(GeoPoint(point.latitude, point.longitude));
     setState(() {
       myMarker=[];
       myMarker.add(Marker(
@@ -67,6 +94,7 @@ class _AddAddressMapperState extends State<AddAddressMapper> {
         icon:
         BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
       ));
+      itsOkay = true;
     });
   }
 }

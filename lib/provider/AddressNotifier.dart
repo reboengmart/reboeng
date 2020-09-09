@@ -30,6 +30,19 @@ class AddressNotifier with ChangeNotifier{
   _nama =value;
   notifyListeners();
   }
+
+  resetAll(){
+    _nama = null;
+    _geo = null;
+    _detail = null;
+    _icon = null;
+    notifyListeners();
+  }
+
+  changeGeo(GeoPoint point){
+    _geo = point;
+    notifyListeners();
+  }
   changeDetail(String value){
     _detail=value;
     notifyListeners();
@@ -62,7 +75,7 @@ class AddressNotifier with ChangeNotifier{
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
-    var newAddress=Address(id:uuid.v1(),nama:nama,notSelected: false,geo:GeoPoint(45.521563, -122.677433),detail:detail,icon:icon,status:'not primary');
+    var newAddress=Address(id:uuid.v1(),nama:nama,notSelected: false,geo:geo,detail:detail,icon:icon,status:'not primary');
     addressAPI.saveAddress(newAddress);
   }
 }

@@ -22,7 +22,7 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
 
   Completer<GoogleMapController> _controller = Completer();
   static LatLng _center;
-  final Set<Marker> _markers = {};
+  Set<Marker> _markers = {};
   LatLng _lastMapPotition;
   MapType _currentMapType = MapType.normal;
 
@@ -68,6 +68,7 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
   Widget build(BuildContext context) {
     AddressNotifier addressNotifier = Provider.of<AddressNotifier>(context);
     _initLatlng(addressNotifier.addressList);
+    print('tessssssss '+_center.toString());
     return Scaffold(
       appBar: AppBar(title: Text('Alamat Anda'),),
       body: Stack(
@@ -76,7 +77,7 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
             mapType: _currentMapType,
-            markers: _markers,
+//            markers: _markers,
             onCameraMove: _onCameraMove,
           ),
         ],
