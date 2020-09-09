@@ -22,7 +22,7 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
 
   Completer<GoogleMapController> _controller = Completer();
   static LatLng _center;
-  Set<Marker> _markers = {};
+  List<Marker> _markers = [];
   LatLng _lastMapPotition;
   MapType _currentMapType = MapType.normal;
 
@@ -44,8 +44,12 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
     double lat = _geo.latitude;
     double lng = _geo.longitude;
 
-    _center = LatLng(lat, lng);
-    _lastMapPotition = _center;
+
+    setState(() {
+      _center = LatLng(lat, lng);
+      _lastMapPotition = _center;
+    });
+    _markers=[];
     _markers.add(
       Marker(
         markerId: MarkerId(_lastMapPotition.toString()),
@@ -77,7 +81,7 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
             mapType: _currentMapType,
-            markers: _markers,
+            markers: Set.from(_markers),
             onCameraMove: _onCameraMove,
           ),
         ],
