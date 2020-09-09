@@ -53,5 +53,26 @@ class AddressApi{
     uid = user.uid;
     return Firestore.instance.collection('user').document('${uid}').collection('address').document(address.id).setData(address.toMap());
   }
-
+  static Future<void> updatestatusPrimary(String id) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    String uid = user.uid;
+    return Firestore.instance
+        .collection('user')
+        .document('${uid}')
+        .collection('address')
+        .document(id)
+        .updateData({'status': 'primary'});
+  }
+  static Future<void> updateStatusNotPrimmary(String id) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    String uid = user.uid;
+    return Firestore.instance
+        .collection('user')
+        .document('${uid}')
+        .collection('address')
+        .document(id)
+        .updateData({'status': 'not primary'});
+  }
 }

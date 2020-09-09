@@ -78,4 +78,10 @@ class AddressNotifier with ChangeNotifier{
     var newAddress=Address(id:uuid.v1(),nama:nama,geo:geo,detail:detail,icon:icon,status:'not primary');
     addressAPI.saveAddress(newAddress);
   }
+  static void updateStatusPrimary(String id){
+    AddressApi.updatestatusPrimary(id);
+  }
+  static void updatestatusNotPrimary(String id){
+    AddressApi.updateStatusNotPrimmary(id);
+  }
 }

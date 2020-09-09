@@ -258,7 +258,9 @@ class _AddressScreenState extends State<AddressScreen> {
                                         ),
                                         trailing: (item.status == 'not primary')
                                             ? InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  AddressNotifier.updateStatusPrimary(item.id);
+                                                },
                                                 child: Text(
                                                   'pilih',
                                                   style: TextStyle(
