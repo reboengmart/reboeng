@@ -244,7 +244,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                         right: width * 0.07),
                                     child: RoundedContainer(
                                       padding: const EdgeInsets.all(3.0),
-                                      borderColor: (item.notSelected == true)
+                                      borderColor: (item.status == 'not primary')
                                           ? kTextColor
                                           : kPrimaryColor,
                                       child: ListTile(
@@ -256,7 +256,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                           item.nama,
                                           style: TextStyle(color: kTextColor),
                                         ),
-                                        trailing: (item.notSelected == true)
+                                        trailing: (item.status == 'not primary')
                                             ? InkWell(
                                                 onTap: () {},
                                                 child: Text(
