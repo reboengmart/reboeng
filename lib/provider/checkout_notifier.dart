@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:reboeng/services/api/cart_api.dart';
 import 'package:reboeng/services/api/transaction_api.dart';
 import 'package:reboeng/services/model/Cart.dart';
@@ -56,12 +57,13 @@ class CheckoutNotifier extends ChangeNotifier{
       Cart cart=Cart.formMap(element.data);
       _cartList.add(cart);
     });
-
+    DateTime now = DateTime.now();
+    String formattanggal = DateFormat('d MMMM y').format(now);
 
 
     var newCheckout = InvoiceModel(date_invoice: DateTime.now(), address: _addressList.first.id, delivery: 3000, id_invoice: uuid.v1(), total_invoice: _userList.first.cartTotal, total_payment: _userList.first.cartTotal + 3000, user_ref: uid, DetailInvoice: _cartList);
-    var newTransaction = TransactionModel(id_transaction: uuid.v1(), total_transaction: 0, date_transaction: DateTime.now());
-    TransactionApi().saveTransaction(newCheckout, newTransaction);
+    var newTransaction = TransactionModel(id_transaction: uuid.v1(), total_transaction: 0, date_transaction: formattanggal);
+    TransactionApi().saveTransaction(newTransaction,newCheckout);
 //    var newAddress=Address(id:uuid.v1(),nama:nama,geo:geo,detail:detail,icon:icon,status:'not primary');
 //    addressAPI.saveAddress(newAddress);
   }

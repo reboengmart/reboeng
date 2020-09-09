@@ -6,15 +6,17 @@ import 'package:reboeng/services/model/TransactionModel.dart';
 class TransactionApi{
   Firestore _db = Firestore.instance;
 
-  Future<void> saveTransaction(InvoiceModel invoiceModel, TransactionModel transactionModel) async {
-    QuerySnapshot snapshot = await Firestore.instance.collection('transaction').where('date', isEqualTo: DateFormat('d M y').format(DateTime.now())).getDocuments();
+  Future<void> saveTransaction(TransactionModel transactionModel,InvoiceModel invoiceModel) async {
+    QuerySnapshot snapshot = await Firestore.instance.collection('transaction').where('date_transaction', isEqualTo: DateFormat('d MMMM y').format(DateTime.now())).getDocuments();
 
     List<TransactionModel> _listTransaction = [];
-
-    if(snapshot.documents == null){
-      Firestore.instance.collection('transaction').document(transactionModel.id_transaction).setData(transactionModel.toMap());
-      return Firestore.instance.collection('transaction').document(transactionModel.id_transaction).collection('invoice').document(invoiceModel.id_invoice).setData(invoiceModel.toMap());
-    }else if(snapshot.documents != null){
+    if(snapshot.documents.isEmpty) {
+       Firestore.instance.collection('transaction').document(
+          transactionModel.id_transaction).setData(transactionModel.toMap());
+      return Firestore.instance.collection('transaction').document(
+          transactionModel.id_transaction).collection('invoice').document(
+          invoiceModel.id_invoice).setData(invoiceModel.toMap());
+    }else{
       snapshot.documents.forEach((element) {
         TransactionModel transactionModel=TransactionModel.formMap(element.data);
         _listTransaction.add(transactionModel);

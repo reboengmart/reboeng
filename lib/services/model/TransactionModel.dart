@@ -1,7 +1,7 @@
 class TransactionModel{
   String id_transaction;
   int total_transaction;
-  DateTime date_transaction;
+  String date_transaction;
 
 
   TransactionModel({this.id_transaction,this.total_transaction,this.date_transaction});
