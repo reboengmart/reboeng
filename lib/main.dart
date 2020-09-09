@@ -5,7 +5,6 @@ import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/ProductCategoryNotifier.dart';
 import 'package:reboeng/provider/ProductListNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
-import 'package:reboeng/provider/TransactionNotifier.dart';
 import 'package:reboeng/provider/UserNotifier.dart';
 import 'package:reboeng/provider/WishListNotifier.dart';
 import 'package:reboeng/services/api/cart_api.dart';
@@ -33,9 +32,6 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => ProductCategoryNotifier(),
-          ),
-          ChangeNotifierProvider(
-            create: (context) => TransactionNotifier(),
           ),
           ChangeNotifierProvider(
             create: (context) => ProductListNotifier(),

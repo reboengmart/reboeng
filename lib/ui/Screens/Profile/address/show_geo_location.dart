@@ -25,22 +25,18 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
   List<Marker> _markers = [];
   LatLng _lastMapPotition;
   MapType _currentMapType = MapType.normal;
+  AddressNotifier addresProviderr;
 
   @override
   void initState(){
     super.initState();
-    AddressNotifier addressNotifier =
-    Provider.of<AddressNotifier>(context, listen: false);
-    AddressApi().getLatlng(addressNotifier, widget.id);
   }
-
   _onMapCreated(GoogleMapController controller){
     _controller.complete(controller);
   }
 
   void _initLatlng(List<Address> address){
-    List addresss = List.generate(address.length, (index) => address[index].geo);
-    GeoPoint _geo = addresss[0];
+    GeoPoint _geo = address.first.geo;
     double lat = _geo.latitude;
     double lng = _geo.longitude;
 
@@ -71,6 +67,7 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
   @override
   Widget build(BuildContext context) {
     AddressNotifier addressNotifier = Provider.of<AddressNotifier>(context);
+    AddressApi().getLatlng(addressNotifier, widget.id);
     _initLatlng(addressNotifier.addressList);
     print('tessssssss '+_center.toString());
     return Scaffold(
@@ -78,8 +75,8 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
       body: Stack(
         children: <Widget>[
           GoogleMap(
+            initialCameraPosition: CameraPosition(target: LatLng(addressNotifier.addressList.first.geo.latitude, addressNotifier.addressList.first.geo.longitude), zoom: 15.0),
             onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
             mapType: _currentMapType,
             markers: Set.from(_markers),
             onCameraMove: _onCameraMove,

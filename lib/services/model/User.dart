@@ -40,4 +40,15 @@ class User {
         cartTotal = firestore['cartTotal'],
         password = firestore['password'],
         create_at = firestore['create_at'];
+
+  User.formMap(Map<String,dynamic> firestore){
+    uid = firestore['uid'];
+    phone = firestore['phone'];
+    last_name = firestore['last_name'];
+    first_name = firestore['first_name'];
+    email = firestore['email'];
+    cartTotal = firestore['cartTotal'];
+    password = firestore['password'];
+    create_at = firestore['create_at'];
+  }
 }

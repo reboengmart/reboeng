@@ -1,7 +1,7 @@
 class TransactionModel{
-  final String id_transaction;
-  final String total_transaction;
-  final DateTime date_transaction;
+  String id_transaction;
+  int total_transaction;
+  DateTime date_transaction;
 
 
   TransactionModel({this.id_transaction,this.total_transaction,this.date_transaction});
@@ -16,5 +16,11 @@ class TransactionModel{
       'total_transaction':total_transaction,
       'date_transaction':date_transaction
     };
+  }
+
+  TransactionModel.formMap(Map<String,dynamic> firestore){
+    id_transaction=firestore['id_transaction'];
+    total_transaction=firestore['total_transaction'];
+    date_transaction=firestore['date_transaction'];
   }
 }

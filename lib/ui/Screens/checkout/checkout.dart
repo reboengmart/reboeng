@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reboeng/provider/checkout_notifier.dart';
 import 'package:reboeng/services/wrapper.dart';
 import 'package:reboeng/ui/Screens/Profile/address/addressmainscreen.dart';
 import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
@@ -201,6 +202,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               FlatButton(
                 child: Text('Simpan'),
                 onPressed: () {
+                  CheckoutNotifier().saveTransaction();
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -82,6 +82,7 @@ class _AddAddressMapperState extends State<AddAddressMapper> {
     );
   }
   _handleTap(LatLng point) {
+    addressProvider.resetAll();
     addressProvider.changeGeo(GeoPoint(point.latitude, point.longitude));
     setState(() {
       myMarker=[];

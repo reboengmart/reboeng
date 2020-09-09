@@ -1,9 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:reboeng/services/model/InvoiceModel.dart';
 import 'package:reboeng/services/model/TransactionModel.dart';
 
 class TransactionApi{
   Firestore _db = Firestore.instance;
+
+  Future<void> saveTransaction(InvoiceModel invoiceModel, TransactionModel transactionModel) async {
+    QuerySnapshot snapshot = await Firestore.instance.collection('transaction').where('date', isEqualTo: DateFormat('d M y').format(DateTime.now())).getDocuments();
+
+    List<TransactionModel> _listTransaction = [];
+
+    if(snapshot.documents == null){
+      Firestore.instance.collection('transaction').document(transactionModel.id_transaction).setData(transactionModel.toMap());
+      return Firestore.instance.collection('transaction').document(transactionModel.id_transaction).collection('invoice').document(invoiceModel.id_invoice).setData(invoiceModel.toMap());
+    }else if(snapshot.documents != null){
+      snapshot.documents.forEach((element) {
+        TransactionModel transactionModel=TransactionModel.formMap(element.data);
+        _listTransaction.add(transactionModel);
+      });
+      return Firestore.instance.collection('transaction').document(_listTransaction.first.id_transaction).collection('invoice').document(invoiceModel.id_invoice).setData(invoiceModel.toMap());
+    }
+
+  }
+
+
   Future<void> saveCart(TransactionModel transactionModel,InvoiceModel invoiceModel,List liscart) async{
     DocumentReference docRef=Firestore.instance.collection('transaction').document(transactionModel.id_transaction).collection('invoice').document(invoiceModel.id_invoice);
     DocumentSnapshot doc=await docRef.get();
@@ -18,7 +39,7 @@ class TransactionApi{
         .collection('cart')
         .document(invoiceModel.id_invoice).setData(invoiceModel.toMap());
   }
-  Future<void> saveTransaction(TransactionModel transactionModel) async{
-    return Firestore.instance.collection('transaction').document(transactionModel.id_transaction).setData(transactionModel.toMap());
-  }
+//  Future<void> saveTransaction(TransactionModel transactionModel) async{
+//    return Firestore.instance.collection('transaction').document(transactionModel.id_transaction).setData(transactionModel.toMap());
+//  }
 }

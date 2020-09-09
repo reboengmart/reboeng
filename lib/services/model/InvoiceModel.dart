@@ -1,10 +1,10 @@
 class InvoiceModel{
   final DateTime date_invoice;
   final String address;
-  final String delivery;
+  final int delivery;
   final String id_invoice;
-  final String total_invoice;
-  final String total_payment;
+  final int total_invoice;
+  final int total_payment;
   final String user_ref;
   final List DetailInvoice;
   InvoiceModel({this.date_invoice,this.address,this.delivery,this.id_invoice,this.total_invoice

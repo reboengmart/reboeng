@@ -120,6 +120,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           appBar: AppBar(
             leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: (){
               addressProvider.resetAll();
+              addressProvider.changeGeo(null);
+              setState(() {
+                locationString = null;
+              });
               Navigator.of(context).pop();
             }),
             title: const Text(appTitle),
@@ -220,6 +224,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 child: Text("Simpan"),
                 onPressed: (){
                   addressProvider.saveAddress();
+                  setState(() {
+                    locationString = null;
+                  });
                   Navigator.of(context).pop();
                 }
                 ),
