@@ -260,7 +260,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                             ? InkWell(
                                                 onTap: () {},
                                                 child: Text(
-                                                  'ganti ini',
+                                                  'pilih',
                                                   style: TextStyle(
                                                       color: kPrimaryColor),
                                                 ))
