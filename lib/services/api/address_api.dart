@@ -57,6 +57,23 @@ class AddressApi{
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
     String uid = user.uid;
+    String iid;
+    List<Address> _ListAddress=[];
+    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('address').where('status', isEqualTo: 'primary').getDocuments();
+    snapshot.documents.forEach((element) {
+      Address address=Address.formMap(element.data);
+      _ListAddress.add(address);
+    });
+
+    iid = _ListAddress.first.id;
+
+    Firestore.instance
+        .collection('user')
+        .document('${uid}')
+        .collection('address')
+        .document(iid)
+        .updateData({'status': 'not primary'});
+
     return Firestore.instance
         .collection('user')
         .document('${uid}')
