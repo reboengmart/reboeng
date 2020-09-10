@@ -7,6 +7,7 @@ import 'package:reboeng/provider/ProductListNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/provider/UserNotifier.dart';
 import 'package:reboeng/provider/WishListNotifier.dart';
+import 'package:reboeng/provider/historyNotifier.dart';
 import 'package:reboeng/services/api/cart_api.dart';
 import 'package:reboeng/services/api/cart_total.dart';
 import 'package:reboeng/services/api/user_api.dart';
@@ -43,6 +44,8 @@ class MyApp extends StatelessWidget {
             create: (context) => UserNotifier(),
           ),ChangeNotifierProvider(
             create: (context) => WishListNotifier(),
+          ),ChangeNotifierProvider(
+            create: (context) => HistoryNotifier(),
           ),
           StreamProvider(create: (context)=>firestoreService.getUser()),
           StreamProvider(create: (context)=>cartApi.getCart()),

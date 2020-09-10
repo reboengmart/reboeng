@@ -34,7 +34,7 @@ class TransactionApi {
           .document(invoiceModel.id_invoice)
           .setData(invoiceModel.toMap());
       deletecart();
-      createHistory(transactionModel, invoiceModel);
+      createHistory(transactionModel.id_transaction, invoiceModel);
       return Firestore.instance
           .collection('transaction')
           .document(transactionModel.id_transaction)
@@ -66,7 +66,7 @@ class TransactionApi {
       });
       print(invoiceModel.DetailInvoice.map((e) => e.toMap()).toString());
       deletecart();
-      createHistory(transactionModel, invoiceModel);
+      createHistory(_listTransaction.first.id_transaction, invoiceModel);
       return Firestore.instance
           .collection('transaction')
           .document(_listTransaction.first.id_transaction)
@@ -109,7 +109,7 @@ class TransactionApi {
     });
   }
 
-  Future<void> createHistory(TransactionModel transactionModel,InvoiceModel invoiceModel) async {
+  Future<void> createHistory(String id_transaksi,InvoiceModel invoiceModel) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
     String uid = user.uid;
@@ -119,7 +119,7 @@ class TransactionApi {
         .document('${uid}')
         .collection('history')
         .document(id)
-        .setData({"id":id,"status":"sedang dikemas","transaction_ref":transactionModel.id_transaction,"invoice_ref":invoiceModel.id_invoice});
+        .setData({"id":id,"status":"sedang dikemas","transaction_ref":id_transaksi,"invoice_ref":invoiceModel.id_invoice});
   }
 //  Future<void> saveCart(TransactionModel transactionModel,InvoiceModel invoiceModel,List liscart) async{
 //    DocumentReference docRef=Firestore.instance.collection('transaction').document(transactionModel.id_transaction).collection('invoice').document(invoiceModel.id_invoice);
