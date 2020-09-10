@@ -95,6 +95,10 @@ class TransactionApi {
         .document('${uid}')
         .collection('cart')
         .getDocuments();
+    Firestore.instance
+        .collection('user')
+        .document('$uid')
+        .updateData({'cartTotal': 0});
     return snapshot2.documents.forEach((element) {
       Firestore.instance
           .collection('user')
