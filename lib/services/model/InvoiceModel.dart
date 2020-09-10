@@ -1,3 +1,7 @@
+import 'package:reboeng/services/model/DetaiInvoiceModel.dart';
+
+import 'Cart.dart';
+
 class InvoiceModel{
   final DateTime date_invoice;
   final String address;
@@ -6,7 +10,7 @@ class InvoiceModel{
   final int total_invoice;
   final int total_payment;
   final String user_ref;
-  final List DetailInvoice;
+  final Map<String, dynamic> DetailInvoice;
   InvoiceModel({this.date_invoice,this.address,this.delivery,this.id_invoice,this.total_invoice
   ,this.total_payment,this.user_ref,this.DetailInvoice});
 
@@ -30,4 +34,6 @@ Map<String,dynamic> toMap(){
     'user_ref':user_ref
   };
 }
+
+
 }

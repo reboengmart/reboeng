@@ -1,11 +1,11 @@
 class DetaiInvoiceModel {
-  final int qty;
-  final String name;
-  final String assets;
-  final String price;
-  final String unit;
-  final String total_price;
-  final String status;
+  int qty;
+  String name;
+  String assets;
+  String price;
+  String unit;
+  String total_price;
+  String status;
 
   DetaiInvoiceModel({this.price,this.qty,this.name,this.assets,this.status,this.unit,this.total_price});
 
@@ -16,7 +16,7 @@ class DetaiInvoiceModel {
         assets=firestore['assets'],
         status=firestore['status'],
         unit=firestore['unit'],
-        total_price=firestore['total_price'];
+        total_price=firestore['price'];
   Map<String,dynamic> toMap(){
     return{
       'price':price,
@@ -28,4 +28,15 @@ class DetaiInvoiceModel {
       'total_price':total_price
     };
   }
+
+  DetaiInvoiceModel.formMap(Map<String,dynamic> firestore){
+    price=firestore['price'];
+    qty=firestore['qty'];
+    name=firestore['name'];
+    assets=firestore['assets'];
+    status=firestore['status'];
+    unit=firestore['unit'];
+    total_price=firestore['price'];
+  }
+
 }
