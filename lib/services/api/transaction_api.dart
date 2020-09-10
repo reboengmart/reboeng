@@ -14,8 +14,9 @@ class TransactionApi{
           transactionModel.id_transaction).setData(transactionModel.toMap());
       Firestore.instance.collection('transaction').document(
           transactionModel.id_transaction).setData(transactionModel.toMap());
-       return Firestore.instance.collection('transaction').document(transactionModel.id_transaction).collection('invoice').document(
+       Firestore.instance.collection('transaction').document(transactionModel.id_transaction).collection('invoice').document(
           invoiceModel.id_invoice).setData(invoiceModel.toMap());
+       return Firestore.instance.collection('transaction').document(transactionModel.id_transaction).collection('invoice').document(invoiceModel.id_invoice).setData({'address' : invoiceModel.address, 'date_invoice' : invoiceModel.date_invoice, 'delivery': invoiceModel.delivery, 'id_invoice' : invoiceModel.id_invoice, 'total_invoice' : invoiceModel.total_invoice, 'total_payment' : invoiceModel.total_payment, 'user_ref' : invoiceModel.user_ref, 'detail_invoice' : FieldValue.arrayUnion(invoiceModel.DetailInvoice.map((e) => e.toMap()).toList())});
     }else{
       snapshot.documents.forEach((element) {
         TransactionModel transactionModel=TransactionModel.formMap(element.data);
@@ -25,8 +26,8 @@ class TransactionApi{
           .collection('transaction')
           .document(_listTransaction.first.id_transaction)
           .updateData({'total_transaction': _listTransaction.first.total_transaction + invoiceModel.total_payment});
-      print(invoiceModel.DetailInvoice.toString());
-      return Firestore.instance.collection('transaction').document(_listTransaction.first.id_transaction).collection('invoice').document(invoiceModel.id_invoice).setData(invoiceModel.toMap());
+      print(invoiceModel.DetailInvoice.map((e) => e.toMap()).toString());
+      return Firestore.instance.collection('transaction').document(_listTransaction.first.id_transaction).collection('invoice').document(invoiceModel.id_invoice).setData({'address' : invoiceModel.address, 'date_invoice' : invoiceModel.date_invoice, 'delivery': invoiceModel.delivery, 'id_invoice' : invoiceModel.id_invoice, 'total_invoice' : invoiceModel.total_invoice, 'total_payment' : invoiceModel.total_payment, 'user_ref' : invoiceModel.user_ref, 'detail_invoice' : FieldValue.arrayUnion(invoiceModel.DetailInvoice.map((e) => e.toMap()).toList())});
     }
 
   }

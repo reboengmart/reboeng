@@ -39,7 +39,7 @@ class CheckoutNotifier extends ChangeNotifier{
     List<Address> _addressList = [];
     List<User> _userList = [];
     Map<String, dynamic> _cartMap = new Map<String, dynamic>();
-    List _array = [];
+    List<DetaiInvoiceModel> _array = [];
 
     QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('address').where('status', isEqualTo: 'primary').getDocuments();
     snapshot.documents.forEach((element) {
@@ -57,14 +57,14 @@ class CheckoutNotifier extends ChangeNotifier{
     QuerySnapshot snapshot2 = await Firestore.instance.collection('user').document('${uid}').collection('cart').getDocuments();
     snapshot2.documents.forEach((element) {
       DetaiInvoiceModel detaiInvoiceModel= DetaiInvoiceModel.formMap(element.data);
-      _cartMap.addAll(detaiInvoiceModel.toMap());
-      _array.add(_cartMap);
+//      _cartMap.addAll(detaiInvoiceModel.toMap());
+      _array.add(detaiInvoiceModel);
     });
     DateTime now = DateTime.now();
     String formattanggal = DateFormat('d MMMM y').format(now);
 
 
-    var newCheckout = InvoiceModel(date_invoice: DateTime.now(), address: _addressList.first.id, delivery: 3000, id_invoice: randomAlpha(20), total_invoice: _userList.first.cartTotal, total_payment: _userList.first.cartTotal + 3000, user_ref: uid, DetailInvoice: _cartMap);
+    var newCheckout = InvoiceModel(date_invoice: DateTime.now(), address: _addressList.first.id, delivery: 3000, id_invoice: randomAlpha(20), total_invoice: _userList.first.cartTotal, total_payment: _userList.first.cartTotal + 3000, user_ref: uid, DetailInvoice: _array);
     var newTransaction = TransactionModel(id_transaction: randomAlpha(20), total_transaction: _userList.first.cartTotal + 3000, date_transaction: formattanggal);
     TransactionApi().saveTransaction(newTransaction,newCheckout);
 //    var newAddress=Address(id:uuid.v1(),nama:nama,geo:geo,detail:detail,icon:icon,status:'not primary');

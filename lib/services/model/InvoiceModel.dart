@@ -10,7 +10,7 @@ class InvoiceModel{
   final int total_invoice;
   final int total_payment;
   final String user_ref;
-  final Map<String, dynamic> DetailInvoice;
+  final List<DetaiInvoiceModel> DetailInvoice;
   InvoiceModel({this.date_invoice,this.address,this.delivery,this.id_invoice,this.total_invoice
   ,this.total_payment,this.user_ref,this.DetailInvoice});
 
