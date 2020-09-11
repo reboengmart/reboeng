@@ -39,108 +39,112 @@ class _DispatchingProductHistoryState extends State<DispatchingProductHistory> {
                           future: Firestore.instance.collection('transaction').document(item.transaction_ref).collection('invoice').where('id_invoice', isEqualTo: item.invoice_ref).getDocuments(),
                           builder: (BuildContext context,
                               AsyncSnapshot snap) {
-                            print("apa ini "+snap.data.documents.toString());
-                            Timestamp t = snap
-                                .data.documents
-                                .toList()[0]
-                                .data['date_invoice'];
-                            DateTime tanggal = t.toDate();
+                            if(snap.hasData){
+                              Timestamp t = snap
+                                  .data.documents
+                                  .toList()[0]
+                                  .data['date_invoice'];
+                              DateTime tanggal = t.toDate();
 //                            String formattanggal = DateFormat('d MMMM y').format(tanggal);
-                            String total_payment = snap
-                                .data.documents
-                                .toList()[0]
-                                .data['total_payment'].toString();
-                            double height = MediaQuery.of(context).size.height;
-                            double width = MediaQuery.of(context).size.width;
-                            return Container(
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    top: 2,
-                                    right: 5,
-                                    left: 5),
-                                height: height * 0.23,
-                                child: Card(
-                                    elevation: 1.0,
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .start,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment
-                                            .center,
-                                        children: <Widget>[
-                                          Center(
-                                            child:
-                                            Container(
-                                              padding:
-                                              EdgeInsets
-                                                  .all(
-                                                  10.0),
-                                              width:
-                                              (width *
-                                                  0.50),
-                                              height:
-                                              height *
-                                                  0.25,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment
-                                                    .start,
-                                                children: <
-                                                    Widget>[
-                                                  Text(
-                                                    'Tanggal Transaksi +${tanggal.toString()}',
-                                                    style:
-                                                    TextStyle(
-                                                      fontSize:
-                                                      2.9 * SizeConfig.textMultiplier,
-                                                      fontWeight:
-                                                      FontWeight.bold,
+                              String total_payment = snap
+                                  .data.documents
+                                  .toList()[0]
+                                  .data['total_payment'].toString();
+                              double height = MediaQuery.of(context).size.height;
+                              double width = MediaQuery.of(context).size.width;
+                              return Container(
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      top: 2,
+                                      right: 5,
+                                      left: 5),
+                                  height: height * 0.23,
+                                  child: Card(
+                                      elevation: 1.0,
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .start,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment
+                                              .center,
+                                          children: <Widget>[
+                                            Center(
+                                              child:
+                                              Container(
+                                                padding:
+                                                EdgeInsets
+                                                    .all(
+                                                    10.0),
+                                                width:
+                                                (width *
+                                                    0.50),
+                                                height:
+                                                height *
+                                                    0.25,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .start,
+                                                  children: <
+                                                      Widget>[
+                                                    Text(
+                                                      'Tanggal Transaksi +${tanggal.toString()}',
+                                                      style:
+                                                      TextStyle(
+                                                        fontSize:
+                                                        2.9 * SizeConfig.textMultiplier,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                    7.0,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                    children: <
-                                                        Widget>[
-                                                      Text(
-                                                        'Total Pembayaran:',
-                                                        style:
-                                                        TextStyle(
-                                                          color: Colors.grey,
-                                                          fontSize: 1.8 * SizeConfig.textMultiplier,
+                                                    SizedBox(
+                                                      height:
+                                                      7.0,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                      children: <
+                                                          Widget>[
+                                                        Text(
+                                                          'Total Pembayaran:',
+                                                          style:
+                                                          TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 1.8 * SizeConfig.textMultiplier,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      SizedBox(
-                                                        width:
-                                                        10.0,
-                                                      ),
-                                                      Text(
-                                                        'Rp. ${total_payment}',
-                                                        style:
-                                                        TextStyle(
-                                                          color: Colors.blue,
-                                                          fontSize: 1.8 * SizeConfig.textMultiplier,
+                                                        SizedBox(
+                                                          width:
+                                                          10.0,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                        Text(
+                                                          'Rp. ${total_payment}',
+                                                          style:
+                                                          TextStyle(
+                                                            color: Colors.blue,
+                                                            fontSize: 1.8 * SizeConfig.textMultiplier,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ),
-                            );
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                              );
+                            }
+                            if(!snap.hasData){
+                              return Center(child: Text(''));
+                            }
 //                            if (snap.hasError) {
 //                              return Center(
 ////                                          child: Text(wishListSnapshot.error));
