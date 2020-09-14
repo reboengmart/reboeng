@@ -23,7 +23,7 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
   Completer<GoogleMapController> _controller = Completer();
   static LatLng _center;
   List<Marker> _markers = [];
-  LatLng _lastMapPotition;
+ static LatLng _lastMapPotition;
   MapType _currentMapType = MapType.normal;
   AddressNotifier addresProviderr;
 
@@ -32,15 +32,15 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
     super.initState();
   }
   _onMapCreated(GoogleMapController controller){
-    _controller.complete(controller);
-  }
+    setState(() {
+      _controller.complete(controller);
+    });
 
+  }
   void _initLatlng(List<Address> address){
     GeoPoint _geo = address.first.geo;
     double lat = _geo.latitude;
     double lng = _geo.longitude;
-
-
     setState(() {
       _center = LatLng(lat, lng);
       _lastMapPotition = _center;
@@ -58,24 +58,25 @@ class _ShowGeoLocationState extends State<ShowGeoLocation> {
       )
     );
   }
-
   _onCameraMove(CameraPosition position){
     _lastMapPotition = position.target;
   }
-
 
   @override
   Widget build(BuildContext context) {
     AddressNotifier addressNotifier = Provider.of<AddressNotifier>(context);
     AddressApi().getLatlng(addressNotifier, widget.id);
     _initLatlng(addressNotifier.addressList);
-    print('tessssssss '+_center.toString());
+    GeoPoint _geo = addressNotifier.addressList.first.geo;
+    double lat = _geo.latitude;
+    double lng = _geo.longitude;
+    print('tessssssss ${lat.toString()} ${lng.toString()}');
     return Scaffold(
       appBar: AppBar(title: Text('Alamat Anda'),),
       body: Stack(
         children: <Widget>[
           GoogleMap(
-            initialCameraPosition: CameraPosition(target: LatLng(addressNotifier.addressList.first.geo.latitude, addressNotifier.addressList.first.geo.longitude), zoom: 15.0),
+            initialCameraPosition: CameraPosition(target: LatLng(lat,lng), zoom: 11.0),
             onMapCreated: _onMapCreated,
             mapType: _currentMapType,
             markers: Set.from(_markers),
