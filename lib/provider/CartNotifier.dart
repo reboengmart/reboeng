@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:reboeng/services/api/cart_api.dart';
 import 'package:reboeng/services/model/Cart.dart';
+import 'package:reboeng/services/model/SubProduct.dart';
 import 'package:uuid/uuid.dart';
 
 
@@ -49,8 +51,22 @@ class CartNotifier with ChangeNotifier{
   static void kurangqty(String id,int qty, int price, int total) {
     CartApi.removeqty(id,qty,price,total);
   }
-  static void tambahqty(String id,int qty, int price, int total){
-    CartApi.addqty(id, qty, price, total);
+  void tambahqty(String sub_product_id, String id,int qty, int price, int total)async{
+    final FirebaseAuth _auth=FirebaseAuth.instance;
+    final FirebaseUser user=await  _auth.currentUser();
+    uid=user.uid;
+
+    List<SubProduct> _subprodutList = [];
+
+    QuerySnapshot snapshot = await Firestore.instance.collection('sub_product').where('name', isEqualTo: sub_product_id).getDocuments();
+    snapshot.documents.forEach((element) {
+      SubProduct subProduct = SubProduct.formMap(element.data);
+      _subprodutList.add(subProduct);
+    });
+
+    if(qty <= _subprodutList.first.stock){
+      CartApi.addqty(id, qty, price, total);
+    }
   }
   
 }

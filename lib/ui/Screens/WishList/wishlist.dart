@@ -391,7 +391,7 @@ class _WishListState extends State<WishList> {
                                                     ),
                                                   );
                                                 } else{
-                                                  return Center(child: CircularProgressIndicator());
+                                                  return Center(child: Text(''));
                                                 }
                                               });
                                         },
@@ -400,7 +400,7 @@ class _WishListState extends State<WishList> {
                                     if (wishListSnapshot.connectionState !=
                                         ConnectionState.done) {
                                       return Center(
-                                        child: CircularProgressIndicator(),
+                                        child: Text(''),
                                       );
                                     }
                                     if (!wishListSnapshot.hasData &&

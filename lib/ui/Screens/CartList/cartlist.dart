@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/CartNotifier.dart';
@@ -25,7 +26,6 @@ class _CartListState extends State<CartList> {
   String uid;
   int subtotalproduct;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -44,7 +44,6 @@ class _CartListState extends State<CartList> {
         Provider.of<SubProductNotifier>(context, listen: false);
     await getSubProduct(subProductNotifier, subProductRef, cartItemLength);
   }
-
 
   void firebaseUid() async {
     await new Future.delayed(const Duration(seconds: 2));
@@ -81,6 +80,7 @@ class _CartListState extends State<CartList> {
 
   @override
   Widget build(BuildContext context) {
+    bool bayar = false;
     int cartTotal;
     firebaseUid();
     return new Scaffold(
@@ -115,12 +115,20 @@ class _CartListState extends State<CartList> {
                             padding: EdgeInsets.all(16.0),
                             itemCount: cartSnapshot.data.documents.length,
                             itemBuilder: (context, index) {
-                              int qty = cartSnapshot.data.documents[index].data['qty'];
-                              String cartId = cartSnapshot.data.documents[index].documentID;
-                              String productAssets = cartSnapshot.data.documents[index].data['assets'];
-                              String productName = cartSnapshot.data.documents[index].data['name'];
-                              String productPrice = cartSnapshot.data.documents[index].data['price'];
-                              String productUnit = cartSnapshot.data.documents[index].data['unit'];
+                              int qty = cartSnapshot
+                                  .data.documents[index].data['qty'];
+                              String cartId =
+                                  cartSnapshot.data.documents[index].documentID;
+                              String sub_product_id =
+                                  cartSnapshot.data.documents[index].data['id'];
+                              String productAssets = cartSnapshot
+                                  .data.documents[index].data['assets'];
+                              String productName = cartSnapshot
+                                  .data.documents[index].data['name'];
+                              String productPrice = cartSnapshot
+                                  .data.documents[index].data['price'];
+                              String productUnit = cartSnapshot
+                                  .data.documents[index].data['unit'];
                               return Stack(
                                 children: <Widget>[
                                   Container(
@@ -128,8 +136,7 @@ class _CartListState extends State<CartList> {
                                     margin: EdgeInsets.only(
                                         right: 30.0, bottom: 5.0),
                                     child: Material(
-                                      borderRadius:
-                                      BorderRadius.circular(5.0),
+                                      borderRadius: BorderRadius.circular(5.0),
                                       elevation: 3.0,
                                       child: Container(
                                         padding: EdgeInsets.all(16.0),
@@ -139,8 +146,7 @@ class _CartListState extends State<CartList> {
                                               height: 80,
                                               child: Row(
                                                 children: <Widget>[
-                                                  Image.asset(
-                                                      productAssets),
+                                                  Image.asset(productAssets),
                                                 ],
                                               ),
                                             ),
@@ -150,8 +156,7 @@ class _CartListState extends State<CartList> {
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment
-                                                    .start,
+                                                    CrossAxisAlignment.start,
                                                 children: <Widget>[
                                                   Text(
                                                     productName,
@@ -160,14 +165,13 @@ class _CartListState extends State<CartList> {
                                                             SizeConfig
                                                                 .textMultiplier,
                                                         fontWeight:
-                                                        FontWeight
-                                                            .bold),
+                                                            FontWeight.bold),
                                                   ),
                                                   Text(
                                                     "Harga: Rp. ${productPrice} per $productUnit",
                                                     style: TextStyle(
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         fontSize: 1.4 *
                                                             SizeConfig
                                                                 .textMultiplier),
@@ -177,10 +181,9 @@ class _CartListState extends State<CartList> {
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(
-                                                  right:
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .width *
+                                                  right: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
                                                       0.05),
                                               child: Row(
                                                 children: <Widget>[
@@ -204,16 +207,15 @@ class _CartListState extends State<CartList> {
                                                       width: 25.0,
                                                       decoration: BoxDecoration(
                                                           borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              7.0),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      7.0),
                                                           color: Color(
                                                               0xFF7A9BEE)),
                                                       child: Center(
                                                         child: Icon(
                                                           Icons.remove,
-                                                          color:
-                                                          Colors.white,
+                                                          color: Colors.white,
                                                           size: 20.0,
                                                         ),
                                                       ),
@@ -222,21 +224,20 @@ class _CartListState extends State<CartList> {
                                                   Container(
                                                     margin: EdgeInsets.only(
                                                         left: MediaQuery.of(
-                                                            context)
-                                                            .size
-                                                            .width *
+                                                                    context)
+                                                                .size
+                                                                .width *
                                                             0.01,
                                                         right: MediaQuery.of(
-                                                            context)
-                                                            .size
-                                                            .width *
+                                                                    context)
+                                                                .size
+                                                                .width *
                                                             0.01),
                                                     child: Text(
                                                       "${qty} $productUnit",
                                                       style: TextStyle(
                                                           fontWeight:
-                                                          FontWeight
-                                                              .bold,
+                                                              FontWeight.bold,
                                                           fontSize: 18.0),
                                                     ),
                                                   ),
@@ -244,7 +245,8 @@ class _CartListState extends State<CartList> {
                                                     onTap: () {
                                                       qty += 1;
 //                                                          _subproduct(_totalproduct);
-                                                      CartNotifier.tambahqty(
+                                                      CartNotifier().tambahqty(
+                                                          sub_product_id,
                                                           cartId,
                                                           qty,
                                                           int.parse(
@@ -257,16 +259,15 @@ class _CartListState extends State<CartList> {
                                                       width: 25.0,
                                                       decoration: BoxDecoration(
                                                           borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              7.0),
-                                                          color:
-                                                          Colors.white),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      7.0),
+                                                          color: Colors.white),
                                                       child: Center(
                                                         child: Icon(
                                                           Icons.add,
-                                                          color: Color(
-                                                              0xFF7A9BEE),
+                                                          color:
+                                                              Color(0xFF7A9BEE),
                                                           size: 20.0,
                                                         ),
                                                       ),
@@ -290,7 +291,7 @@ class _CartListState extends State<CartList> {
                                       child: MaterialButton(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(5.0)),
+                                                BorderRadius.circular(5.0)),
                                         padding: EdgeInsets.all(0.0),
                                         color: kPrimaryColor,
                                         child: Icon(
@@ -314,7 +315,7 @@ class _CartListState extends State<CartList> {
                       if (cartSnapshot.connectionState !=
                           ConnectionState.done) {
                         return Center(
-                          child: Text(''),
+                          child: CircularProgressIndicator(),
                         );
                       }
                       if (!cartSnapshot.hasData &&
@@ -322,6 +323,11 @@ class _CartListState extends State<CartList> {
                               ConnectionState.done) {
                         return Text('Tidak Ada Product Di Keranjang');
                       }
+//                      if(cartSnapshot.data.documents.length == 0){
+//                        return Center(
+//                          child: Text('Silakan Berbelanja'),
+//                        );
+//                      }
                     })),
             Container(
               width: double.infinity,
@@ -337,51 +343,76 @@ class _CartListState extends State<CartList> {
                       // ignore: missing_return
                       builder: (context, snapshot) {
                         List _cartTotal;
-                        if (snapshot.hasData && snapshot.data.documents.isNotEmpty){
+                        if (snapshot.hasData &&
+                            snapshot.data.documents.isNotEmpty) {
                           _cartTotal = List.generate(
                               snapshot.data.documents.length,
-                                  (index) => snapshot
+                              (index) => snapshot
                                   .data.documents[index].data['cartTotal']);
                           cartTotal = int.parse(_cartTotal[0].toString());
                         }
-                        if (_cartTotal == null){
-                          return Center(child: CircularProgressIndicator());
+                        if (_cartTotal == null) {
+                          return Center(child: Text(''));
                         }
                         if (snapshot.hasError) {
                           return Text(snapshot.error);
                         }
                         if (_cartTotal != null) {
+                          if (_cartTotal[0] < 1) {
+                            bayar = false;
+                          } else if (_cartTotal[0] > 0) {
+                            bayar = true;
+                          }
                           return Text(
-                            "Total Keranjang     Rp. ${_cartTotal[0].toString()}",
+                            (_cartTotal[0] < 1)
+                                ? "Dilarang Membayar\n Jika Anda Belum Memasukkan Produk di sini\n hehehe"
+                                : "Total Keranjang     Rp. ${_cartTotal[0].toString()}",
                             style: TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: 2.6 * SizeConfig.textMultiplier,
                             ),
+                            textAlign: TextAlign.end,
                           );
                         }
                         if (snapshot.connectionState != ConnectionState.done) {
                           return Center(
-                            child: CircularProgressIndicator(),
+                            child: Text(''),
                           );
                         }
                       }),
                   SizedBox(
                     height: 20.0,
                   ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    color: kPrimaryColor,
-                    child: Text(
-                      "checkout".toUpperCase(),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CheckOutScreen()));
-                    },
+                  Container(
+                    child: (bayar == false)
+                        ? RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            color: kTextColor,
+                            child: Text(
+                              "Belum Bisa Bayar".toUpperCase(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {},
+                          )
+                        : RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            color: kPrimaryColor,
+                            child: Text(
+                              "bayar".toUpperCase(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                              if (bayar) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            CheckOutScreen()));
+                              }
+                            },
+                          ),
                   ),
                 ],
               ),

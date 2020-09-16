@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +25,18 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     SubProductNotifier subProductNotifier=Provider.of<SubProductNotifier>(context,listen: false);
     RefreshServices.subProductRefresh(subProductNotifier, id);
+    initUid();
     super.initState();
+  }
+
+  String uid;
+
+  void initUid()async{
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    setState(() {
+      uid = user.uid;
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -180,14 +193,35 @@ class _DetailScreenState extends State<DetailScreen> {
                         ]
                     )
                 ),
-                IconButton(
-                    icon: Icon(Icons.favorite),
-                    color: Colors.red,
-                    onPressed: () {
-                      setState(() {
-                      wishListNotifier.saveWishList(id);
-                      });
-                    }
+                Container(
+                  child: StreamBuilder(
+                    stream: Firestore.instance.collection('user').document('${uid}').collection('wishlist').where('sub_product_ref', isEqualTo: id).snapshots(),
+                    builder: (context, snapshot) {
+                      if(snapshot.hasData){
+                        return Container(
+                          child: (snapshot.data.documents.length == 0) ? IconButton(
+                              icon: Icon(Icons.favorite),
+                              color: Colors.black26,
+                              onPressed: () {
+                                setState(() {
+                                  wishListNotifier.saveWishList(id);
+                                });
+                              }
+                          ) : IconButton(
+                              icon: Icon(Icons.favorite),
+                              color: Colors.redAccent,
+                              onPressed: () {
+                                wishListNotifier.deleteWishListIndetail(id);
+                              }
+                          ),
+                        );
+                      }
+                      if(!snapshot.hasData){
+                        return Text('');
+                      }
+                    },
+
+                  ),
                 ),
 //                IconButton(
 //                    icon: Icon(Icons.add_shopping_cart),

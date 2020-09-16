@@ -79,7 +79,7 @@ class _DispatchingProductHistoryState extends State<DispatchingProductHistory> {
                                                     10.0),
                                                 width:
                                                 (width *
-                                                    0.50),
+                                                    0.80),
                                                 height:
                                                 height *
                                                     0.25,

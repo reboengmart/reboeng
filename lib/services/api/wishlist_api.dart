@@ -25,10 +25,25 @@ class WishListApi{
     String uid=user.uid;
     return Firestore.instance.collection('user').document(uid).collection('wishlist').document(id).delete();
   }
+
+  static Future<void> removeWishListIndetail(String id) async {
+    final FirebaseAuth _auth=FirebaseAuth.instance;
+    final FirebaseUser user=await  _auth.currentUser();
+    String uid=user.uid;
+    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('wishlist').where('sub_product_ref', isEqualTo: id).getDocuments();
+    return Firestore.instance.collection('user').document(uid).collection('wishlist').document(snapshot.documents.first.documentID).delete();
+  }
   //Create Data
-  Future<void> saveWishlist(WishListModel wishList){
+  Future<void> saveWishlist(WishListModel wishList) async{
     getauth();
-    return Firestore.instance.collection('user').document(uid).collection('wishlist').document(wishList.id).setData(wishList.toMap());
+
+    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('wishlist').where('sub_product_ref', isEqualTo: wishList.sub_product_ref).getDocuments();
+    if(snapshot.documents != null) {
+      return Firestore.instance.collection('user').document(uid).collection(
+          'wishlist').document(wishList.id).setData(wishList.toMap());
+    }else{
+      return 0;
+    }
   }
   static Future<void> subproductReference(SubProductNotifier subProductNotifier, String sub_product_reference, int cartItemLength) async {
     Firestore _db = Firestore.instance;

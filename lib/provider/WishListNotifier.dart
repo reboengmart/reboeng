@@ -17,6 +17,10 @@ class WishListNotifier with ChangeNotifier{
    void deleteWishList(String id) {
     WishListApi.removeWishlist(id);
   }
+
+  void deleteWishListIndetail(String id){
+     WishListApi.removeWishListIndetail(id);
+  }
   void saveWishList(String subProduct) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
