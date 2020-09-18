@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +30,15 @@ class _MainPaymentHistoryState extends State<MainPaymentHistory> with TickerProv
   String title;
   Color tabColor;
   TabController tabController ;
+  FirebaseUser userFirebase;
+
+  void firebaseUserAuth() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    setState(() {
+      userFirebase = user;
+    });
+  }
 
   @override
   void initState() {
@@ -112,6 +123,7 @@ class _MainPaymentHistoryState extends State<MainPaymentHistory> with TickerProv
 
   @override
   Widget build(BuildContext context) {
+    firebaseUserAuth();
     setIndex(tabIndex);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -160,30 +172,190 @@ class _MainPaymentHistoryState extends State<MainPaymentHistory> with TickerProv
                   tabs: <Widget>[
                     Tab(
                       child: Container(
-                          child: Text(
-                            'Pembelian',
-                            style: TextStyle(color: Colors.white),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Pembelian',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              FutureBuilder(
+                                future: Firestore.instance.collection('user').document(userFirebase.uid).collection('history').where('status', isEqualTo: 'completed').getDocuments(),
+                                builder: (BuildContext context, AsyncSnapshot snap){
+                                  int _totalCompleted = 0;
+                                  if(snap.hasData){
+                                     _totalCompleted = snap.data.documents.length;
+                                  }
+                                  return Container(
+                                    child: (_totalCompleted != 0) ? Container(
+                                      width: SizeConfig.heightMultiplier * 5,
+                                      height: SizeConfig.heightMultiplier * 5,
+                                      padding: EdgeInsets.only(bottom: SizeConfig.heightMultiplier * 2, left: SizeConfig.widthMultiplier * 1),
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent
+                                      ),
+                                      child: Container(
+                                        width: SizeConfig.heightMultiplier * 1,
+                                        height: SizeConfig.heightMultiplier * 1,
+                                        padding: EdgeInsets.only(top: SizeConfig.heightMultiplier * 0.3),
+                                        decoration: new BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.circular(35)
+                                        ),
+                                        child: Text(
+                                          '${_totalCompleted.toString()}',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: SizeConfig.textMultiplier * 2,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ) : Text(''),
+                                  );
+                                }
+                              )
+                            ],
                           )),
                     ),
                     Tab(
                       child: Container(
-                          child: Text(
-                            'Sedang Dikemas',
-                            style: TextStyle(color: Colors.white),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Sedang Dikemas',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              FutureBuilder(
+                                  future: Firestore.instance.collection('user').document(userFirebase.uid).collection('history').where('status', isEqualTo: 'sedang dikemas').getDocuments(),
+                                  builder: (BuildContext context, AsyncSnapshot snap){
+                                    int _totalCompleted = 0;
+                                    if(snap.hasData){
+                                      _totalCompleted = snap.data.documents.length;
+                                    }
+                                    return Container(
+                                      child: (_totalCompleted != 0) ? Container(
+                                        width: SizeConfig.heightMultiplier * 5,
+                                        height: SizeConfig.heightMultiplier * 5,
+                                        padding: EdgeInsets.only(bottom: SizeConfig.heightMultiplier * 2, left: SizeConfig.widthMultiplier * 1),
+                                        decoration: BoxDecoration(
+                                            color: Colors.transparent
+                                        ),
+                                        child: Container(
+                                          width: SizeConfig.heightMultiplier * 1,
+                                          height: SizeConfig.heightMultiplier * 1,
+                                          padding: EdgeInsets.only(top: SizeConfig.heightMultiplier * 0.3),
+                                          decoration: new BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.circular(35)
+                                          ),
+                                          child: Text(
+                                            '${_totalCompleted.toString()}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: SizeConfig.textMultiplier * 2,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ) : Text(''),
+                                    );
+                                  }
+                              )
+                            ],
                           )),
                     ),
                     Tab(
                       child: Container(
-                          child: Text(
-                            'Sedang Dikirim',
-                            style: TextStyle(color: Colors.white),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Sedang Dikirim',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              FutureBuilder(
+                                  future: Firestore.instance.collection('user').document(userFirebase.uid).collection('history').where('status', isEqualTo: 'sedang dikirim').getDocuments(),
+                                  builder: (BuildContext context, AsyncSnapshot snap){
+                                    int _totalCompleted = 0;
+                                    if(snap.hasData){
+                                      _totalCompleted = snap.data.documents.length;
+                                    }
+                                    return Container(
+                                      child: (_totalCompleted != 0) ? Container(
+                                        width: SizeConfig.heightMultiplier * 5,
+                                        height: SizeConfig.heightMultiplier * 5,
+                                        padding: EdgeInsets.only(bottom: SizeConfig.heightMultiplier * 2, left: SizeConfig.widthMultiplier * 1),
+                                        decoration: BoxDecoration(
+                                            color: Colors.transparent
+                                        ),
+                                        child: Container(
+                                          width: SizeConfig.heightMultiplier * 1,
+                                          height: SizeConfig.heightMultiplier * 1,
+                                          padding: EdgeInsets.only(top: SizeConfig.heightMultiplier * 0.3),
+                                          decoration: new BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.circular(35)
+                                          ),
+                                          child: Text(
+                                            '${_totalCompleted.toString()}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: SizeConfig.textMultiplier * 2,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ) : Text(''),
+                                    );
+                                  }
+                              )
+                            ],
                           )),
                     ),
                     Tab(
                       child: Container(
-                          child: Text(
-                            'Sudah Diterima',
-                            style: TextStyle(color: Colors.white),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Menunggu Diterima',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              FutureBuilder(
+                                  future: Firestore.instance.collection('user').document(userFirebase.uid).collection('history').where('status', isEqualTo: 'menunggu diterima').getDocuments(),
+                                  builder: (BuildContext context, AsyncSnapshot snap){
+                                    int _totalCompleted = 0;
+                                    if(snap.hasData){
+                                      _totalCompleted = snap.data.documents.length;
+                                    }
+                                    return Container(
+                                      child: (_totalCompleted != 0) ? Container(
+                                        width: SizeConfig.heightMultiplier * 5,
+                                        height: SizeConfig.heightMultiplier * 5,
+                                        padding: EdgeInsets.only(bottom: SizeConfig.heightMultiplier * 2, left: SizeConfig.widthMultiplier * 1),
+                                        decoration: BoxDecoration(
+                                            color: Colors.transparent
+                                        ),
+                                        child: Container(
+                                          width: SizeConfig.heightMultiplier * 1,
+                                          height: SizeConfig.heightMultiplier * 1,
+                                          padding: EdgeInsets.only(top: SizeConfig.heightMultiplier * 0.3),
+                                          decoration: new BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.circular(35)
+                                          ),
+                                          child: Text(
+                                            '${_totalCompleted.toString()}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: SizeConfig.textMultiplier * 2,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ) : Text(''),
+                                    );
+                                  }
+                              )
+                            ],
                           )),
                     ),
                   ]),

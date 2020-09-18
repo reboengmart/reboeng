@@ -58,6 +58,20 @@ class _CartListState extends State<CartList> {
   int deliveryTotal = 0;
   int cartTotal = 0;
 
+//  bool bayar = false;
+//
+//  void updateBayarStatus(bool status){
+//    if(!status){
+//      setState(() {
+//        bayar = false;
+//      });
+//    }else{
+//      setState(() {
+//        bayar = true;
+//      });
+//    }
+//  }
+
 //  void subTotalFormulas(String operator, int price, int totalBuy){
 //    int formulasTotal;
 //    switch(operator){
@@ -80,7 +94,7 @@ class _CartListState extends State<CartList> {
 
   @override
   Widget build(BuildContext context) {
-    bool bayar = false;
+    int bayarStatus = 0;
     int cartTotal;
     firebaseUid();
     return new Scaffold(
@@ -358,20 +372,54 @@ class _CartListState extends State<CartList> {
                           return Text(snapshot.error);
                         }
                         if (_cartTotal != null) {
-                          if (_cartTotal[0] < 1) {
-                            bayar = false;
-                          } else if (_cartTotal[0] > 0) {
-                            bayar = true;
-                          }
-                          return Text(
-                            (_cartTotal[0] < 1)
-                                ? "Dilarang Membayar\n Jika Anda Belum Memasukkan Produk di sini\n hehehe"
-                                : "Total Keranjang     Rp. ${_cartTotal[0].toString()}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 2.6 * SizeConfig.textMultiplier,
-                            ),
-                            textAlign: TextAlign.end,
+                          return Column(
+                            children: <Widget>[
+                              Text(
+                                (_cartTotal[0] < 1)
+                                    ? "Dilarang Membayar\n Jika Anda Belum Memasukkan Produk di sini\n hehehe"
+                                    : "Total Keranjang    Rp. ${_cartTotal[0].toString()}",
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 2.6 * SizeConfig.textMultiplier,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 40),
+                                child: Container(
+                                  child: (_cartTotal[0] == 0)
+                                      ? RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12)),
+                                    color: kTextColor,
+                                    child: Text(
+                                      "Belum Bisa Bayar".toUpperCase(),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () {},
+                                  )
+                                      : RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12)),
+                                    color: kPrimaryColor,
+                                    child: Text(
+                                      "bayar".toUpperCase(),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CheckOutScreen()));
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           );
                         }
                         if (snapshot.connectionState != ConnectionState.done) {
@@ -380,40 +428,7 @@ class _CartListState extends State<CartList> {
                           );
                         }
                       }),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Container(
-                    child: (bayar == false)
-                        ? RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            color: kTextColor,
-                            child: Text(
-                              "Belum Bisa Bayar".toUpperCase(),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {},
-                          )
-                        : RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            color: kPrimaryColor,
-                            child: Text(
-                              "bayar".toUpperCase(),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                              if (bayar) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CheckOutScreen()));
-                              }
-                            },
-                          ),
-                  ),
+
                 ],
               ),
             )

@@ -17,13 +17,12 @@ class _DispatchingProductHistoryState extends State<DispatchingProductHistory> {
     // TODO: implement initState
     HistoryNotifier historyNotifier =
     Provider.of<HistoryNotifier>(context, listen: false);
-    DispatchingAPI.getDispatching(historyNotifier);
+    DispatchingAPI.getDispatching(historyNotifier, 'sedang dikemas');
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     final historyProvider = Provider.of<HistoryNotifier>(context);
-    print("Tessssss"+ historyProvider.historyList.length.toString());
     return new Scaffold(
       body: SafeArea(
         child: Column(

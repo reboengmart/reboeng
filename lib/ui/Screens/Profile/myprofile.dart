@@ -1,5 +1,7 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,6 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   FirebaseUser userFirebase;
 
+  String photoUrl;
+
   void firebaseUserAuth() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
@@ -47,12 +51,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
       userFirebase = user;
     });
   }
+
+  void firebaseGetUserImage()async{
+    String _uid = userFirebase.uid;
+    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('$_uid').parent().getDocuments();
+    String _fileName = snapshot.documents.first.data['profile_photo'];
+    print(_fileName);
+
+    StorageReference ref = FirebaseStorage.instance.ref().child("user/profile/$_fileName");
+    String _url = (await ref.getDownloadURL()).toString();
+    setState(() {
+      photoUrl = _url;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    firebaseUserAuth();
+    Future.delayed(Duration(milliseconds: 1)).then((value) =>firebaseGetUserImage());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, height: 896, width: 414, allowFontScaling: true);
-
-    firebaseUserAuth();
-
     var profileInfo = Expanded(
       child: Column(
         children: <Widget>[
@@ -64,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: <Widget>[
                 CircleAvatar(
                   radius: kSpacingUnit.w * 5,
-                  backgroundImage: AssetImage('assets/buah/lemon.png'),
+                  backgroundImage: NetworkImage('$photoUrl'),
                 ),
               ],
             ),
@@ -72,9 +94,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(height: kSpacingUnit.w * 2),
           (userFirebase != null) ? Column(
             children: <Widget>[
-              Text(
-                '${userFirebase.uid}',
-                style: kTitleTextStyle,
+              FutureBuilder(
+                future: Firestore.instance.collection('user').document(userFirebase.uid).parent().getDocuments(),
+                builder: (BuildContext context, AsyncSnapshot userSnap){
+                  String firstname = '';
+                  String lastname = '';
+                  if(userSnap.hasData){
+                    firstname = userSnap.data.documents.toList()[0].data['first_name'];
+                    lastname = userSnap.data.documents.toList()[0].data['last_name'];
+                  }
+                  return Text(
+                    '$firstname $lastname',
+                    style: kTitleTextStyle,
+                  );
+                }
               ),
               SizedBox(height: kSpacingUnit.w * 0.5),
               Text(
@@ -101,34 +134,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
-
-//    var themeSwitcher = ThemeSwitcher(
-//      builder: (context) {
-//        return AnimatedCrossFade(
-//          duration: Duration(milliseconds: 200),
-//          crossFadeState:
-//          ThemeProvider.of(context).brightness == Brightness.dark
-//              ? CrossFadeState.showFirst
-//              : CrossFadeState.showSecond,
-//          firstChild: GestureDetector(
-//            onTap: () =>
-//                ThemeSwitcher.of(context).changeTheme(theme: kLightTheme),
-//            child: Icon(
-//              LineAwesomeIcons.sun,
-//              size: ScreenUtil().setSp(kSpacingUnit.w * 3),
-//            ),
-//          ),
-//          secondChild: GestureDetector(
-//            onTap: () =>
-//                ThemeSwitcher.of(context).changeTheme(theme: kDarkTheme),
-//            child: Icon(
-//              LineAwesomeIcons.moon,
-//              size: ScreenUtil().setSp(kSpacingUnit.w * 3),
-//            ),
-//          ),
-//        );
-//      },
-//    );
 
     var header = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,13 +180,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                         child: ProfileListItem(
                           icon: LineAwesomeIcons.history,
-                          text: 'Purchase History',
+                          text: 'Riwayat Pembelian',
                           hasNavigation: 'true',
                         ),
                       ),
                       ProfileListItem(
                         icon: LineAwesomeIcons.question_circle,
-                        text: 'Chat With Costumer Service',
+                        text: 'Hubungi Customer Service',
                         hasNavigation: 'true',
                       ),
                       InkWell(
@@ -193,13 +198,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                         child: ProfileListItem(
                           icon: LineAwesomeIcons.cog,
-                          text: 'Settings',
+                          text: 'Pengaturan Akun',
                           hasNavigation: 'true',
                         ),
                       ),
                       ProfileListItem(
                         icon: LineAwesomeIcons.user_plus,
-                        text: 'Rating',
+                        text: 'Rating Kami',
                         hasNavigation: 'true',
                       ),
                       InkWell(

@@ -399,14 +399,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                       SizeConfig.textMultiplier,
                                                 ),
                                               ),
-                                              Text(
-                                                "Total Bayar Rp. ${cartTotal.toString()}",
-                                                textAlign: TextAlign.end,
-                                                style: TextStyle(
-                                                  color: kPrimaryColor,
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 2.6 *
-                                                      SizeConfig.textMultiplier,
+                                              Padding(
+                                                padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 16),
+                                                child: Text(
+                                                  "Total Bayar Rp. ${cartTotal.toString()}",
+                                                  textAlign: TextAlign.end,
+                                                  style: TextStyle(
+                                                    color: kPrimaryColor,
+                                                    fontWeight: FontWeight.normal,
+                                                    fontSize: 2.6 *
+                                                        SizeConfig.textMultiplier,
+                                                  ),
                                                 ),
                                               )
                                             ],
