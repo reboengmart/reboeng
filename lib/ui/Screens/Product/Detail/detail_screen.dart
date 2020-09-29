@@ -30,12 +30,14 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   String uid;
+  FirebaseUser userFirebase;
 
   void initUid()async{
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
     setState(() {
       uid = user.uid;
+      userFirebase = user;
     });
   }
   @override
@@ -72,7 +74,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => MainPageScreen(2)
+                                  builder: (context) => MainPageScreen(2, userFirebase)
                               )
                             );
                           },

@@ -29,14 +29,15 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainPageScreen(indexScreen),
+      home: MainPageScreen(indexScreen, widget.firebaseUser),
     );
   }
 }
 
 class MainPageScreen extends StatefulWidget {
   final int indexScreen;
-  MainPageScreen(this.indexScreen);
+  final FirebaseUser userFirebase;
+  MainPageScreen(this.indexScreen, this.userFirebase);
   @override
   _MainPageScreenState createState() => _MainPageScreenState(indexScreen);
 }
@@ -97,7 +98,7 @@ class _MainPageScreenState extends State<MainPageScreen> {
                   ],
                   child: Scaffold(
                     // ignore: unrelated_type_equality_checks
-                    appBar: (_currentIndex == 3 ) ? null : homeAppBar(context, search[_currentIndex].searchString),
+                    appBar: (_currentIndex == 3 ) ? null : homeAppBar(context, search[_currentIndex].searchString, widget.userFirebase.uid),
                     body: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       child: _children[_currentIndex],
