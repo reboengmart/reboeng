@@ -75,60 +75,68 @@ class CartApi {
   //Create Data
   Future<void> saveCart(Cart cart, String id, String stock_awal) async {
     getauth();
-    QuerySnapshot snapshot = await Firestore.instance
-        .collection('user')
-        .where('uid', isEqualTo: '$uid')
-        .getDocuments();
-    QuerySnapshot snapshotnama = await Firestore.instance
-        .collection('user')
-        .document('$uid')
+    QuerySnapshot snapshotvalidate = await Firestore.instance.collection('user')
+        .document('${uid}')
         .collection('cart')
-        .where('id', isEqualTo: id)
-        .getDocuments();
-    final _cartTotal = List.generate(snapshot.documents.length,
-        (index) => snapshot.documents[index].data['cartTotal']);
-    int cartTotal = _cartTotal.first;
-    int hasil = int.parse(stock_awal) - cart.qty;
-    int hasil1 = cartTotal + int.parse(cart.price);
-    return validateCartCollection().then((value) {
-      if(value){
-        validateEnvironment(cart.id).then((value) {
-          if (!value) {
-            Firestore.instance.collection('user').document('$uid').updateData(
-                {'cartTotal': cartTotal + int.parse(cart.price) * cart.qty});
-            return Firestore.instance
-                .collection('user')
-                .document(uid)
-                .collection('cart')
-                .document(cart.id)
-                .setData(cart.toMap());
-          } else {
-            Firestore.instance
-                .collection('user')
-                .document('$uid')
-                .updateData({'cartTotal': hasil1});
-            return Firestore.instance
-                .collection('user')
-                .document(uid)
-                .collection('cart')
-                .document(id)
-                .updateData({'qty': cart.qty});
-          }
-        });
-      }else{
-        String randomUid = randomAlpha(20);
-        Firestore.instance.collection('user').document('$uid').collection('cart').document(randomUid).setData({});
-        Firestore.instance.collection('user').document('$uid').updateData(
-            {'cartTotal': cartTotal + int.parse(cart.price) * cart.qty});
-        Firestore.instance
-            .collection('user')
-            .document(uid)
-            .collection('cart')
-            .document(cart.id)
-            .setData(cart.toMap());
-        return deleteUndefiniedCartItem(randomUid, uid);
-      }
-    });
+        .where('name', isEqualTo: cart.name).getDocuments();
+    if(snapshotvalidate.documents != null){
+      QuerySnapshot snapshot = await Firestore.instance
+          .collection('user')
+          .where('uid', isEqualTo: '$uid')
+          .getDocuments();
+      QuerySnapshot snapshotnama = await Firestore.instance
+          .collection('user')
+          .document('$uid')
+          .collection('cart')
+          .where('id', isEqualTo: id)
+          .getDocuments();
+      final _cartTotal = List.generate(snapshot.documents.length,
+              (index) => snapshot.documents[index].data['cartTotal']);
+      int cartTotal = _cartTotal.first;
+      int hasil = int.parse(stock_awal) - cart.qty;
+      int hasil1 = cartTotal + int.parse(cart.price);
+      return validateCartCollection().then((value) {
+        if(value){
+          validateEnvironment(cart.id).then((value) {
+            if (!value) {
+              Firestore.instance.collection('user').document('$uid').updateData(
+                  {'cartTotal': cartTotal + int.parse(cart.price) * cart.qty});
+              return Firestore.instance
+                  .collection('user')
+                  .document(uid)
+                  .collection('cart')
+                  .document(cart.id)
+                  .setData(cart.toMap());
+            } else {
+              Firestore.instance
+                  .collection('user')
+                  .document('$uid')
+                  .updateData({'cartTotal': hasil1});
+              return Firestore.instance
+                  .collection('user')
+                  .document(uid)
+                  .collection('cart')
+                  .document(id)
+                  .updateData({'qty': cart.qty});
+            }
+          });
+        }else{
+          String randomUid = randomAlpha(20);
+          Firestore.instance.collection('user').document('$uid').collection('cart').document(randomUid).setData({});
+          Firestore.instance.collection('user').document('$uid').updateData(
+              {'cartTotal': cartTotal + int.parse(cart.price) * cart.qty});
+          Firestore.instance
+              .collection('user')
+              .document(uid)
+              .collection('cart')
+              .document(cart.id)
+              .setData(cart.toMap());
+          return deleteUndefiniedCartItem(randomUid, uid);
+        }
+      });
+  }else{
+  return 0;
+  }
   }
 
   Future<void> deleteUndefiniedCartItem(String id, String uid){
