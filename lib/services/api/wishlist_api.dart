@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:random_string/random_string.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/services/model/SubProduct.dart';
 import 'package:reboeng/services/model/WishList.dart';
@@ -39,10 +40,87 @@ class WishListApi{
 
     QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('wishlist').where('sub_product_ref', isEqualTo: wishList.sub_product_ref).getDocuments();
     if(snapshot.documents != null) {
-      return Firestore.instance.collection('user').document(uid).collection(
-          'wishlist').document(wishList.id).setData(wishList.toMap());
+//      return Firestore.instance.collection('user').document(uid).collection(
+//          'wishlist').document(wishList.id).setData(wishList.toMap());
+      return validateCartCollection().then((value) {
+        if(value){
+          validateEnvironment(wishList.id).then((value) {
+            if (!value) {
+              return Firestore.instance
+                  .collection('user')
+                  .document(uid).collection('wishlist')
+                  .document(wishList.id).setData(wishList.toMap());
+            }
+          });
+        }else{
+          String randomUid = randomAlpha(20);
+          Firestore.instance.collection('user').document('$uid').collection('wishlist').document(randomUid).setData({});
+          Firestore.instance
+              .collection('user')
+              .document(uid)
+              .collection('wishlist')
+              .document(wishList.id)
+              .setData(wishList.toMap());
+          return deleteUndefiniedCartItem(randomUid, uid);
+        }
+      });
     }else{
       return 0;
+    }
+  }
+  Future<void> deleteUndefiniedCartItem(String id, String uid){
+    print(id);
+    return Future.delayed(Duration(seconds: 1)).then((value) => Firestore.instance
+        .collection('user')
+        .document(uid)
+        .collection('wishlist')
+        .document('$id')
+        .delete());
+  }
+  static Future<bool> validateCartCollection() async{
+    bool exists = false;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    final uidd = user.uid;
+    try {
+      await Firestore.instance
+          .collection("user")
+          .document(uidd)
+          .collection("wishlist")
+          .document()
+          .get()
+          .then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
+    }
+  }
+  static Future<bool> validateEnvironment(String idwishlist) async {
+    bool exists = false;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    final uidd = user.uid;
+    try {
+      await Firestore.instance
+          .collection("user")
+          .document(uidd)
+          .collection("wishlist")
+          .document(idwishlist)
+          .get()
+          .then((doc) {
+        if (doc.exists)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
     }
   }
   static Future<void> subproductReference(SubProductNotifier subProductNotifier, String sub_product_reference, int cartItemLength) async {
