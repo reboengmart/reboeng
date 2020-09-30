@@ -34,8 +34,8 @@ class CartNotifier with ChangeNotifier{
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
-    var newCart=Cart(id:uuid.v1(),qty:1,name:name,price: price,assets: assets,status: status,unit: unit);
-    cartApi.saveCart(newCart,id,stock_awal);
+    var newCart=Cart(id:name,qty:1,name:name,price: price,assets: assets,status: status,unit: unit);
+    cartApi.saveCart(newCart,name,stock_awal);
 
 
   }

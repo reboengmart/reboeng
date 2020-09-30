@@ -362,7 +362,7 @@ class _WishListState extends State<WishList> {
                                                                                   _showSnackBar();
                                                                                 } else {
                                                                                   setState(() {
-                                                                                    subCartNotifier.saveCart(productid, productStock.toString(), productName, productPrice.toString(), productAssets, productstatus, productUnit);
+                                                                                    subCartNotifier.saveCart(productName, productStock.toString(), productName, productPrice.toString(), productAssets, productstatus, productUnit);
                                                                                     wishListNotifier.deleteWishList(wishId);
 //                                                      wishlistItemList.removeAt(index);
 //                                                      wishlistItem--;
