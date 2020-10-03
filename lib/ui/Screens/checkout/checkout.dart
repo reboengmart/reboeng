@@ -254,7 +254,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   if (_cartTotal == null) {
                     return Padding(
                         padding: const EdgeInsets.only(top : 2),
-                        child: Center(child: CircularProgressIndicator())
+                        child: Center(child: Text(''))
                     );
                   }
                   if (snapshot.hasError) {
@@ -451,10 +451,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     );
                   }
                   if (snapshot.connectionState != ConnectionState.done) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top : 2),
-                      child: Center(
-                        child: CircularProgressIndicator(),
+                    return Center(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: SizeConfig.heightMultiplier * 50, top: SizeConfig.heightMultiplier * 50),
+                        child: CircularProgressIndicator()
                       ),
                     );
                   }

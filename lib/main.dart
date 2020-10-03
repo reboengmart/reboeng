@@ -14,8 +14,32 @@ import 'package:reboeng/services/api/user_api.dart';
 import 'package:reboeng/services/api/wishlist_api.dart';
 import 'package:reboeng/services/auth.dart';
 import 'package:reboeng/services/wrapper.dart';
+import 'package:reboeng/ui/constants.dart';
+import 'package:splashscreen/splashscreen.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(StartScreen());
+
+class StartScreen extends StatefulWidget {
+  @override
+  _StartScreenState createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: new SplashScreen(
+        seconds: 8,
+        navigateAfterSeconds: new MyApp(),
+        image:  Image.asset('assets/reboeng.png'),
+        photoSize: 100.0,
+//        image: new Image.network('https://firebasestorage.googleapis.com/v0/b/reboeng-f95b7.appspot.com/o/appSettings%2Fcropped-Reboeng-horisontal.png'),
+      ),
+    );
+  }
+}
+
 
 class MyApp extends StatelessWidget {
   @override

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/DrawerProvider.dart';
@@ -21,6 +22,34 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+  final firebaseMessaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+
+//    firebaseMessaging.configure(
+//      onLaunch:  (Map<String, dynamic> message) async {
+//        debugPrint('onLaunch: $message');
+//      },
+//      onBackgroundMessage: (Map<String, dynamic> message) async {
+//      debugPrint('onBackground: $message');
+//    }
+//    );
+
+    firebaseMessaging.requestNotificationPermissions(
+    const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: true)
+    );
+
+    firebaseMessaging.onIosSettingsRegistered.listen((event) {
+      debugPrint('settings registered: $event');
+    });
+
+    firebaseMessaging.subscribeToTopic(widget.firebaseUser.uid);
+
+    // TODO: implement initState
+    super.initState();
+  }
 
   final int indexScreen;
   _MainPageState(this.indexScreen);

@@ -119,14 +119,14 @@ class _WishListState extends State<WishList> {
                       ),
                     ),
                     Expanded(
-                      child: (wishlistItem == null)
+                      child: (wishlistItem.length < 1)
                           ? Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Icon(
-                                    FontAwesomeIcons.heartBroken,
+                                    FontAwesomeIcons.handHoldingHeart,
                                     color: Colors.grey,
                                     size: 60.0,
                                   ),
@@ -134,7 +134,7 @@ class _WishListState extends State<WishList> {
                                     height: 10.0,
                                   ),
                                   Text(
-                                    'Tidak Ada Produk Harapan Di sini :(',
+                                    'Silahkan buka menu produk dan tekan tombol hati',
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                   SizedBox(
@@ -400,7 +400,7 @@ class _WishListState extends State<WishList> {
                                     if (wishListSnapshot.connectionState !=
                                         ConnectionState.done) {
                                       return Center(
-                                        child: Text(''),
+                                        child: CircularProgressIndicator()
                                       );
                                     }
                                     if (!wishListSnapshot.hasData &&
