@@ -1,26 +1,26 @@
 class TransactionModel{
-  String id_transaction;
-  int total_transaction;
-  String date_transaction;
+  String idTransaction;
+  int totalTransaction;
+  String dateTransaction;
 
 
-  TransactionModel({this.id_transaction,this.total_transaction,this.date_transaction});
+  TransactionModel({this.idTransaction,this.totalTransaction,this.dateTransaction});
 
   TransactionModel.fromFirestore(Map<String,dynamic> firestore)
-      : id_transaction=firestore['id_transaction'],
-        total_transaction=firestore['total_transaction'],
-        date_transaction=firestore['date_transaction'];
+      : idTransaction=firestore['id_transaction'],
+        totalTransaction=firestore['total_transaction'],
+        dateTransaction=firestore['date_transaction'];
   Map<String,dynamic> toMap(){
     return{
-      'id_transaction':id_transaction,
-      'total_transaction':total_transaction,
-      'date_transaction':date_transaction
+      'id_transaction':idTransaction,
+      'total_transaction':totalTransaction,
+      'date_transaction':dateTransaction
     };
   }
 
   TransactionModel.formMap(Map<String,dynamic> firestore){
-    id_transaction=firestore['id_transaction'];
-    total_transaction=firestore['total_transaction'];
-    date_transaction=firestore['date_transaction'];
+    idTransaction=firestore['id_transaction'];
+    totalTransaction=firestore['total_transaction'];
+    dateTransaction=firestore['date_transaction'];
   }
 }

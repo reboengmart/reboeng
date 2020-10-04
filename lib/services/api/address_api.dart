@@ -18,65 +18,65 @@ class AddressApi{
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
     uid = user.uid;
-    List<Address> _ListAddress=[];
-    List<Address> _ListAddress2=[];
+    List<Address> _listAddress=[];
+    List<Address> _listAddress2=[];
     QuerySnapshot snapshot = await _db.collection('user').document('$uid').collection('address').getDocuments();
     QuerySnapshot snapshot2 = await _db.collection('user').document('$uid').collection('address').where('notSelected',isEqualTo: false).getDocuments();
     snapshot.documents.forEach((element) {
       Address address=Address.formMap(element.data);
-      _ListAddress.add(address);
+      _listAddress.add(address);
     });
     snapshot2.documents.forEach((element) {
       Address address=Address.formMap(element.data);
-      _ListAddress2.add(address);
+      _listAddress2.add(address);
     });
 
-     addressNotifier.addressList2=_ListAddress2;
-    return addressNotifier.addressList=_ListAddress;
+     addressNotifier.addressList2=_listAddress2;
+    return addressNotifier.addressList=_listAddress;
   }
 
   Future<void> getLatlng(AddressNotifier addressNotifier, String id) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
     uid = user.uid;
-    List<Address> _ListAddress=[];
-    QuerySnapshot snapshot = await _db.collection('user').document('${uid}').collection('address').where('id', isEqualTo: '$id').getDocuments();
+    List<Address> _listAddress=[];
+    QuerySnapshot snapshot = await _db.collection('user').document('$uid').collection('address').where('id', isEqualTo: '$id').getDocuments();
     snapshot.documents.forEach((element) {
       Address address=Address.formMap(element.data);
-      _ListAddress.add(address);
+      _listAddress.add(address);
     });
-    return addressNotifier.addressList=_ListAddress;
+    return addressNotifier.addressList=_listAddress;
   }
   Future<void> saveAddress(Address address) async{
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
     uid = user.uid;
-    return Firestore.instance.collection('user').document('${uid}').collection('address').document(address.id).setData(address.toMap());
+    return Firestore.instance.collection('user').document('$uid').collection('address').document(address.id).setData(address.toMap());
   }
   static Future<void> updatestatusPrimary(String id) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseUser user = await _auth.currentUser();
     String uid = user.uid;
     String iid;
-    List<Address> _ListAddress=[];
-    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('address').where('status', isEqualTo: 'primary').getDocuments();
+    List<Address> _listAddress=[];
+    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('$uid').collection('address').where('status', isEqualTo: 'primary').getDocuments();
     snapshot.documents.forEach((element) {
       Address address=Address.formMap(element.data);
-      _ListAddress.add(address);
+      _listAddress.add(address);
     });
 
-    iid = _ListAddress.first.id;
+    iid = _listAddress.first.id;
 
     Firestore.instance
         .collection('user')
-        .document('${uid}')
+        .document('$uid')
         .collection('address')
         .document(iid)
         .updateData({'status': 'not primary'});
 
     return Firestore.instance
         .collection('user')
-        .document('${uid}')
+        .document('$uid')
         .collection('address')
         .document(id)
         .updateData({'status': 'primary'});
@@ -87,7 +87,7 @@ class AddressApi{
     String uid = user.uid;
     return Firestore.instance
         .collection('user')
-        .document('${uid}')
+        .document('$uid')
         .collection('address')
         .document(id)
         .updateData({'status': 'not primary'});

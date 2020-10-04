@@ -1,4 +1,3 @@
-
 class ProductCategory{
    String id;
    String nama;

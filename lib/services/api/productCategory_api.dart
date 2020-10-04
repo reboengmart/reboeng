@@ -7,13 +7,13 @@ class ProductCategoryApi {
  static Future<void> getProductCategory(ProductCategoryNotifier categoryNotifier) async{
   QuerySnapshot snapshot=await Firestore.instance.collection('category').orderBy('priority').getDocuments();
 
-  List<ProductCategory> _ListCategory=[];
+  List<ProductCategory> _listCategory=[];
   snapshot.documents.forEach((element) {
    ProductCategory productCategory=ProductCategory.formMap(element.data);
-   _ListCategory.add(productCategory);
+   _listCategory.add(productCategory);
   });
 
-  return categoryNotifier.categoryList=_ListCategory;
+  return categoryNotifier.categoryList=_listCategory;
  }
 
 }

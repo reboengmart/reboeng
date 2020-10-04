@@ -9,14 +9,14 @@ class UserNotifier with ChangeNotifier{
 //  final cartApi=CartApi();
   String _id;
   int _qty;
-  String _sub_product_ref;
-  String _user_ref;
+  String _subProductRef;
+  String _userRef;
   String uid;
   var uuid=Uuid();
   String get id =>_id;
   int get qty => _qty;
-  String get sub_product_ref=> _sub_product_ref;
-  String get user_ref=> _user_ref;
+  String get subProductRef=> _subProductRef;
+  String get userRef=> _userRef;
 
   List<User> _userList=[];
   User _currentUser;
@@ -38,7 +38,7 @@ class UserNotifier with ChangeNotifier{
 //    final FirebaseAuth _auth=FirebaseAuth.instance;
 //    final FirebaseUser user=await  _auth.currentUser();
 //    uid=user.uid;
-//    var newCart=Cart(id:uuid.v1(),qty:1,sub_product_ref:subProduct,user_ref:uid);
+//    var newCart=Cart(id:uuid.v1(),qty:1,subProductRef:subProduct,userRef:uid);
 //    cartApi.saveCart(newCart);
 //
 //  }
@@ -46,7 +46,7 @@ class UserNotifier with ChangeNotifier{
 //    final FirebaseAuth _auth=FirebaseAuth.instance;
 //    final FirebaseUser user=await  _auth.currentUser();
 //    uid=user.uid;
-//    var newCart=Cart(id:uuid.v1(),qty:qty,sub_product_ref:subProduct,user_ref:uid);
+//    var newCart=Cart(id:uuid.v1(),qty:qty,subProductRef:subProduct,userRef:uid);
 //    cartApi.saveCart(newCart);
 //
 //  }

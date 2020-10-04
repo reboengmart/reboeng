@@ -14,7 +14,7 @@ class AddressNotifier with ChangeNotifier{
   var uuid=Uuid();
   final addressAPI=AddressApi();
   String uid;
-  String _id,_nama,_detail,_icon,_status;
+  String _nama,_detail,_icon,_status;
   GeoPoint _geo;
   bool _notSelected;
   //Getter

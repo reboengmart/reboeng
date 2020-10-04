@@ -1,37 +1,34 @@
 import 'package:reboeng/services/model/DetaiInvoiceModel.dart';
-
-import 'Cart.dart';
-
 class InvoiceModel{
-  final DateTime date_invoice;
+  final DateTime dateInvoice;
   final String address;
   final int delivery;
-  final String id_invoice;
-  final int total_invoice;
-  final int total_payment;
-  final String user_ref;
-  final List<DetaiInvoiceModel> DetailInvoice;
-  InvoiceModel({this.date_invoice,this.address,this.delivery,this.id_invoice,this.total_invoice
-  ,this.total_payment,this.user_ref,this.DetailInvoice});
+  final String idInvoice;
+  final int totalInvoice;
+  final int totalPayment;
+  final String userRef;
+  final List<DetaiInvoiceModel> detailInvoice;
+  InvoiceModel({this.dateInvoice,this.address,this.delivery,this.idInvoice,this.totalInvoice
+  ,this.totalPayment,this.userRef,this.detailInvoice});
 
 InvoiceModel.fromFirestore(Map<String,dynamic> firestore)
-:date_invoice=firestore['date_invoice'],
+:dateInvoice=firestore['date_invoice'],
 address=firestore['address'],
-DetailInvoice=firestore['DetailInvoice'],
+detailInvoice=firestore['detail_invoice'],
 delivery=firestore['delivery'],
-id_invoice=firestore['id_invoice'],
-total_invoice=firestore['total_invoice'],
-total_payment=firestore['total_payment'],
-user_ref=firestore['user_ref'];
+idInvoice=firestore['id_invoice'],
+totalInvoice=firestore['total_invoice'],
+totalPayment=firestore['total_payment'],
+userRef=firestore['user_ref'];
 Map<String,dynamic> toMap(){
   return{
-    'date_invoice':date_invoice,
+    'date_invoice':dateInvoice,
     'address':address,
     'delivery':delivery,
-    'id_invoice':id_invoice,
-    'total_invoice':total_invoice,
-    'total_payment':total_payment,
-    'user_ref':user_ref
+    'id_invoice':idInvoice,
+    'total_invoice':totalInvoice,
+    'total_payment':totalPayment,
+    'user_ref':userRef
   };
 }
 

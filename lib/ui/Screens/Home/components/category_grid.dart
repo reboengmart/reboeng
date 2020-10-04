@@ -52,6 +52,7 @@ class _FeedState extends State<CategoryGrid>{
                       );
                       break;
                     case "comingsoon":
+                      // ignore: unnecessary_statements
                       0;
                       break;
                     default:

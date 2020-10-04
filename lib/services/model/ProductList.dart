@@ -1,22 +1,22 @@
 class ProductList{
    String id;
    String assets;
-   String category_ref;
+   String categoryRef;
    String nama;
 
 
    ProductList.formMap(Map<String,dynamic> data){
      id=data['id'];
      nama=data['nama'];
-     category_ref=data['category_ref'];
+     categoryRef=data['category_ref'];
      assets=data['assets'];
    }
-//  ProductList({this.id,this.assets,this.category_ref,this.nama});
+//  ProductList({this.id,this.assets,this.categoryRef,this.nama});
 //  Map<String,dynamic> toMap(){
 //    return{
 //      'nama' :nama,
 //      'assets':assets,
-//      'category_ref':category_ref,
+//      'category_ref':categoryRef,
 //      'id':id,
 //    };
 //  }
@@ -24,6 +24,6 @@ class ProductList{
 //  ProductList.fromFirestore(Map<String, dynamic> firestore)
 //  : id=firestore['id'],
 //    nama=firestore['nama'],
-//    category_ref=firestore['category_ref'],
+//    categoryRef=firestore['category_ref'],
 //    assets=firestore['assets'];
 }

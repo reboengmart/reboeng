@@ -11,6 +11,7 @@ class ItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // ignore: non_constant_identifier_names
     final ProductList = [
       {
         'name': 'Sawi Putih',

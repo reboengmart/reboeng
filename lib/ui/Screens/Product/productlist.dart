@@ -122,6 +122,7 @@ class _ProductListItemState extends State<ProductListItem> {
                               ),
                               Expanded(
                                 child: Consumer<ProductListNotifier>(
+                                    // ignore: non_constant_identifier_names
                                     builder:(context,ProductListNotifier,_) {
 //                                      List<ProductList> productList=ProductListNotifier.item;
 //                                      print('tes $productList');

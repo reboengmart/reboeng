@@ -3,7 +3,7 @@ class SubProduct{
   String name;
   String assets;
   int price;
-  String product_ref;
+  String productRef;
   int stock;
   String unit;
   String status;
@@ -13,7 +13,7 @@ class SubProduct{
     name=data['name'];
     assets=data['assets'];
     price=data['price'];
-    product_ref=data['product_ref'];
+    productRef=data['product_ref'];
     stock=data['stock'];
     unit=data['unit'];
     status=data['status'];

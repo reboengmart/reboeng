@@ -28,7 +28,7 @@ class _BodyState extends State<Body> {
   Future<void> _refreshNow() async {
     ProductCategoryNotifier productCategoryNotifier =
         Provider.of<ProductCategoryNotifier>(context, listen: false);
-    await setState(() {
+    setState(() {
       RefreshServices.homeRefresh(productCategoryNotifier);
     });
     await Future.delayed(Duration(milliseconds: 1500));

@@ -30,35 +30,34 @@ class CartNotifier with ChangeNotifier{
   static void deleteCart(String id,int price,int total,int qty) {
     CartApi.removeCart(id,price,total,qty);
   }
-  void saveCart(String id,String stock_awal,String name,String price,String assets,String status,String unit) async {
+  void saveCart(String id,String stockAwal,String name,String price,String assets,String status,String unit) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
     var newCart=Cart(id:name,qty:1,name:name,price: price,assets: assets,status: status,unit: unit);
-    cartApi.saveCart(newCart,name,stock_awal);
+    cartApi.saveCart(newCart,name,stockAwal);
 
 
   }
-  void saveCartPage(String id,String stock_awal,int qty,String name,String price,String assets,String status,String unit) async {
+  void saveCartPage(String id,String stockAwal,int qty,String name,String price,String assets,String status,String unit) async {
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
-    int total=int.parse(price) * qty;
     var newCart=Cart(id:name,qty:qty,name:name,price: price,assets: assets,status: status,unit: unit);
-    cartApi.saveCart(newCart,name,stock_awal);
+    cartApi.saveCart(newCart,name,stockAwal);
 
   }
   static void kurangqty(String id,int qty, int price, int total) {
     CartApi.removeqty(id,qty,price,total);
   }
-  void tambahqty(String sub_product_id, String id,int qty, int price, int total)async{
+  void tambahqty(String subProductId, String id,int qty, int price, int total)async{
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
 
     List<SubProduct> _subprodutList = [];
 
-    QuerySnapshot snapshot = await Firestore.instance.collection('sub_product').where('name', isEqualTo: sub_product_id).getDocuments();
+    QuerySnapshot snapshot = await Firestore.instance.collection('sub_product').where('name', isEqualTo: subProductId).getDocuments();
     snapshot.documents.forEach((element) {
       SubProduct subProduct = SubProduct.formMap(element.data);
       _subprodutList.add(subProduct);

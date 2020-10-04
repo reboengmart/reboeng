@@ -192,6 +192,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     InkWell(
                                       onTap: () {
                                         setState(() {
+                                          // ignore: unnecessary_statements
                                           (int.parse(widget.foodStock) <= _totalproduct)? _totalproduct=widget.foodStock :_totalproduct;
                                           _totalproduct +=1;
                                           _subproduct(_totalproduct);

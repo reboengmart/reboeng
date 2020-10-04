@@ -31,25 +31,25 @@ class WishListApi{
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     String uid=user.uid;
-    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('wishlist').where('sub_product_ref', isEqualTo: id).getDocuments();
+    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('$uid').collection('wishlist').where('sub_product_ref', isEqualTo: id).getDocuments();
     return Firestore.instance.collection('user').document(uid).collection('wishlist').document(snapshot.documents.first.documentID).delete();
   }
   //Create Data
   Future<void> saveWishlist(WishListModel wishList) async{
     getauth();
 
-    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('wishlist').where('sub_product_ref', isEqualTo: wishList.sub_product_ref).getDocuments();
+    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('$uid').collection('wishlist').where('sub_product_ref', isEqualTo: wishList.subProductRef).getDocuments();
     if(snapshot.documents != null) {
-//      return Firestore.instance.collection('user').document(uid).collection(
-//          'wishlist').document(wishList.id).setData(wishList.toMap());
-      return validateCartCollection().then((value) {
-        if(value){
-          validateEnvironment(wishList.id).then((value) {
+      return validateCartCollection().then((exist) {
+        if(exist){
+          return validateEnvironment(wishList.id).then((value) {
             if (!value) {
               return Firestore.instance
                   .collection('user')
                   .document(uid).collection('wishlist')
                   .document(wishList.id).setData(wishList.toMap());
+            } else{
+              return 0;
             }
           });
         }else{
@@ -123,11 +123,11 @@ class WishListApi{
       return false;
     }
   }
-  static Future<void> subproductReference(SubProductNotifier subProductNotifier, String sub_product_reference, int cartItemLength) async {
+  static Future<void> subproductReference(SubProductNotifier subProductNotifier, String subProductReference, int cartItemLength) async {
     Firestore _db = Firestore.instance;
     List<SubProduct> _subProduct = [];
 //    _subProduct.isEmpty;
-    QuerySnapshot snapshot=await _db.collection('sub_product').where('id', isEqualTo: sub_product_reference).getDocuments();
+    QuerySnapshot snapshot=await _db.collection('sub_product').where('id', isEqualTo: subProductReference).getDocuments();
     snapshot.documents.forEach((element) {
       SubProduct productCategory=SubProduct.formMap(element.data);
 //      subProductNotifier.subproductList.add(productCategory);

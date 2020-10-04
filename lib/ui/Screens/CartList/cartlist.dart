@@ -1,13 +1,14 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/services/api/cart_api.dart';
 import 'package:reboeng/services/model/SubProduct.dart';
-import 'package:reboeng/services/model/User.dart';
 import 'package:reboeng/ui/Screens/checkout/checkout.dart';
 import 'package:reboeng/ui/components/sizeconfig.dart';
 import 'package:reboeng/ui/constants.dart';
@@ -31,6 +32,18 @@ class _CartListState extends State<CartList> {
     // TODO: implement initState
     super.initState();
     firebaseUid();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    print("BACK BUTTON!"); // Do some stuff.
+    return true;
   }
 
   void getSubProduct(SubProductNotifier subProductNotifier,
@@ -42,7 +55,7 @@ class _CartListState extends State<CartList> {
   void subProductGet(String subProductRef, int cartItemLength) async {
     SubProductNotifier subProductNotifier =
         Provider.of<SubProductNotifier>(context, listen: false);
-    await getSubProduct(subProductNotifier, subProductRef, cartItemLength);
+    getSubProduct(subProductNotifier, subProductRef, cartItemLength);
   }
 
   void firebaseUid() async {
@@ -94,7 +107,6 @@ class _CartListState extends State<CartList> {
 
   @override
   Widget build(BuildContext context) {
-    int bayarStatus = 0;
     int cartTotal;
     firebaseUid();
     return new Scaffold(
@@ -133,7 +145,7 @@ class _CartListState extends State<CartList> {
                                   .data.documents[index].data['qty'];
                               String cartId =
                                   cartSnapshot.data.documents[index].documentID;
-                              String sub_product_id =
+                              String subProductId =
                                   cartSnapshot.data.documents[index].data['id'];
                               String productAssets = cartSnapshot
                                   .data.documents[index].data['assets'];
@@ -182,7 +194,7 @@ class _CartListState extends State<CartList> {
                                                             FontWeight.bold),
                                                   ),
                                                   Text(
-                                                    "Harga: Rp. ${productPrice} per $productUnit",
+                                                    "Harga: Rp. $productPrice per $productUnit",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -248,7 +260,7 @@ class _CartListState extends State<CartList> {
                                                                 .width *
                                                             0.01),
                                                     child: Text(
-                                                      "${qty} $productUnit",
+                                                      "$qty $productUnit",
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -260,7 +272,7 @@ class _CartListState extends State<CartList> {
                                                       qty += 1;
 //                                                          _subproduct(_totalproduct);
                                                       CartNotifier().tambahqty(
-                                                          sub_product_id,
+                                                          subProductId,
                                                           cartId,
                                                           qty,
                                                           int.parse(
@@ -372,54 +384,71 @@ class _CartListState extends State<CartList> {
                           return Text(snapshot.error);
                         }
                         if (_cartTotal != null) {
-                          return Column(
-                            children: <Widget>[
-                              Text(
-                                (_cartTotal[0] < 1)
-                                    ? "Dilarang Membayar\n Jika Anda Belum Memasukkan Produk di sini\n hehehe"
-                                    : "Total Keranjang    Rp. ${_cartTotal[0].toString()}",
-                                textAlign: TextAlign.end,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 2.6 * SizeConfig.textMultiplier,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20.0,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 40),
-                                child: Container(
-                                  child: (_cartTotal[0] == 0)
-                                      ? RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12)),
-                                    color: kTextColor,
-                                    child: Text(
-                                      "Belum Bisa Bayar".toUpperCase(),
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    onPressed: () {},
-                                  )
-                                      : RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12)),
-                                    color: kPrimaryColor,
-                                    child: Text(
-                                      "bayar".toUpperCase(),
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CheckOutScreen()));
-                                    },
+                          return Container(
+                            margin: EdgeInsets.only(left: SizeConfig.widthMultiplier * 20),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  (_cartTotal[0] < 1)
+                                      ? "Keranjang anda masih kosong, silahkan buka menu produk dan tambahkan produk\nke dalam keranjang"
+                                      : "Total Keranjang    Rp. ${_cartTotal[0].toString()}",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 2.6 * SizeConfig.textMultiplier,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      right: SizeConfig.widthMultiplier * 1.5),
+                                  alignment: Alignment.bottomRight,
+                                  child: (_cartTotal[0] < 1)
+                                      ? Icon(FontAwesomeIcons.cartPlus,
+                                          color: kPrimaryColor)
+                                      : Text(''),
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: SizeConfig.widthMultiplier * 40),
+                                  child: Container(
+                                    child: (_cartTotal[0] == 0)
+                                        ? RaisedButton(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                            color: kTextColor,
+                                            child: Text(
+                                              "bayar".toUpperCase(),
+                                              style:
+                                                  TextStyle(color: Colors.white),
+                                            ),
+                                            onPressed: () {},
+                                          )
+                                        : RaisedButton(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                            color: kPrimaryColor,
+                                            child: Text(
+                                              "bayar".toUpperCase(),
+                                              style:
+                                                  TextStyle(color: Colors.white),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CheckOutScreen()));
+                                            },
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         }
                         if (snapshot.connectionState != ConnectionState.done) {
@@ -428,7 +457,6 @@ class _CartListState extends State<CartList> {
                           );
                         }
                       }),
-
                 ],
               ),
             )

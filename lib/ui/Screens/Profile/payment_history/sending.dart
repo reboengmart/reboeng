@@ -34,7 +34,8 @@ class _SendingProductHistoryState extends State<SendingProductHistory> {
                     itemBuilder: (context, index){
                       final item = historyProvider.historyList[index];
                       return FutureBuilder(
-                          future: Firestore.instance.collection('transaction').document(item.transaction_ref).collection('invoice').where('id_invoice', isEqualTo: item.invoice_ref).getDocuments(),
+                          future: Firestore.instance.collection('transaction').document(item.transactionRef).collection('invoice').where('id_invoice', isEqualTo: item.invoiceRef).getDocuments(),
+                          // ignore: missing_return
                           builder: (BuildContext context,
                               AsyncSnapshot snap) {
                             if(snap.hasData){
@@ -44,7 +45,7 @@ class _SendingProductHistoryState extends State<SendingProductHistory> {
                                   .data['date_invoice'];
                               DateTime tanggal = t.toDate();
 //                            String formattanggal = DateFormat('d MMMM y').format(tanggal);
-                              String total_payment = snap
+                              String totalPayment = snap
                                   .data.documents
                                   .toList()[0]
                                   .data['total_payment'].toString();
@@ -121,7 +122,7 @@ class _SendingProductHistoryState extends State<SendingProductHistory> {
                                                           10.0,
                                                         ),
                                                         Text(
-                                                          'Rp. ${total_payment}',
+                                                          'Rp. $totalPayment',
                                                           style:
                                                           TextStyle(
                                                             color: Colors.blue,

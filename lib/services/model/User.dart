@@ -1,54 +1,67 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   String email;
-  String first_name;
-  String last_name;
+  String firstName;
+  String lastName;
   String password;
   String phone;
   String uid;
   int cartTotal;
-  String create_at;
+  Timestamp registeredAt;
+  String profilePhoto;
+  String status;
 
   User(
       {this.uid,
       this.phone,
-      this.last_name,
-      this.first_name,
+      this.lastName,
+      this.firstName,
       this.email,
       this.password,
       this.cartTotal,
-      this.create_at});
+      this.registeredAt,
+      this.profilePhoto,
+        this.status
+      });
 
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'phone': phone,
-      'last_name': last_name,
-      'first_name': first_name,
+      'last_name': lastName,
+      'first_name': firstName,
       'email': email,
       'password': password,
       'cartTotal': cartTotal,
-      'create_at': create_at,
+      'registered_at': registeredAt,
+      'profile_photo' : profilePhoto,
+      'status' : status
     };
   }
 
   User.fromFirestore(Map<String, dynamic> firestore)
       : uid = firestore['uid'],
         phone = firestore['phone'],
-        last_name = firestore['last_name'],
-        first_name = firestore['first_name'],
+        lastName = firestore['last_name'],
+        firstName = firestore['first_name'],
         email = firestore['email'],
         cartTotal = firestore['cartTotal'],
         password = firestore['password'],
-        create_at = firestore['create_at'];
+        registeredAt = firestore['registered_at'],
+        profilePhoto = firestore['profile_photo'],
+        status = firestore['status'];
 
   User.formMap(Map<String,dynamic> firestore){
     uid = firestore['uid'];
     phone = firestore['phone'];
-    last_name = firestore['last_name'];
-    first_name = firestore['first_name'];
+    lastName = firestore['last_name'];
+    firstName = firestore['first_name'];
     email = firestore['email'];
     cartTotal = firestore['cartTotal'];
     password = firestore['password'];
-    create_at = firestore['create_at'];
+    registeredAt = firestore['registered_at'];
+    profilePhoto = firestore['profile_photo'];
+    status = firestore['status'];
   }
 }

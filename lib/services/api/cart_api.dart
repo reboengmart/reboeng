@@ -33,13 +33,13 @@ class CartApi {
   }
 
   static Future<void> subproductReference(SubProductNotifier subProductNotifier,
-      String sub_product_reference, int cartItemLength) async {
+      String subProductReference, int cartItemLength) async {
     Firestore _db = Firestore.instance;
     List<SubProduct> _subProduct = [];
 //    _subProduct.isEmpty;
     QuerySnapshot snapshot = await _db
         .collection('sub_product')
-        .where('id', isEqualTo: sub_product_reference)
+        .where('id', isEqualTo: subProductReference)
         .getDocuments();
     snapshot.documents.forEach((element) {
       SubProduct productCategory = SubProduct.formMap(element.data);
@@ -73,10 +73,10 @@ class CartApi {
   }
 
   //Create Data
-  Future<void> saveCart(Cart cart, String id, String stock_awal) async {
+  Future<void> saveCart(Cart cart, String id, String stockAwal) async {
     getauth();
     QuerySnapshot snapshotvalidate = await Firestore.instance.collection('user')
-        .document('${uid}')
+        .document('$uid')
         .collection('cart')
         .where('name', isEqualTo: cart.name).getDocuments();
     if(snapshotvalidate.documents != null){
@@ -84,20 +84,14 @@ class CartApi {
           .collection('user')
           .where('uid', isEqualTo: '$uid')
           .getDocuments();
-      QuerySnapshot snapshotnama = await Firestore.instance
-          .collection('user')
-          .document('$uid')
-          .collection('cart')
-          .where('id', isEqualTo: id)
-          .getDocuments();
       final _cartTotal = List.generate(snapshot.documents.length,
               (index) => snapshot.documents[index].data['cartTotal']);
       int cartTotal = _cartTotal.first;
-      int hasil = int.parse(stock_awal) - cart.qty;
+//      int hasil = int.parse(stockAwal) - cart.qty;
       int hasil1 = cartTotal + int.parse(cart.price);
-      return validateCartCollection().then((value) {
-        if(value){
-          validateEnvironment(cart.id).then((value) {
+      return validateCartCollection().then((exist) {
+        if(exist){
+          return validateEnvironment(cart.id).then((value) {
             if (!value) {
               Firestore.instance.collection('user').document('$uid').updateData(
                   {'cartTotal': cartTotal + int.parse(cart.price) * cart.qty});
@@ -203,7 +197,7 @@ class CartApi {
     final FirebaseUser user = await _auth.currentUser();
     String uid = user.uid;
     int hasil = total - price;
-    int pricee = price - price;
+//    int pricee = price - price;
     Firestore.instance
         .collection('user')
         .document('$uid')
@@ -221,7 +215,7 @@ class CartApi {
     final FirebaseUser user = await _auth.currentUser();
     String uid = user.uid;
     int hasil = total + price;
-    int pricee = price + price;
+//    int pricee = price + price;
     Firestore.instance
         .collection('user')
         .document('$uid')

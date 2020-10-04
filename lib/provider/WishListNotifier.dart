@@ -8,11 +8,11 @@ class WishListNotifier with ChangeNotifier{
   final cartwishList=WishListApi();
 //  final firestoreService2=CartApi();
   String _id;
-  String _sub_product_ref;
+  String _subProductRef;
   String uid;
   var uuid=Uuid();
   String get id =>_id;
-  String get sub_product_ref=> _sub_product_ref;
+  String get subProductRef=> _subProductRef;
 
    void deleteWishList(String id) {
     WishListApi.removeWishlist(id);
@@ -25,7 +25,7 @@ class WishListNotifier with ChangeNotifier{
     final FirebaseAuth _auth=FirebaseAuth.instance;
     final FirebaseUser user=await  _auth.currentUser();
     uid=user.uid;
-    var newCart=WishListModel(id:uuid.v1(),sub_product_ref:subProduct);
+    var newCart=WishListModel(id:uuid.v1(),subProductRef:subProduct);
     cartwishList.saveWishlist(newCart);
 
 

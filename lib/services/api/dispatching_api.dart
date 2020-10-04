@@ -12,7 +12,7 @@ class DispatchingAPI{
 
     List<History> _historyy = [];
 
-    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('${uid}').collection('history').where('status', isEqualTo: status).getDocuments();
+    QuerySnapshot snapshot = await Firestore.instance.collection('user').document('$uid').collection('history').where('status', isEqualTo: status).getDocuments();
     snapshot.documents.forEach((element) {
        History history=History.formMap(element.data);
       _historyy.add(history);

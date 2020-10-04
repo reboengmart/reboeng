@@ -6,12 +6,12 @@ class ProductListApi{
   static Future<void> getProducts(ProductListNotifier productListNotifier, String id) async{
     QuerySnapshot snapshot = await Firestore.instance.collection('product').where('category_ref', isEqualTo: id).getDocuments();
 
-    List<ProductList> _ListProduct=[];
+    List<ProductList> _listProduct=[];
     snapshot.documents.forEach((element) {
       ProductList productList=ProductList.formMap(element.data);
-      _ListProduct.add(productList);
+      _listProduct.add(productList);
     });
 
-    return productListNotifier.productList=_ListProduct;
+    return productListNotifier.productList=_listProduct;
   }
 }

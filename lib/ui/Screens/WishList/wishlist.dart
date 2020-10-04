@@ -21,7 +21,7 @@ class _WishListState extends State<WishList> {
   List<SubProduct> itemlist = new List();
   List<SubProduct> itemlist2 = new List();
   String uid;
-  int _totalproduct;
+//  int _totalproduct;
   int subtotalproduct;
 
   void firebaseUid() async {
@@ -48,7 +48,7 @@ class _WishListState extends State<WishList> {
   void subProductGet(String subProductRef, int cartItemLength) async {
     SubProductNotifier subProductNotifier =
         Provider.of<SubProductNotifier>(context, listen: false);
-    await getSubProduct(subProductNotifier, subProductRef, cartItemLength);
+    getSubProduct(subProductNotifier, subProductRef, cartItemLength);
   }
 
 //  void itemGenerated(List<SubProduct> itemListUngenerated) {
@@ -99,6 +99,7 @@ class _WishListState extends State<WishList> {
                           child: Row(
                             children: <Widget>[
                               Text(
+                                // ignore: unrelated_type_equality_checks
                                 (wishlistItem == 0)
                                     ? "Tidak Produk Harapan Untuk DiCari :("
                                     : "Cari Produk Harapan Anda",
@@ -119,7 +120,7 @@ class _WishListState extends State<WishList> {
                       ),
                     ),
                     Expanded(
-                      child: (wishlistItem.length < 1)
+                      child: (wishlistItem != null && wishlistItem.length < 1)
                           ? Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -167,17 +168,13 @@ class _WishListState extends State<WishList> {
                                                   .where('id',
                                                       isEqualTo:
                                                           wishlistItem[index]
-                                                              .sub_product_ref)
+                                                              .subProductRef)
                                                   .getDocuments(),
                                               builder: (BuildContext context,
                                                   AsyncSnapshot snap) {
                                                 if(snap.hasData){
                                                   String wishId =
                                                       wishlistItem[index].id;
-                                                  String productid = snap
-                                                      .data.documents
-                                                      .toList()[0]
-                                                      .data['id'];
                                                   String productAssets = snap
                                                       .data.documents
                                                       .toList()[0]
@@ -202,8 +199,6 @@ class _WishListState extends State<WishList> {
                                                       .data.documents
                                                       .toList()[0]
                                                       .data['status'];
-                                                  final item =
-                                                  wishlistItem[index];
                                                   return Container(
                                                     child: Container(
                                                       padding: EdgeInsets.only(
@@ -265,7 +260,7 @@ class _WishListState extends State<WishList> {
                                                                       children: <
                                                                           Widget>[
                                                                         Text(
-                                                                          '${productName}',
+                                                                          '$productName',
                                                                           style:
                                                                           TextStyle(
                                                                             fontSize:
@@ -298,7 +293,7 @@ class _WishListState extends State<WishList> {
                                                                               10.0,
                                                                             ),
                                                                             Text(
-                                                                              'Rp. ${productPrice} per $productUnit',
+                                                                              'Rp. $productPrice per $productUnit',
                                                                               style:
                                                                               TextStyle(
                                                                                 color: Colors.blue,

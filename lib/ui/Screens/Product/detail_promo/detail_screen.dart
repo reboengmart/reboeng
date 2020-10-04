@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reboeng/provider/CartNotifier.dart';
+//import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/services/api/subproduct.dart';
 import 'package:reboeng/ui/Screens/Product/detail_promo/detailsPage.dart';
@@ -109,7 +109,7 @@ class _PromoDetailScreenState extends State<PromoDetailScreen> {
   }
 
   Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id,String status,String unit) {
-    CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
+//    CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
     return Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: InkWell(

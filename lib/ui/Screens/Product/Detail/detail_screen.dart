@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reboeng/provider/CartNotifier.dart';
 import 'package:reboeng/provider/SubProductNotifier.dart';
 import 'package:reboeng/provider/WishListNotifier.dart';
 import 'package:reboeng/services/refresh.dart';
@@ -137,7 +136,7 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Widget _buildFoodItem(String imgPath, String foodName, String price,String stock,String id,String status,String unit) {
-    CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
+//    CartNotifier subCartNotifier=Provider.of<CartNotifier>(context);
     WishListNotifier wishListNotifier=Provider.of<WishListNotifier>(context);
     return Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
@@ -197,7 +196,8 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 Container(
                   child: StreamBuilder(
-                    stream: Firestore.instance.collection('user').document('${uid}').collection('wishlist').where('sub_product_ref', isEqualTo: id).snapshots(),
+                    stream: Firestore.instance.collection('user').document('$uid').collection('wishlist').where('sub_product_ref', isEqualTo: id).snapshots(),
+                    // ignore: missing_return
                     builder: (context, snapshot) {
                       if(snapshot.hasData){
                         return Container(

@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reboeng/services/model/User.dart';
 
 
 class AuthServices{
@@ -51,6 +53,12 @@ class AuthServices{
     FirebaseUser newUser = await FirebaseAuth.instance.currentUser();
     // Add newUser to a Stream, maybe merge this Stream with onAuthStateChanged?
     return newUser;
+  }
+
+  void initSignup(FirebaseUser firebaseUser, String phone, String firstName, String lastName, String password, String email) async {
+    var createUser = User(uid: firebaseUser.uid, phone: phone, lastName: lastName, firstName: firstName, email: email, password: password, cartTotal: 0, registeredAt: new Timestamp.now(), profilePhoto: "", status: "member");
+
+    Firestore.instance.collection('user').document(createUser.uid).setData(createUser.toMap());
   }
 }
 //static Future<FirebaseUser> signUp(String email, String password) async{

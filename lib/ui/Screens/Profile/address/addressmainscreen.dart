@@ -72,7 +72,7 @@ class _AddressScreenState extends State<AddressScreen> {
   Future<void> _refreshNow() async {
     AddressNotifier addressNotifier =
         Provider.of<AddressNotifier>(context, listen: false);
-    await setState(() {
+    setState(() {
       AddressApi().getUserAddress(addressNotifier);
     });
     await Future.delayed(Duration(milliseconds: 1500));

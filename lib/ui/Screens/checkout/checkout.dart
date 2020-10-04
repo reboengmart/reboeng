@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reboeng/provider/checkout_notifier.dart';
-import 'package:reboeng/services/wrapper.dart';
 import 'package:reboeng/ui/Screens/Profile/address/addressmainscreen.dart';
 import 'package:reboeng/ui/Screens/checkout/components/rounded_container.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -35,7 +34,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool loading = true;
     firebaseUid();
     final image = 'assets/img/3.jpg';
     final TextStyle subtitle = TextStyle(fontSize: 12.0, color: Colors.grey);
@@ -202,14 +200,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               FlatButton(
                 child: Text('Simpan'),
                 onPressed: () {
-                  CheckoutNotifier().saveTransaction();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Wrapper(),
-                      )
-                      // ignore: unnecessary_statements
-                      );
+                  CheckoutNotifier().saveTransaction(context);
                 },
               ),
             ],
@@ -221,7 +212,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     int cartTotal = 0;
-    int ongkos_kirim = 3000;
+    int ongkosKirim = 3000;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -261,7 +252,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     return Text(snapshot.error);
                   }
                   if (_cartTotal.isNotEmpty) {
-                    loading = false;
                     return Column(
                       children: <Widget>[
                         Text(
@@ -368,7 +358,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   .data['cartTotal']);
                                           cartTotal =
                                               int.parse(_cartTotal[0].toString()) +
-                                                  ongkos_kirim;
+                                                  ongkosKirim;
                                         }
                                         if (_cartTotal == null) {
                                           return CircularProgressIndicator();
@@ -390,7 +380,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                 ),
                                               ),
                                               Text(
-                                                "Total Ongkos Kirim Rp. ${ongkos_kirim.toString()}",
+                                                "Total Ongkos Kirim Rp. ${ongkosKirim.toString()}",
                                                 textAlign: TextAlign.end,
                                                 style: TextStyle(
                                                   color: kPrimaryColor,
